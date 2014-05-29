@@ -118,6 +118,5 @@ class HtmlDocumentTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(file_exists(__DIR__ . '/tmp/cache/core.js'));
         $this->assertTrue(file_exists(__DIR__ . '/tmp/cache/framework.js'));
         $this->assertTrue(file_exists(__DIR__ . '/tmp/cache/theme.css'));
-        $this->assertTrue(file_exists(__DIR__ . '/tmp/cache/3d4eada40c0e41452b7249a988806a89.php'));
     }
 }
