@@ -5,7 +5,18 @@
     "homepage": "http://vision-web.pl",
     "require": {
         "php": ">=5.3.3",
-        "danielstjules/stringy": ">=1.5.1"
+
+        "tedivm/jshrink": "~1.0",
+        "oyejorge/less.php": ">=1.7",
+        "imagine/imagine": "~0.5.0",
+
+        "danielstjules/stringy": ">=1.5.1",
+        "jwage/purl": "v0.0.4",
+
+        "symfony/yaml": "2.4.*",
+        "symfony/config": "2.4.*",
+        "symfony/property-access": "2.4.*",
+        "symfony/options-resolver": "2.4.*"
     },
     "autoload": {
         "psr-0": { "vSymfo\\Component\\Document\\": "" }
