@@ -4,7 +4,8 @@
     "description": "vSymfo Document Component",
     "homepage": "http://vision-web.pl",
     "require": {
-        "php": ">=5.3.3"
+        "php": ">=5.3.3",
+        "danielstjules/stringy": ">=1.5.1"
     },
     "autoload": {
         "psr-0": { "vSymfo\\Component\\Document\\": "" }
