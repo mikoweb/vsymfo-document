@@ -1,0 +1,4 @@
+translations:
+  using:
+    - TRANS_TEST1
+    - TRANS_TEST2

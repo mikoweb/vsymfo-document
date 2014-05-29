@@ -1,0 +1,19 @@
+resources:
+  javascript:
+    groups:
+      - {name: framework, required: []}
+      - {name: core, required: [framework]}
+    sources:
+      framework:
+        - js/bar.js
+        - js/foo.js
+      core:
+        - js/foo.js
+        - js/bar.js
+
+  stylesheet:
+    groups:
+      - {name: theme, required: []}
+    sources:
+      theme:
+        - less/bootstrap.less
