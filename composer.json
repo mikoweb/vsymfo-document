@@ -2,5 +2,12 @@
     "name": "mikoweb/vsymfo-document",
     "type": "library",
     "description": "vSymfo Document Component",
-    "homepage": "http://vision-web.pl"
+    "homepage": "http://vision-web.pl",
+    "require": {
+        "php": ">=5.3.3"
+    },
+    "autoload": {
+        "psr-0": { "vSymfo\\Component\\Document\\": "" }
+    },
+    "target-dir": "vSymfo/Component/Document"
 }
