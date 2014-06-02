@@ -140,11 +140,10 @@ abstract class ResourceAbstract implements ResourceInterface
             throw new \Exception('Wrong UrlManager object. It is not compatible with interface UrlManagerInterface.');
         }
 
-        // generuj listę tylko jeden raz
-        if ($this->urls === null) {
+        if (is_null($this->urls)) {
             $this->urls = array();
             foreach ($this->source as $source) {
-                $this->urls[] = $this->urlManager->url($source, true, true);
+                $this->urls[] = $this->urlManager->url($source);
             }
         }
 
