@@ -131,4 +131,40 @@ abstract class ResourceManagerAbstract implements ResourceManagerInterface
     {
         return $this->length;
     }
+
+
+    /**
+     * automatyczny wybór metody formatowania
+     * @param string $format
+     * @param integer|string $group
+     * @param mixed $output
+     * @return mixed
+     * @throws \Exception
+     */
+    final protected function callRender($format, $group, &$output)
+    {
+        if (!is_string($format)) {
+            throw new \Exception('format is not string');
+        }
+
+        $call = "render_$format";
+        if (!method_exists($this, $call)) {
+            throw new \Exception('unallowed format: ' . $format);
+        }
+
+        if ($group === 0) {
+            $resources = $this->resources();
+        } else {
+            $resources = $this->groups->get($group);
+            $resources = isset($resources['resources'])
+                ? $resources['resources']
+                : array();
+        }
+
+        foreach ($resources as $res) {
+            call_user_func_array(array($this, $call), array($res, &$output));
+        }
+
+        return $output;
+    }
 }

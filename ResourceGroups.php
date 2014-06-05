@@ -80,7 +80,7 @@ class ResourceGroups implements ResourceGroupsInterface
      */
     public function get($name)
     {
-        if ($name === null) {
+        if (is_null($name)) {
             // zapodaj zasoby niepasujące do żadnej grupy
             return $this->unknown;
         } else {

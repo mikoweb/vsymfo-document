@@ -53,10 +53,11 @@ interface ResourceManagerInterface
 
     /**
      * zapodaj kod źródłowy w wybranym formacie
-     * @param $format
+     * @param string $format
+     * @param integer|string $group
      * @return mixed
      */
-    public function render($format);
+    public function render($format, $group = 0);
 
     /**
      * @param callable $onAdd

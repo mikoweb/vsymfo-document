@@ -132,18 +132,15 @@ abstract class ResourceAbstract implements ResourceInterface
     /**
      * Podaj tablicę adresów URL do zasobów
      * @return array
-     * @throws \Exception
      */
     public function getUrl()
     {
-        if (!($this->urlManager instanceof UrlManagerInterface)) {
-            throw new \Exception('Wrong UrlManager object. It is not compatible with interface UrlManagerInterface.');
-        }
-
         if (is_null($this->urls)) {
             $this->urls = array();
             foreach ($this->source as $source) {
-                $this->urls[] = $this->urlManager->url($source);
+                $this->urls[] = !is_null($this->urlManager)
+                    ? $this->urlManager->url($source)
+                    : $source;
             }
         }
 

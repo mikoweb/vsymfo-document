@@ -34,7 +34,13 @@ class ImageResource extends ResourceAbstract implements MakeResourceInterface
      * opcje
      * @var array
      */
-    protected $options;
+    protected $options = null;
+
+    /**
+     * dane obrazków
+     * @var array
+     */
+    protected $imageData = null;
 
     /**
      * @param string name
@@ -57,13 +63,17 @@ class ImageResource extends ResourceAbstract implements MakeResourceInterface
     {
         $resolver->setRequired(array('root_dir', 'output_dir'));
         $resolver->setDefaults(array(
-            'images'     => array()
+            'images' => array(),
+            'sizes'  => '',
+            'media'  => array(),
         ));
 
         $resolver->setAllowedTypes(array(
             'root_dir'   => 'string',
             'output_dir' => 'string',
-            'images'     => 'array'
+            'images'     => 'array',
+            'sizes'      => 'string',
+            'media'      => 'array',
         ));
 
         $image = new OptionsResolver();
@@ -73,7 +83,11 @@ class ImageResource extends ResourceAbstract implements MakeResourceInterface
             'suffix' => '',
             'jpeg_quality' => 80,
             'png_compression_level' => 9,
-            'mode' => ImageInterface::THUMBNAIL_OUTBOUND
+            'mode' => ImageInterface::THUMBNAIL_OUTBOUND,
+            'srcset-w' => 0,
+            'srcset-h' => 0,
+            'srcset-x' => 0,
+            'media-index' => -1
         ));
 
         $image->setAllowedTypes(array(
@@ -84,11 +98,15 @@ class ImageResource extends ResourceAbstract implements MakeResourceInterface
             'format'  => 'string',
             'jpeg_quality' => 'integer',
             'png_compression_level' => 'integer',
-            'mode' => 'string'
+            'mode' => 'string',
+            'srcset-w' => 'integer',
+            'srcset-h' => 'integer',
+            'srcset-x' => 'integer',
+            'media-index' => 'integer'
         ));
 
         $image->setAllowedValues(array(
-            'format' => array('jpg', 'png'),
+            'format' => array('jpg', 'png', 'gif'),
             'mode' => array(
                 ImageInterface::THUMBNAIL_INSET,
                 ImageInterface::THUMBNAIL_OUTBOUND
@@ -98,23 +116,43 @@ class ImageResource extends ResourceAbstract implements MakeResourceInterface
         $source = $this->source;
         $resolver->setNormalizers(array(
             'output_dir' => function (Options $options, $value) {
-                if (!file_exists($options['root_dir'] . $value)) {
-                    throw new \Exception('not exists directory: ' . $options['root_dir']  . $value);
-                }
-
-                return $value;
-            },
-            'images' => function (Options $options, $value) use($image, $source) {
-                $tmp = array();
-                foreach ($value as $img) {
-                    $opt = $tmp[] =  $image->resolve($img);
-                    if (!isset($source[$opt['index']])) {
-                        throw new \OutOfRangeException('there is no source with index ' . $opt['index']);
+                    if (!file_exists($options['root_dir'] . $value)) {
+                        throw new \Exception('not exists directory: ' . $options['root_dir']  . $value);
                     }
-                }
 
-                return $tmp;
-            },
+                    return $value;
+                },
+            'media' => function (Options $options, $value) {
+                    $tmp = array();
+                    foreach ($value as $k => $v) {
+                        if (!is_string($v)) {
+                            throw new \UnexpectedValueException('option [' . $k . '] is not string');
+                        }
+
+                        $tmp[] = $v;
+                    }
+
+                    return $tmp;
+                },
+            'images' => function (Options $options, $value) use($image, $source) {
+                    $tmp = array();
+                    foreach ($value as $img) {
+                        $opt = $tmp[] =  $image->resolve($img);
+                        if (!isset($source[$opt['index']])) {
+                            throw new \OutOfRangeException('there is no source with index ' . $opt['index']);
+                        }
+
+                        if ($opt['media-index'] < -1) {
+                            throw new \UnexpectedValueException('media-index must be greater than or equal to -1');
+                        }
+
+                        if ($opt['media-index'] > -1 && !isset($options['media'][$opt['media-index']])) {
+                            throw new \OutOfRangeException('there is no Media Query with index ' . $opt['media-index']);
+                        }
+                    }
+
+                    return $tmp;
+                },
         ));
     }
 
@@ -155,25 +193,53 @@ class ImageResource extends ResourceAbstract implements MakeResourceInterface
     }
 
     /**
+     * tablica z danymi obrazków pogrupowanymi według atrybutu media
+     * @return array
+     */
+    public function imageData()
+    {
+        $urls = $this->getUrl();
+        if (is_null($this->imageData)) {
+            $this->imageData = array(
+                'sizes' => $this->options['sizes'],
+                'media' => $this->options['media'],
+                'length' => 0,
+            );
+
+            foreach ($this->options['images'] as $k => $image) {
+                if (!isset($this->imageData[$image['media-index']])) {
+                    $this->imageData[$image['media-index']] = array();
+
+                    if ($image['media-index'] !== -1) {
+                        $this->imageData++;
+                    }
+                }
+
+                $item = array(
+                    'url' => $urls[$k],
+                    'data' => $image
+                );
+
+                $this->imageData[$image['media-index']][] = $item;
+            }
+        }
+
+        return $this->imageData;
+    }
+
+    /**
      * Podaj tablicę adresów URL do zasobów
      * @return array
-     * @throws \Exception
      */
     public function getUrl()
     {
-        if (empty($this->options['images'])) {
-            return parent::getUrl();
-        }
-
-        if (!($this->urlManager instanceof UrlManagerInterface)) {
-            throw new \Exception('Wrong UrlManager object. It is not compatible with interface UrlManagerInterface.');
-        }
-
         if (is_null($this->urls)) {
             $this->urls = array();
             foreach ($this->options['images'] as &$image) {
-                $this->urls[] = $this->urlManager->url($this->options['output_dir']
-                    . DIRECTORY_SEPARATOR . $this->filename($image));
+                $this->urls[] = !is_null($this->urlManager)
+                    ? $this->urlManager->url($this->options['output_dir']
+                        . DIRECTORY_SEPARATOR . $this->filename($image))
+                    : $source;
             }
         }
 

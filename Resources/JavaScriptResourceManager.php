@@ -42,19 +42,18 @@ class JavaScriptResourceManager extends CombineResourceManagerAbstract
     /**
      * zapodaj kod źródłowy w wybranym formacie
      * @param string $format
+     * @param integer|string $group
      * @return string
-     * @throws \Exception
      */
-    public function render($format)
+    public function render($format, $group = 0)
     {
         switch ($format) {
             case 'json':
                 return $this->json();
-            case 'html':
-                return $this->html();
+            default:
+                $output = '';
+                return $this->callRender($format, $group, $output);
         }
-
-        throw new \Exception('unallowed format');
     }
 
     /**
@@ -100,21 +99,17 @@ class JavaScriptResourceManager extends CombineResourceManagerAbstract
 
     /**
      * kod źródłowy w formacie HTML
-     * @return string
+     * @param JavaScriptResource $res
+     * @param string $output
      */
-    private function html()
+    protected function render_html(JavaScriptResource $res, &$output)
     {
-        $html = '';
-        foreach ($this->resources() as $res) {
-            foreach ($res->getUrl() as $url) {
-                $tag = new HtmlElement('script');
-                $tag->attr('src', $url);
-                $tag->attr('type', 'text/javascript');
-                $html .= $tag->render();
-                $tag->destroy($tag);
-            }
+        foreach ($res->getUrl() as $url) {
+            $tag = new HtmlElement('script');
+            $tag->attr('src', $url);
+            $tag->attr('type', 'text/javascript');
+            $output .= $tag->render();
+            $tag->destroy($tag);
         }
-
-        return $html;
     }
 }

@@ -42,37 +42,30 @@ class StyleSheetResourceManager extends CombineResourceManagerAbstract
     /**
      * zapodaj kod źródłowy w wybranym formacie
      * @param string $format
+     * @param integer|string $group
      * @return string
      * @throws \Exception
      */
-    public function render($format)
+    public function render($format, $group = 0)
     {
-        switch ($format) {
-            case 'html':
-                return $this->html();
-        }
-
-        throw new \Exception('unallowed format');
+        $output = '';
+        return $this->callRender($format, $group, $output);
     }
 
     /**
      * kod źródłowy w formacie HTML
-     * @return string
+     * @param StyleSheetResource $res
+     * @param string $output
      */
-    private function html()
+    protected function render_html(StyleSheetResource $res, &$output)
     {
-        $html = '';
-        foreach ($this->resources() as $res) {
-            foreach ($res->getUrl() as $url) {
-                $tag = new HtmlElement('link');
-                $tag->attr('href', $url);
-                $tag->attr('rel', 'stylesheet');
-                $tag->attr('type', 'text/css');
-                $html .= $tag->render();
-                $tag->destroy($tag);
-            }
+        foreach ($res->getUrl() as $url) {
+            $tag = new HtmlElement('link');
+            $tag->attr('href', $url);
+            $tag->attr('rel', 'stylesheet');
+            $tag->attr('type', 'text/css');
+            $output .= $tag->render();
+            $tag->destroy($tag);
         }
-
-        return $html;
     }
 }

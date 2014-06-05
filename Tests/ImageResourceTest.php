@@ -12,12 +12,14 @@
 
 use vSymfo\Component\Document\UrlManager;
 use vSymfo\Component\Document\Resources\ImageResource;
+use vSymfo\Component\Document\Resources\ImageResourceManager;
+use vSymfo\Component\Document\ResourceGroups;
 use Imagine\Image\ImageInterface;
 use Imagine\Gd\Imagine;
 
 class ImageResourceTest extends \PHPUnit_Framework_TestCase
 {
-    public function testTest()
+    public function testRes()
     {
         $image = new ImageResource('Ford Mustang 1972',
             array(
@@ -65,5 +67,51 @@ class ImageResourceTest extends \PHPUnit_Framework_TestCase
         $urls = $image->getUrl();
         $this->assertEquals('/tmp/images/test/1972_ford_mustang-wide_test_1000x800.jpg', $urls[0]);
         $this->assertEquals('/tmp/images/test/1972_ford_mustang-mini_ok_300x150.png', $urls[1]);
+    }
+
+    public function testManager()
+    {
+        $res = new ImageResourceManager(
+            new ResourceGroups(),
+            function(ImageResource $res) {
+                $url = new UrlManager();
+                $url->setBaseUrl('/tmp/');
+                $res->setUrlManager($url);
+            }
+        );
+
+        $res->add(new ImageResource('Ford Mustang 1972',
+                array(
+                    '/images/1972_ford_mustang-wide.jpg',
+                    '/images/1972_ford_mustang-mini.jpg'
+                ),
+                array(
+                    'root_dir' => __DIR__ . '/tmp',
+                    'output_dir' => '/images/test',
+                    'sizes' => '100vw, (min-width: 40em) 80vw',
+                    'media' => array('(min-width: 800px)'),
+                    'images' => array(
+                        array(
+                            'index' => 0,
+                            'suffix' => 'test',
+                            'width' => 1000,
+                            'height' => 800,
+                            'format' => 'jpg',
+                            'srcset-x' => 2,
+                            'media-index' => 0
+                        ),
+                        array(
+                            'index' => 1,
+                            'suffix' => 'ok',
+                            'width' => 300,
+                            'height' => 150,
+                            'format' => 'png'
+                        )
+                    )
+                )
+            )
+        );
+
+        var_dump($res->render('html_img'));
     }
 }
