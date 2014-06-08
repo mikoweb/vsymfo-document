@@ -89,8 +89,13 @@ class ImageResourceManager extends ResourceManagerAbstract
             $tag->attr('sizes', $data['sizes']);
         }
 
+        $urls = $res->getUrl();
+        $tag->attr('src', $urls[$data['src-index']]);
         $tag->attr('srcset', substr($srcset, 0, -2));
-        $tag->attr('alt', $res->getName());
+        $tag->attr('alt', htmlspecialchars($res->getName()));
+        foreach ($data['attr'] as $k => $v) {
+            $tag->attr(htmlspecialchars($k), htmlspecialchars($v));
+        }
         $output[] = $tag->render();
         $tag->destroy($tag);
     }
@@ -103,6 +108,52 @@ class ImageResourceManager extends ResourceManagerAbstract
     protected function render_html_picture(ImageResource $res, &$output)
     {
         $data = $res->imageData();
-        $output[] = '';
+        $tmp = '';
+        $source = function(&$arr) use (&$data, &$tmp) {
+            $tag = new HtmlElement('source');
+            $srcset = '';
+            foreach ($arr as &$img) {
+                $srcset .= $img['url'];
+                $srcset .= !empty($img['data']['srcset-x'])
+                    ? (' ' . $img['data']['srcset-x'] . 'x') : '';
+                $srcset .= ', ';
+            }
+            $tag->attr('srcset', substr($srcset, 0, -2));
+            $index = $arr[0]['data']['media-index'];
+            if (isset($data['media'][$index])) {
+                $tag->attr('media', $data['media'][$index]);
+            }
+            $tmp .= $tag->render() . PHP_EOL;
+            $tag->destroy($tag);
+        };
+
+        for ($i = 0;  $i < $data['length']; $i++) {
+            $source($data[$i]);
+        }
+        if (isset($data[-1])) {
+            $source($data[-1]);
+        }
+
+        $urls = $res->getUrl();
+        $img = new HtmlElement('img');
+        $img->attr('src', $urls[$data['src-index']]);
+        $img->attr('alt', htmlspecialchars($res->getName()));
+
+        $tag = new HtmlElement('picture');
+        $tag->attr('alt', htmlspecialchars($res->getName()));
+        foreach ($data['attr'] as $k => $v) {
+            $tag->attr(htmlspecialchars($k), htmlspecialchars($v));
+        }
+        preg_match('/<picture.*?>/', $tag->render(), $result);
+        $output[] = (isset($result[0])
+            ? $result[0] . PHP_EOL
+            : '<picture>' . PHP_EOL)
+            . "<!--[if IE 9]><video style=\"display: none;\"><![endif]-->" . PHP_EOL
+            . $tmp
+            . "<!--[if IE 9]></video><![endif]-->" . PHP_EOL
+            . $img->render() . PHP_EOL
+            . '</picture>';
+        $tag->destroy($tag);
+        $img->destroy($img);
     }
 }

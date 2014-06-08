@@ -66,6 +66,8 @@ class ImageResource extends ResourceAbstract implements MakeResourceInterface
             'images' => array(),
             'sizes'  => '',
             'media'  => array(),
+            'attr'   => array(),
+            'src-index' => 0,
         ));
 
         $resolver->setAllowedTypes(array(
@@ -74,6 +76,8 @@ class ImageResource extends ResourceAbstract implements MakeResourceInterface
             'images'     => 'array',
             'sizes'      => 'string',
             'media'      => 'array',
+            'attr'       => 'array',
+            'src-index'  => 'integer',
         ));
 
         $image = new OptionsResolver();
@@ -136,6 +140,9 @@ class ImageResource extends ResourceAbstract implements MakeResourceInterface
                 },
             'images' => function (Options $options, $value) use($image, $source) {
                     $tmp = array();
+                    if (count($value) === 0) {
+                        throw new \LengthException('images array cannot be empty');
+                    }
                     foreach ($value as $img) {
                         $opt = $tmp[] =  $image->resolve($img);
                         if (!isset($source[$opt['index']])) {
@@ -152,6 +159,26 @@ class ImageResource extends ResourceAbstract implements MakeResourceInterface
                     }
 
                     return $tmp;
+                },
+            'attr' => function (Options $options, $value) {
+                    foreach ($value as $k => $v) {
+                        if (!is_string($k)) {
+                            throw new \UnexpectedValueException('attribute key is not string');
+                        }
+
+                        if (!is_string($v)) {
+                            throw new \UnexpectedValueException('option [' . $k . '] is not string');
+                        }
+                    }
+
+                    return $value;
+                },
+            'src-index' => function (Options $options, $value) {
+                    if (!isset($options['images'][$value])) {
+                        throw new \OutOfRangeException('there is no image with index ' . $value);
+                    }
+
+                    return $value;
                 },
         ));
     }
@@ -198,11 +225,13 @@ class ImageResource extends ResourceAbstract implements MakeResourceInterface
      */
     public function imageData()
     {
-        $urls = $this->getUrl();
         if (is_null($this->imageData)) {
+            $urls = $this->getUrl();
             $this->imageData = array(
                 'sizes' => $this->options['sizes'],
                 'media' => $this->options['media'],
+                'attr'  => $this->options['attr'],
+                'src-index' => $this->options['src-index'],
                 'length' => 0,
             );
 
@@ -211,7 +240,7 @@ class ImageResource extends ResourceAbstract implements MakeResourceInterface
                     $this->imageData[$image['media-index']] = array();
 
                     if ($image['media-index'] !== -1) {
-                        $this->imageData++;
+                        $this->imageData['length']++;
                     }
                 }
 

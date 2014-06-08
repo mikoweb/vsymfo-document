@@ -89,7 +89,14 @@ class ImageResourceTest extends \PHPUnit_Framework_TestCase
                     'root_dir' => __DIR__ . '/tmp',
                     'output_dir' => '/images/test',
                     'sizes' => '100vw, (min-width: 40em) 80vw',
-                    'media' => array('(min-width: 800px)'),
+                    'media' => array(
+                        '(min-width: 1000px)',
+                        '(min-width: 800px)',
+                    ),
+                    'attr' => array(
+                        'class' => 'test',
+                        'data-test' => 'ok'
+                    ),
                     'images' => array(
                         array(
                             'index' => 0,
@@ -112,6 +119,43 @@ class ImageResourceTest extends \PHPUnit_Framework_TestCase
             )
         );
 
-        var_dump($res->render('html_img'));
+        $input = $res->render('html_picture');
+        libxml_use_internal_errors(true);
+        foreach ($input as $code) {
+            $dom = new DOMDocument();
+            $dom->loadHTML($code);
+            $xpath = new DOMXPath($dom);
+
+            $this->assertEquals(1, $xpath->query('body/picture')->length);
+            $el = $xpath->query('body/picture')->item(0);
+            $this->assertEquals('Ford Mustang 1972', $el->getAttribute('alt'));
+            $this->assertEquals('test', $el->getAttribute('class'));
+
+            $el = $xpath->query('body/picture/img')->item(0);
+            $this->assertEquals('/tmp/images/test/1972_ford_mustang-wide_test_1000x800.jpg', $el->getAttribute('src'));
+
+            $el = $xpath->query('body/picture/source');
+            $this->assertEquals('(min-width: 1000px)', $el->item(0)->getAttribute('media'));
+            $this->assertEquals('/tmp/images/test/1972_ford_mustang-wide_test_1000x800.jpg 2x', $el->item(0)->getAttribute('srcset'));
+            $this->assertEquals('', $el->item(1)->getAttribute('media'));
+            $this->assertEquals('/tmp/images/test/1972_ford_mustang-mini_ok_300x150.png', $el->item(1)->getAttribute('srcset'));
+
+        }
+        libxml_use_internal_errors(false);
+
+        $input = $res->render('html_img');
+        foreach ($input as $code) {
+            $dom = new DOMDocument();
+            $dom->loadHTML($code);
+            $xpath = new DOMXPath($dom);
+
+            $img = $xpath->query('body/img');
+            $this->assertEquals(1, $img->length);
+            $img = $img->item(0);
+            $this->assertEquals('Ford Mustang 1972', $img->getAttribute('alt'));
+            $this->assertEquals('100vw, (min-width: 40em) 80vw', $img->getAttribute('sizes'));
+            $this->assertEquals('/tmp/images/test/1972_ford_mustang-wide_test_1000x800.jpg', $img->getAttribute('src'));
+            $this->assertEquals('/tmp/images/test/1972_ford_mustang-mini_ok_300x150.png', $img->getAttribute('srcset'));
+        }
     }
 }
