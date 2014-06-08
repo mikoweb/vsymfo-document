@@ -33,9 +33,7 @@ class JavaScriptResource extends CombineResourceAbstract
      * domyślne opcje konstruktora
      * @var array
      */
-    protected $defaults = array(
-
-    );
+    protected $defaults = array();
 
     /**
      * @param string name
