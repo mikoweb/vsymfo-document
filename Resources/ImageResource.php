@@ -16,7 +16,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\Options;
 use vSymfo\Component\Document\Resources\Interfaces\MakeResourceInterface;
 use vSymfo\Component\Document\ResourceAbstract;
-use vSymfo\Component\Document\Interfaces\UrlManagerInterface;
 use Imagine\Gd\Imagine;
 use Imagine\Image\Point;
 use Imagine\Image\Box;

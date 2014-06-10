@@ -60,6 +60,11 @@ abstract class DocumentAbstract implements DocumentInterface
     private $createdDate = null;
 
     /**
+     * @var \DateTime
+     */
+    private $lastModified = null;
+
+    /**
      * @var string
      */
     private $description = '';
@@ -202,10 +207,24 @@ abstract class DocumentAbstract implements DocumentInterface
     public function createdDate($set = null)
     {
         if (is_string($set) || is_null($this->createdDate)) {
-            $this->createdDate = new \DateTime($set);
+            $this->createdDate = new \DateTime(is_null($set) ? '1970-01-01 00:00:00' : $set);
         }
 
         return $this->createdDate;
+    }
+
+    /**
+     * data modyfikacji
+     * @param string $set
+     * @return \DateTime
+     */
+    public function lastModified($set = null)
+    {
+        if (is_string($set) || is_null($this->lastModified)) {
+            $this->lastModified = new \DateTime(is_null($set) ? '1970-01-01 00:00:00' : $set);
+        }
+
+        return $this->lastModified;
     }
 
     /**

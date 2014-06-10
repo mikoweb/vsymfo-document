@@ -117,12 +117,16 @@ class TxtDocumentTest extends \PHPUnit_Framework_TestCase
     /**
      * testowanie daty
      */
-    public function testCreateDate()
+    public function testDate()
     {
-        $now = new \DateTime();
+        $now = new \DateTime('1970-01-01 00:00:00');
         $this->assertEquals($now->format('Y-m-d'), $this->doc->createdDate()->format('Y-m-d'));
         $this->doc->createdDate('2011-10-31 12:40:20');
         $this->assertEquals('2011-10-31', $this->doc->createdDate()->format('Y-m-d'));
+
+        $this->assertEquals($now->format('Y-m-d'), $this->doc->lastModified()->format('Y-m-d'));
+        $this->doc->lastModified('2011-10-31 12:40:20');
+        $this->assertEquals('2011-10-31', $this->doc->lastModified()->format('Y-m-d'));
     }
 
     /**
