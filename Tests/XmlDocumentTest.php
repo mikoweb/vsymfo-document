@@ -11,7 +11,6 @@
  */
 
 use vSymfo\Component\Document\Format\XmlDocument;
-use vSymfo\Component\Document\Element\HtmlElement;
 
 class XmlDocumentTest extends \PHPUnit_Framework_TestCase
 {
