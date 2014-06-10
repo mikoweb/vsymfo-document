@@ -335,7 +335,7 @@ class HtmlDocument extends DocumentAbstract
     {
         $output = preg_match('/^<!DOCTYPE\s.*>$/', trim($this->doctype->render()))
             ? trim($this->doctype->render()) . PHP_EOL
-            : '';
+            : '<!DOCTYPE html>' . PHP_EOL;
 
         preg_match('/<html.*?>/', $this->html->render(), $result);
         $output .= isset($result[0])
@@ -361,7 +361,7 @@ class HtmlDocument extends DocumentAbstract
 
         $output .= '</head>' . PHP_EOL;
         $output .= $this->body;
-        $output .= PHP_EOL . '</html>';
+        $output .= '</html>';
 
         return $output;
     }

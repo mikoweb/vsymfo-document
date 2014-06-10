@@ -36,7 +36,7 @@ class TxtDocument extends DocumentAbstract
     /**
      * Zasoby
      * @param string $name
-     * @return ResourcesInterface
+     * @return null
      * @throws \Exception
      */
     public function resources($name)

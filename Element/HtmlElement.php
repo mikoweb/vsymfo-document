@@ -43,12 +43,6 @@ class HtmlElement implements ElementInterface
     protected $element = null;
 
     /**
-     * nazwa elementu
-     * @var string
-     */
-    protected $name;
-
-    /**
      * @param string $name
      * @param string $content
      * @throws \InvalidArgumentException
@@ -64,7 +58,6 @@ class HtmlElement implements ElementInterface
             self::$DOM->strictErrorChecking = false;
         }
 
-        $this->name = $name;
         $this->element = self::$DOM->createElement($name);
         self::$DOM->appendChild($this->element);
         if (!empty($content)) {
@@ -101,7 +94,7 @@ class HtmlElement implements ElementInterface
      */
     public function name()
     {
-        return $this->name;
+        return $this->element->tagName;
     }
 
     /**
@@ -293,7 +286,7 @@ class HtmlElement implements ElementInterface
         if (!$inside) {
             return self::$DOM->saveHTML($this->element);
         } else {
-            preg_match("/<$this->name[^>]*>(.*?)<\/$this->name>/s", self::$DOM->saveHTML($this->element), $matches);
+            preg_match("/<".$this->element->tagName."[^>]*>(.*?)<\/".$this->element->tagName.">/s", self::$DOM->saveHTML($this->element), $matches);
             return trim($matches[1]);
         }
     }
