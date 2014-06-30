@@ -3,6 +3,14 @@
     "type": "library",
     "description": "vSymfo Document Component",
     "homepage": "http://vision-web.pl",
+    "license": "CC-BY-NC-ND",
+    "authors": [
+        {
+            "name": "Rafał Mikołajun",
+            "email": "rafal@vision-web.pl",
+            "role": "Developer"
+        }
+    ],
     "require": {
         "php": ">=5.3.3",
 

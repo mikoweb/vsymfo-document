@@ -20,5 +20,5 @@ namespace vSymfo\Component\Document\Format;
  */
 class RssDocument extends XmlDocument
 {
-    
+
 }
