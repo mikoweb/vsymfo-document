@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Joomla Rapid Framework
+ * This file is part of the Joomla Startup
  *
  * website: www.vision-web.pl
  * (c) Rafał Mikołajun <rafal@vision-web.pl>
