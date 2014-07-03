@@ -49,6 +49,14 @@ class TxtElement implements ElementInterface
     }
 
     /**
+     * @return bool
+     */
+    public function isEmpty()
+    {
+        return empty($this->text);
+    }
+
+    /**
      * manipulowanie zawartością
      * @param callable $closure
      * @throws \Exception

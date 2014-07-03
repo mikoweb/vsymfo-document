@@ -54,7 +54,7 @@ class HtmlDocument extends DocumentAbstract
     private $title = null;
 
     /**
-     * @var HtmlElement
+     * @var TxtElement
      */
     private $script = null;
 
@@ -132,8 +132,7 @@ class HtmlDocument extends DocumentAbstract
             ->attr('content', 'IE=Edge,chrome=1')
             ->insertTo($this->head)
         ;
-        $this->script = new HtmlElement('script');
-        $this->script->attr('type', 'text/javascript');
+        $this->script = new TxtElement();
         $this->author = new HtmlElement('meta');
         $this->authorUrl = new HtmlElement('link');
         $this->description = new HtmlElement('meta');
@@ -355,8 +354,9 @@ class HtmlDocument extends DocumentAbstract
             }
         }
 
-        if ($this->script->text()) {
-            $output .= $this->script->render() . PHP_EOL;
+        if (!$this->script->isEmpty()) {
+            $output .= '<script type="text/javascript">'
+                . $this->script->render() . '</script>' . PHP_EOL;
         }
 
         $output .= '</head>' . PHP_EOL;
