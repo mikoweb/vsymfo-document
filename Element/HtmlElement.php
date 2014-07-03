@@ -57,7 +57,7 @@ class HtmlElement implements ElementInterface
             self::$DOM = new \DOMDocument();
             self::$DOM->strictErrorChecking = false;
             self::$DOM->substituteEntities = false;
-            self::$DOM->loadHTML('<meta charset="utf-8">');
+            self::$DOM->loadHTML('<!DOCTYPE html><meta charset="utf-8">');
         }
 
         $this->element = self::$DOM->createElement($name);
