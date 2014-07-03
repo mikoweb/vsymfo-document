@@ -128,16 +128,21 @@ class HtmlElement implements ElementInterface
             throw new \UnexpectedValueException('content is not valid code');
         }
 
-        $fragment = self::$DOM->createDocumentFragment();
-        $fragment->appendXML(trim($content));
+        $code = trim($content);
+        if (!empty($code)) {
+            $fragment = self::$DOM->createDocumentFragment();
+            libxml_use_internal_errors(true);
+            $fragment->appendXML($code);
+            libxml_clear_errors();
 
-        switch ($where) {
-            case self::CHILD_APPEND:
-                $this->element->appendChild($fragment);
-                break;
-            case self::CHILD_PREPEND:
-                $this->element->insertBefore($fragment, $this->element->childNodes->item(0));
-                break;
+            switch ($where) {
+                case self::CHILD_APPEND:
+                    $this->element->appendChild($fragment);
+                    break;
+                case self::CHILD_PREPEND:
+                    $this->element->insertBefore($fragment, $this->element->childNodes->item(0));
+                    break;
+            }
         }
 
         return $this;
