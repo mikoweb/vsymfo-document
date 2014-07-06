@@ -139,9 +139,9 @@ class HtmlDocument extends DocumentAbstract
         $this->keywords = new HtmlElement('meta');
         $this->javaScript = new JavaScriptResourceManager(new ResourceGroups());
         $this->styleSheet = new StyleSheetResourceManager(new ResourceGroups());
-        $this->scriptOutput = function(JavaScriptResourceManager $manager) {
-            return $manager->render('html');
-        };
+        $this->setScriptOutput(function(JavaScriptResourceManager $manager) {
+                return $manager->render('html');
+            });
     }
 
     /**
@@ -154,8 +154,8 @@ class HtmlDocument extends DocumentAbstract
         $reflection = new \ReflectionFunction($output);
         $args = $reflection->getParameters();
         if (isset($args[0]) && is_object($args[0]->getClass())
-            && $args[0]->getClass()
-                ->implementsInterface('vSymfo\Component\Document\CombineResourceManagerAbstract')
+            && $args[0]->getClass()->getName()
+                == 'vSymfo\Component\Document\Resources\JavaScriptResourceManager'
         ) {
             $this->scriptOutput = $output;
         } else {
