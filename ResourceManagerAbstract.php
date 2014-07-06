@@ -102,6 +102,20 @@ abstract class ResourceManagerAbstract implements ResourceManagerInterface
     }
 
     /**
+     * lista nazw zarejestrowanych funkcji dodających
+     * @return array
+     */
+    public function getOnAddNames()
+    {
+        $names = array();
+        foreach ($this->chooseOnAdd as $k=>$v) {
+            $names[] = $k;
+        }
+
+        return $names;
+    }
+
+    /**
      * Zapodaj obiekt grupowania
      * @return ResourceGroupsInterface
      */

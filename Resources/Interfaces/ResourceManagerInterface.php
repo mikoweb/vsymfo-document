@@ -73,4 +73,10 @@ interface ResourceManagerInterface
      * @return void
      */
     public function chooseOnAdd($name);
+
+    /**
+     * lista nazw zarejestrowanych funkcji dodających
+     * @return array
+     */
+    public function getOnAddNames();
 }
