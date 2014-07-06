@@ -95,6 +95,7 @@ class HtmlDocumentTest extends \PHPUnit_Framework_TestCase
         $manager->setOnAdd("hoho", function(StyleSheetResource $res) {});
         $manager->chooseOnAdd("hoho");
         $manager->chooseOnAdd("styleTestAdd");
+        //$manager->chooseOnAdd(null);
 
         $locator = new FileLocator(__DIR__ . '/tmp/config');
         $loader = new StyleSheetResourcesLoader($locator, array(
