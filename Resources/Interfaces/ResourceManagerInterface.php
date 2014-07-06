@@ -60,7 +60,17 @@ interface ResourceManagerInterface
     public function render($format, $group = 0);
 
     /**
-     * @param callable $onAdd
+     * ustaw funckcję dodającą o podanej nazwie
+     * @param string $name
+     * @param \Closure $onAdd
+     * @return void
      */
-    public function setOnAdd(\Closure $onAdd);
+    public function setOnAdd($name, \Closure $onAdd);
+
+    /**
+     * wybierz funkcje dodającą
+     * @param $name
+     * @return void
+     */
+    public function chooseOnAdd($name);
 }

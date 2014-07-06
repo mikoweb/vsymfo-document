@@ -37,6 +37,11 @@ abstract class ResourceManagerAbstract implements ResourceManagerInterface
     protected $onAdd = null;
 
     /**
+     * @var array
+     */
+    protected $chooseOnAdd = array();
+
+    /**
      * liczba zasobów
      * @var int
      */
@@ -51,29 +56,48 @@ abstract class ResourceManagerAbstract implements ResourceManagerInterface
     {
         $this->groups = $groups;
         if (!is_null($onAdd)) {
-            $this->setOnAdd($onAdd);
+            $this->setOnAdd("default", $onAdd);
+            $this->chooseOnAdd("default");
         }
     }
 
     /**
-     * @param callable $onAdd
+     * ustaw funckcję dodającą o podanej nazwie
+     * @param string $name
+     * @param \Closure $onAdd
      * @throws \Exception
      */
-    public function setOnAdd(\Closure $onAdd)
+    public function setOnAdd($name, \Closure $onAdd)
     {
-        if (is_null($this->onAdd)) {
+        if (!isset($this->chooseOnAdd[$name])) {
             $reflection = new \ReflectionFunction($onAdd);
             $args = $reflection->getParameters();
             if (isset($args[0]) && is_object($args[0]->getClass())
                 && $args[0]->getClass()
                     ->implementsInterface('vSymfo\Component\Document\Resources\Interfaces\ResourceInterface')
             ) {
-                $this->onAdd = $onAdd;
+                $this->chooseOnAdd[$name] = $onAdd;
             } else {
                 throw new \Exception('not allowed Closure');
             }
         } else {
-            throw new \Exception('can be set only once');
+            throw new \RuntimeException('OnAddResource closure: "' . $name . '" is registered.');
+        }
+    }
+
+    /**
+     * wybierz funkcje dodającą
+     * @param $name
+     * @throws \RuntimeException
+     */
+    public function chooseOnAdd($name)
+    {
+        if (isset($this->chooseOnAdd[$name])
+            && $this->chooseOnAdd[$name] instanceof \Closure
+        ) {
+            $this->onAdd = $this->chooseOnAdd[$name];
+        } else {
+            throw new \RuntimeException('OnAddResource closure: "' . $name . '" not exists.');
         }
     }
 

@@ -38,7 +38,7 @@ class HtmlDocumentTest extends \PHPUnit_Framework_TestCase
     public function testResourcesLoader()
     {
         $manager = $this->doc->resources('javascript');
-        $manager->setOnAdd(function(JavaScriptResource $res) {
+        $manager->setOnAdd("testAdd", function(JavaScriptResource $res) {
             $combine = new JavaScriptCombineFiles();
             $combine->setInputDir(__DIR__)
                 ->setOutputDir(__DIR__ . '/tmp/cache')
@@ -56,6 +56,7 @@ class HtmlDocumentTest extends \PHPUnit_Framework_TestCase
             $res->setCombineObject($combine);
             $res->setUrlManager(new UrlManager());
         });
+        $manager->chooseOnAdd("testAdd");
 
         $locator = new FileLocator(__DIR__ . '/tmp/config');
         $loader = new JavaScriptResourcesLoader($locator, array(
@@ -70,7 +71,7 @@ class HtmlDocumentTest extends \PHPUnit_Framework_TestCase
         $loader->load('html_resources.yml', 'core');
 
         $manager = $this->doc->resources('stylesheet');
-        $manager->setOnAdd(function(StyleSheetResource $res) {
+        $manager->setOnAdd("styleTestAdd", function(StyleSheetResource $res) {
             $combine = new StyleSheetCombineFiles();
             $combine->setInputDir(__DIR__)
                 ->setOutputDir(__DIR__ . '/tmp/cache')
@@ -90,6 +91,10 @@ class HtmlDocumentTest extends \PHPUnit_Framework_TestCase
             $res->setCombineObject($combine);
             $res->setUrlManager(new UrlManager());
         });
+        $manager->chooseOnAdd("styleTestAdd");
+        $manager->setOnAdd("hoho", function(StyleSheetResource $res) {});
+        $manager->chooseOnAdd("hoho");
+        $manager->chooseOnAdd("styleTestAdd");
 
         $locator = new FileLocator(__DIR__ . '/tmp/config');
         $loader = new StyleSheetResourcesLoader($locator, array(
