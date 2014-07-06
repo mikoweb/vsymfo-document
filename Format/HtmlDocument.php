@@ -155,7 +155,7 @@ class HtmlDocument extends DocumentAbstract
         $args = $reflection->getParameters();
         if (isset($args[0]) && is_object($args[0]->getClass())
             && $args[0]->getClass()
-                ->implementsInterface('vSymfo\Component\Document\Resources\JavaScriptResourceManager')
+                ->implementsInterface('vSymfo\Component\Document\CombineResourceManagerAbstract')
         ) {
             $this->scriptOutput = $output;
         } else {
