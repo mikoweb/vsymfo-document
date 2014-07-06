@@ -65,10 +65,15 @@ abstract class ResourceManagerAbstract implements ResourceManagerInterface
      * ustaw funckcję dodającą o podanej nazwie
      * @param string $name
      * @param \Closure $onAdd
-     * @throws \Exception
+     * @throws \RuntimeException
+     * @throws \InvalidArgumentException
      */
     public function setOnAdd($name, \Closure $onAdd)
     {
+        if (!is_string($name)) {
+            throw new \InvalidArgumentException('invalid name');
+        }
+
         if (!isset($this->chooseOnAdd[$name])) {
             $reflection = new \ReflectionFunction($onAdd);
             $args = $reflection->getParameters();
@@ -78,7 +83,7 @@ abstract class ResourceManagerAbstract implements ResourceManagerInterface
             ) {
                 $this->chooseOnAdd[$name] = $onAdd;
             } else {
-                throw new \Exception('not allowed Closure');
+                throw new \RuntimeException('not allowed Closure');
             }
         } else {
             throw new \RuntimeException('OnAddResource closure: "' . $name . '" is registered.');
@@ -87,17 +92,24 @@ abstract class ResourceManagerAbstract implements ResourceManagerInterface
 
     /**
      * wybierz funkcje dodającą
-     * @param $name
+     * @param string|null $name
      * @throws \RuntimeException
+     * @throws \InvalidArgumentException
      */
     public function chooseOnAdd($name)
     {
-        if (isset($this->chooseOnAdd[$name])
-            && $this->chooseOnAdd[$name] instanceof \Closure
-        ) {
-            $this->onAdd = $this->chooseOnAdd[$name];
+        if (is_string($name)) {
+            if (isset($this->chooseOnAdd[$name])
+                && $this->chooseOnAdd[$name] instanceof \Closure
+            ) {
+                $this->onAdd = $this->chooseOnAdd[$name];
+            } else {
+                throw new \RuntimeException('OnAddResource closure: "' . $name . '" not exists.');
+            }
+        } elseif (is_null($name)) {
+            $this->onAdd = null;
         } else {
-            throw new \RuntimeException('OnAddResource closure: "' . $name . '" not exists.');
+            throw new \InvalidArgumentException('invalid name');
         }
     }
 
