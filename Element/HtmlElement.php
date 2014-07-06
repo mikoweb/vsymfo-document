@@ -139,10 +139,10 @@ class HtmlElement implements ElementInterface
 
             switch ($where) {
                 case self::CHILD_APPEND:
-                    $this->element->appendChild($fragment);
+                    @$this->element->appendChild($fragment);
                     break;
                 case self::CHILD_PREPEND:
-                    $this->element->insertBefore($fragment, $this->element->childNodes->item(0));
+                    @$this->element->insertBefore($fragment, $this->element->childNodes->item(0));
                     break;
             }
         }
