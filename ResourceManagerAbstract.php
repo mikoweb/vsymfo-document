@@ -62,7 +62,7 @@ abstract class ResourceManagerAbstract implements ResourceManagerInterface
     }
 
     /**
-     * ustaw funckcję dodającą o podanej nazwie
+     * utwórz funckcję wspomagającą dodawanie zasobów o podanej nazwie
      * @param string $name
      * @param \Closure $onAdd
      * @throws \RuntimeException
@@ -91,7 +91,8 @@ abstract class ResourceManagerAbstract implements ResourceManagerInterface
     }
 
     /**
-     * wybierz funkcje dodającą
+     * wybierz funkcje wspomagającą
+     * jeśli name == null, to zostanie wyłączone
      * @param string|null $name
      * @throws \RuntimeException
      * @throws \InvalidArgumentException
@@ -114,7 +115,7 @@ abstract class ResourceManagerAbstract implements ResourceManagerInterface
     }
 
     /**
-     * lista nazw zarejestrowanych funkcji dodających
+     * lista nazw zarejestrowanych funkcji wspomagających
      * @return array
      */
     public function getOnAddNames()

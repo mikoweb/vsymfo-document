@@ -60,7 +60,7 @@ interface ResourceManagerInterface
     public function render($format, $group = 0);
 
     /**
-     * ustaw funckcję dodającą o podanej nazwie
+     * utwórz funckcję wspomagającą dodawanie zasobów o podanej nazwie
      * @param string $name
      * @param \Closure $onAdd
      * @return void
@@ -68,14 +68,15 @@ interface ResourceManagerInterface
     public function setOnAdd($name, \Closure $onAdd);
 
     /**
-     * wybierz funkcje dodającą
+     * wybierz funkcje wspomagającą
+     * jeśli name == null, to zostanie wyłączone
      * @param $name
      * @return void
      */
     public function chooseOnAdd($name);
 
     /**
-     * lista nazw zarejestrowanych funkcji dodających
+     * lista nazw zarejestrowanych funkcji wspomagających
      * @return array
      */
     public function getOnAddNames();
