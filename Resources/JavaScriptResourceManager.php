@@ -43,13 +43,15 @@ class JavaScriptResourceManager extends CombineResourceManagerAbstract
      * zapodaj kod źródłowy w wybranym formacie
      * @param string $format
      * @param integer|string $group
-     * @return string
+     * @return string|array
      */
     public function render($format, $group = 0)
     {
         switch ($format) {
             case 'json':
                 return $this->json();
+            case 'array':
+                return $this->formatArray();
             default:
                 $output = '';
                 return $this->callRender($format, $group, $output);
@@ -57,10 +59,11 @@ class JavaScriptResourceManager extends CombineResourceManagerAbstract
     }
 
     /**
-     * kod źródłowy w formacie JSON
-     * @return string
+     * format tablicowy
+     * @return array
      */
-    private function json() {
+    private function formatArray()
+    {
         $groups = $this->groups->getAll();
         $arr = array(
             'resources' => array(),
@@ -94,7 +97,15 @@ class JavaScriptResourceManager extends CombineResourceManagerAbstract
             }
         }
 
-        return json_encode($arr);
+        return $arr;
+    }
+
+    /**
+     * kod źródłowy w formacie JSON
+     * @return string
+     */
+    private function json() {
+        return json_encode($this->formatArray());
     }
 
     /**
