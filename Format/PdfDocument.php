@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Joomla Startup
+ * This file is part of the vSymfo package.
  *
  * website: www.vision-web.pl
  * (c) Rafał Mikołajun <rafal@vision-web.pl>
