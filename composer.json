@@ -21,5 +21,10 @@
     "autoload": {
         "psr-0": { "vSymfo\\Component\\Document\\": "" }
     },
-    "target-dir": "vSymfo/Component/Document"
+    "target-dir": "vSymfo/Component/Document",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "dev-trunk"
+        }
+    }
 }
