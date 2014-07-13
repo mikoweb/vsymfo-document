@@ -14,17 +14,12 @@
     "require": {
         "php": ">=5.3.3",
 
-        "mikoweb/vsymfo-core": "dev-master",
+        "mikoweb/vsymfo-core": "dev-trunk",
         "symfony/yaml": "2.4.*",
         "mikehaertl/phpwkhtmltopdf": "1.2.5"
     },
     "autoload": {
         "psr-0": { "vSymfo\\Component\\Document\\": "" }
     },
-    "target-dir": "vSymfo/Component/Document",
-    "extra": {
-        "branch-alias": {
-            "dev-master": "dev-trunk"
-        }
-    }
+    "target-dir": "vSymfo/Component/Document"
 }
