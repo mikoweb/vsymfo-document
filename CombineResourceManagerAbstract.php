@@ -39,7 +39,7 @@ abstract class CombineResourceManagerAbstract extends ResourceManagerAbstract
 
         // zaktualizuje listę plików do scalenia
         if ($res->getCombineObject()) {
-            foreach ($res->getSources() as &$source) {
+            foreach ($res->getSources() as $source) {
                 $res->getCombineObject()->addSource($source);
             }
         }
