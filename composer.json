@@ -15,7 +15,6 @@
         "php": ">=5.3.3",
 
         "mikoweb/vsymfo-core": "dev-master",
-        "symfony/yaml": "2.4.*",
         "mikehaertl/phpwkhtmltopdf": "1.2.5"
     },
     "autoload": {
