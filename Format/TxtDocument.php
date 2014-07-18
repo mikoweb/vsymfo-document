@@ -87,11 +87,6 @@ class TxtDocument extends DocumentAbstract
      */
     public function render()
     {
-        $title = $this->title();
-        $content = empty($title)
-            ? $this->body->render()
-            : $title . PHP_EOL . PHP_EOL . $this->body->render();
-
-        return $this->transText($content);
+        return $this->transText($this->body->render());
     }
 }

@@ -35,7 +35,7 @@ class TxtDocumentTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals('abc defg', $this->doc->render());
         $this->doc->title('Title');
-        $this->assertEquals('Title' . PHP_EOL . PHP_EOL . 'abc defg', $this->doc->render());
+        $this->assertEquals('abc defg', $this->doc->render());
     }
 
     /**
