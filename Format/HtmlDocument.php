@@ -145,6 +145,14 @@ class HtmlDocument extends DocumentAbstract
     }
 
     /**
+     * {@inheritdoc }
+     */
+    public function formatName()
+    {
+        return "html";
+    }
+
+    /**
      * ustaw wyjście skryptów
      * @param \Closure $output
      * @throws \Exception

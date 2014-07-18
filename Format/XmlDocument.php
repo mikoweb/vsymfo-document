@@ -45,6 +45,14 @@ class XmlDocument extends DocumentAbstract
     }
 
     /**
+     * {@inheritdoc }
+     */
+    public function formatName()
+    {
+        return "xml";
+    }
+
+    /**
      * elementy
      * @param string $name
      * @return HtmlElement|TxtElement

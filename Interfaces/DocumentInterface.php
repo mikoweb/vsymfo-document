@@ -102,4 +102,10 @@ interface DocumentInterface
      * @return string
      */
     public function render();
+
+    /**
+     * nazwa formatu dokumentu
+     * @return string
+     */
+    public function formatName();
 }

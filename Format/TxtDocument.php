@@ -34,6 +34,14 @@ class TxtDocument extends DocumentAbstract
     }
 
     /**
+     * {@inheritdoc }
+     */
+    public function formatName()
+    {
+        return "txt";
+    }
+
+    /**
      * Zasoby
      * @param string $name
      * @return null

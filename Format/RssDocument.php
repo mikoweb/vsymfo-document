@@ -20,5 +20,11 @@ namespace vSymfo\Component\Document\Format;
  */
 class RssDocument extends XmlDocument
 {
-
+    /**
+     * {@inheritdoc }
+     */
+    public function formatName()
+    {
+        return "rss";
+    }
 }

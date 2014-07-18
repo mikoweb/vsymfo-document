@@ -68,6 +68,14 @@ class PdfDocument extends HtmlDocument
     }
 
     /**
+     * {@inheritdoc }
+     */
+    public function formatName()
+    {
+        return "pdf";
+    }
+
+    /**
      * ustawienia dokumentu i WkHtmlToPdf
      * @param array $options
      * @link https://github.com/mikehaertl/phpwkhtmltopdf
