@@ -109,7 +109,7 @@ class ImageResourceManager extends ResourceManagerAbstract
     {
         $data = $res->imageData();
         $tmp = '';
-        $source = function(&$arr) use (&$data, &$tmp) {
+        $source = function(array &$arr) use (&$data, &$tmp) {
             $tag = new HtmlElement('source');
             $srcset = '';
             foreach ($arr as &$img) {
@@ -128,7 +128,9 @@ class ImageResourceManager extends ResourceManagerAbstract
         };
 
         for ($i = 0;  $i < $data['length']; $i++) {
-            $source($data[$i]);
+            if (isset($data[$i])) {
+                $source($data[$i]);
+            }
         }
         if (isset($data[-1])) {
             $source($data[-1]);
