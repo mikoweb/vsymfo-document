@@ -151,7 +151,7 @@ class ImageResourceManager extends ResourceManagerAbstract
             ? $result[0] . PHP_EOL
             : '<picture>' . PHP_EOL)
             . "<!--[if IE 9]><video style=\"display: none;\"><![endif]-->" . PHP_EOL
-            . str_replace("</picture>", '', $tmp)
+            . str_replace("</source>", '', $tmp)
             . "<!--[if IE 9]></video><![endif]-->" . PHP_EOL
             . $img->render() . PHP_EOL
             . '</picture>';
