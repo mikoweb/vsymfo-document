@@ -127,9 +127,9 @@ class ImageResourceManager extends ResourceManagerAbstract
             $tag->destroy($tag);
         };
 
-        for ($i = 0;  $i < $data['length']; $i++) {
-            if (isset($data[$i])) {
-                $source($data[$i]);
+        foreach ($data as $k=>$v) {
+            if (is_integer($k) && $k > -1 && is_array($v)) {
+                $source($data[$k]);
             }
         }
         if (isset($data[-1])) {
