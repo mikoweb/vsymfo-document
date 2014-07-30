@@ -131,15 +131,14 @@ class ImageResourceTest extends \PHPUnit_Framework_TestCase
             $this->assertEquals('Ford Mustang 1972', $el->getAttribute('alt'));
             $this->assertEquals('test', $el->getAttribute('class'));
 
-            $el = $xpath->query('body/picture/img')->item(0);
+            $el = $xpath->query('/descendant::img')->item(0);
             $this->assertEquals('/tmp/images/test/1972_ford_mustang-wide_test_1000x800.jpg', $el->getAttribute('src'));
 
-            $el = $xpath->query('body/picture/source');
+            $el = $xpath->query('/descendant::source');
             $this->assertEquals('(min-width: 1000px)', $el->item(0)->getAttribute('media'));
             $this->assertEquals('/tmp/images/test/1972_ford_mustang-wide_test_1000x800.jpg 2x', $el->item(0)->getAttribute('srcset'));
             $this->assertEquals('', $el->item(1)->getAttribute('media'));
             $this->assertEquals('/tmp/images/test/1972_ford_mustang-mini_ok_300x150.png', $el->item(1)->getAttribute('srcset'));
-
         }
         libxml_use_internal_errors(false);
 
