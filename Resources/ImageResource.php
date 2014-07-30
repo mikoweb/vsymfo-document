@@ -118,13 +118,6 @@ class ImageResource extends ResourceAbstract implements MakeResourceInterface
 
         $source = $this->source;
         $resolver->setNormalizers(array(
-            'output_dir' => function (Options $options, $value) {
-                    if (!file_exists($options['root_dir'] . $value)) {
-                        throw new \Exception('not exists directory: ' . $options['root_dir']  . $value);
-                    }
-
-                    return $value;
-                },
             'media' => function (Options $options, $value) {
                     $tmp = array();
                     foreach ($value as $k => $v) {
