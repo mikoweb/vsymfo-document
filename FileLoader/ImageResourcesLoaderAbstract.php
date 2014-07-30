@@ -95,7 +95,7 @@ abstract class ImageResourcesLoaderAbstract extends FileLoaderAbstract
      */
     protected function process($filename, $type = null)
     {
-        $config = ImageResourcesConfiguration::layoutConfig(self::$yaml[$filename]);
+        $config = ImageResourcesConfiguration::layoutConfig(self::$yaml[$filename], $this->options['layout']);
         $this->loadImages($config, $type);
     }
 
