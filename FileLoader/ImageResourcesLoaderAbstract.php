@@ -57,8 +57,7 @@ abstract class ImageResourcesLoaderAbstract extends FileLoaderAbstract
         $resolver->setRequired(array('images_root_dir', 'images_output_dir', 'baseurl'));
         $resolver->setDefaults(array(
                 'layout'    => null,
-                'forcesave' => false,
-                'checksum'  => null
+                'forcesave' => false
             ));
 
         $resolver->setAllowedTypes(array(
