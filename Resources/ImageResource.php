@@ -268,10 +268,12 @@ class ImageResource extends ResourceAbstract implements MakeResourceInterface
     {
         /*
          * Jeśli tablica nie zawiera $imageData['input'] i $imageData['output']
+         * lub $this->source[$image['index']] jest puste
          * to nie można przeprowadzić testu.
          */
         if (isset($imageData['input']) && is_array($imageData['input'])
             && isset($imageData['output']) && is_array($imageData['output'])
+            && !empty($this->source[$image['index']])
         ) {
             if (!isset($imageData['output']['filename'])
                 || (isset($imageData['output']['filename'])
