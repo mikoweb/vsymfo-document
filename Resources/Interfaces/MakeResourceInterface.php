@@ -22,11 +22,14 @@ interface MakeResourceInterface extends ResourceInterface
 {
     /**
      * zapisz pliki
+     * @param array $options
+     * @return null|array
      */
-    public function save();
+    public function save(array $options = null);
 
     /**
      * posprzątaj po sobie
+     * @return null|array
      */
     public function cleanup();
 }
