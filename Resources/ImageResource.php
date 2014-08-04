@@ -341,7 +341,7 @@ class ImageResource extends ResourceAbstract implements MakeResourceInterface
                     // zmodyfikowano plik źródłowy
                     return true;
                 }
-            }          
+            }
         }
 
         return false;
