@@ -67,6 +67,11 @@ class ImageResource extends ResourceAbstract implements MakeResourceInterface
                 'media'  => array(),
                 'attr'   => array(),
                 'src-index' => 0,
+                'compare_image_mode' => 'simple'
+            ));
+
+        $resolver->setAllowedValues(array(
+                'compare_image_mode' => array('simple', 'full'),
             ));
 
         $resolver->setAllowedTypes(array(
@@ -77,6 +82,7 @@ class ImageResource extends ResourceAbstract implements MakeResourceInterface
                 'media'      => 'array',
                 'attr'       => 'array',
                 'src-index'  => 'integer',
+                'compare_image_mode' => 'string'
             ));
 
         $image = new OptionsResolver();
@@ -275,26 +281,11 @@ class ImageResource extends ResourceAbstract implements MakeResourceInterface
             && isset($imageData['output']) && is_array($imageData['output'])
             && !empty($this->source[$image['index']])
         ) {
-            if (!isset($imageData['output']['filename'])
-                || (isset($imageData['output']['filename'])
-                    && !file_exists($imageData['output']['filename']))
-            ) {
-                // plik docelowy nie istniał wcześniej
-                return true;
-            }
-
             $openfilename = $this->options['root_dir'] . $this->source[$image['index']];
             if (isset($imageData['input']['filename'])
                 && $imageData['input']['filename'] != $openfilename
             ) {
                 // zmieniono adres pliku źródłowego
-                return true;
-            }
-
-            if ((isset($imageData['input']['mtime']) && $imageData['input']['mtime'] != @filemtime($openfilename))
-                || (isset($imageData['input']['size']) && $imageData['input']['size'] != @filesize($openfilename))
-            ) {
-                // zmodyfikowano plik źródłowy
                 return true;
             }
 
@@ -334,6 +325,23 @@ class ImageResource extends ResourceAbstract implements MakeResourceInterface
                     }
                 }
             }
+
+            if ($this->options['compare_image_mode'] == 'full') {
+                if (!isset($imageData['output']['filename'])
+                    || (isset($imageData['output']['filename'])
+                        && !file_exists($imageData['output']['filename']))
+                ) {
+                    // plik docelowy nie istniał wcześniej
+                    return true;
+                }
+
+                if ((isset($imageData['input']['mtime']) && $imageData['input']['mtime'] != @filemtime($openfilename))
+                    || (isset($imageData['input']['size']) && $imageData['input']['size'] != @filesize($openfilename))
+                ) {
+                    // zmodyfikowano plik źródłowy
+                    return true;
+                }
+            }          
         }
 
         return false;
