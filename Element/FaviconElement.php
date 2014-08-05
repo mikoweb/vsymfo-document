@@ -92,7 +92,7 @@ class FaviconElement implements ElementInterface
                 . '<link rel="icon" type="image/png" href="' . $this->basepath . '/favicon-96x96.png" sizes="96x96">' .  PHP_EOL
                 . '<link rel="icon" type="image/png" href="' . $this->basepath . '/favicon-16x16.png" sizes="16x16">' .  PHP_EOL
                 . '<link rel="icon" type="image/png" href="' . $this->basepath . '/favicon-32x32.png" sizes="32x32">' .  PHP_EOL
-                . '<meta name="msapplication-TileColor" content="' . $this->$tileColor . '">' .  PHP_EOL
+                . '<meta name="msapplication-TileColor" content="' . $this->tileColor . '">' .  PHP_EOL
                 . '<meta name="msapplication-TileImage" content="' . $this->basepath . '/mstile-144x144.png">' .  PHP_EOL
                 . '<meta name="msapplication-config" content="' . $this->basepath . '/browserconfig.xml">';
             return $code;
