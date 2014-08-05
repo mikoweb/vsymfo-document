@@ -15,6 +15,7 @@ namespace vSymfo\Component\Document\Format;
 use vSymfo\Component\Document\ResourcesInterface;
 use vSymfo\Component\Document\Element\TxtElement;
 use vSymfo\Component\Document\Element\HtmlElement;
+use vSymfo\Component\Document\Element\FaviconElement;
 use vSymfo\Component\Document\Resources\JavaScriptResourceManager;
 use vSymfo\Component\Document\Resources\StyleSheetResourceManager;
 use vSymfo\Component\Document\ResourceGroups;
@@ -94,6 +95,11 @@ class HtmlDocument extends DocumentAbstract
     private $xua_compatible = null;
 
     /**
+     * @var FaviconElement
+     */
+    private $favicon = null;
+
+    /**
      * @var JavaScriptResourceManager
      */
     private $javaScript = null;
@@ -132,6 +138,10 @@ class HtmlDocument extends DocumentAbstract
             ->attr('content', 'IE=Edge,chrome=1')
             ->insertTo($this->head)
         ;
+
+        $this->favicon = new FaviconElement();
+        $this->favicon->enable(false);
+
         $this->script = new TxtElement();
         $this->author = new HtmlElement('meta');
         $this->authorUrl = new HtmlElement('link');
@@ -192,7 +202,7 @@ class HtmlDocument extends DocumentAbstract
     /**
      * elementy
      * @param string $name
-     * @return HtmlElement|TxtElement
+     * @return HtmlElement|TxtElement|FaviconElement
      * @throws \Exception
      */
     public function element($name)
@@ -202,6 +212,8 @@ class HtmlDocument extends DocumentAbstract
                 return $this->script;
             case 'head':
                 return $this->head;
+            case 'favicon':
+                return $this->favicon;
             case 'viewport':
                 return $this->viewport;
             case 'html':
@@ -350,6 +362,11 @@ class HtmlDocument extends DocumentAbstract
             : '<html>' . PHP_EOL;
 
         $output .= substr($this->head->render(), 0, -7);
+
+        $favicon = $this->favicon->render();
+        if (!empty($favicon)) {
+            $output .= $favicon . PHP_EOL;
+        }
 
         if ($this->styleSheet->length()) {
             $output .= $this->styleSheet->render('html') . PHP_EOL;
