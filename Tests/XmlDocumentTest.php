@@ -24,7 +24,7 @@ class XmlDocumentTest extends \PHPUnit_Framework_TestCase
     public function testProlog()
     {
         $prolog = $this->doc->element('prolog');
-        $this->assertEquals('<?xml version="1.0" encoding="UTF-8"?>', $prolog->render());
+        $this->assertEquals('<?xml version="1.0" encoding="{{ encoding }}"?>', $prolog->render());
     }
 
     public function testRoot()
