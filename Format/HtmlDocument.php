@@ -306,7 +306,7 @@ class HtmlDocument extends DocumentAbstract
      */
     public function description($set = null)
     {
-        $desc = parent::author($set);
+        $desc = parent::description($set);
         $this->insertToHead($this->description, $set,
             function(HtmlElement $el) use($desc) {
                 $el->attr('name', 'description');
@@ -323,7 +323,7 @@ class HtmlDocument extends DocumentAbstract
      */
     public function keywords($set = null)
     {
-        $words = parent::author($set);
+        $words = parent::keywords($set);
         $this->insertToHead($this->keywords, $set,
             function(HtmlElement $el) use($words) {
                 $el->attr('name', 'keywords');
