@@ -36,7 +36,7 @@ class XmlDocument extends DocumentAbstract
     /**
      * @var HtmlElement
      */
-    private $root = null;
+    protected $root = null;
 
     public function __construct()
     {
@@ -115,13 +115,22 @@ class XmlDocument extends DocumentAbstract
     }
 
     /**
+     * Kod samego prologu
+     * @return string
+     */
+    protected function prologRender()
+    {
+        return preg_match('/^<\?xml\s.*\?>$/', trim($this->prolog->render()))
+            ? trim($this->prolog->render()) . PHP_EOL
+            : '<?xml version="1.0" encoding="UTF-8"?>' . PHP_EOL;
+    }
+
+    /**
      * @return string
      */
     public function render()
     {
-        $output = preg_match('/^<\?xml\s.*\?>$/', trim($this->prolog->render()))
-            ? trim($this->prolog->render()) . PHP_EOL
-            : '<?xml version="1.0" encoding="UTF-8"?>' . PHP_EOL;
+        $output = $this->prologRender();
 
         preg_match('/<'.$this->root->name().'.*?>/', $this->root->render(), $result);
         $output .= isset($result[0])
