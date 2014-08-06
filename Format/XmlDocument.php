@@ -34,13 +34,19 @@ class XmlDocument extends DocumentAbstract
     private $body = '';
 
     /**
+     * @var TxtElement
+     */
+    private $encoding = null;
+
+    /**
      * @var HtmlElement
      */
     protected $root = null;
 
     public function __construct()
     {
-        $this->prolog = new TxtElement('<?xml version="1.0" encoding="UTF-8"?>');
+        $this->prolog = new TxtElement('<?xml version="1.0" encoding="{{ encoding }}"?>');
+        $this->encoding = new TxtElement('UTF-8');
         $this->root = new HtmlElement('root');
     }
 
@@ -61,6 +67,8 @@ class XmlDocument extends DocumentAbstract
     public function element($name)
     {
         switch ($name) {
+            case 'encoding':
+                return $this->encoding;
             case 'root':
                 return $this->root;
             case 'prolog':
@@ -121,7 +129,11 @@ class XmlDocument extends DocumentAbstract
     protected function prologRender()
     {
         return preg_match('/^<\?xml\s.*\?>$/', trim($this->prolog->render()))
-            ? trim($this->prolog->render()) . PHP_EOL
+            ? trim(str_replace(
+                    "{{ encoding }}"
+                    , preg_replace('/[^A-Z0-9_\/\.-]/i', '', $this->encoding->render())
+                    , $this->prolog->render()
+                )) . PHP_EOL
             : '<?xml version="1.0" encoding="UTF-8"?>' . PHP_EOL;
     }
 
