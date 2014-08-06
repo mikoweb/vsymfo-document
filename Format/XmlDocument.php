@@ -36,7 +36,7 @@ class XmlDocument extends DocumentAbstract
     /**
      * @var TxtElement
      */
-    private $encoding = null;
+    protected $encoding = null;
 
     /**
      * @var HtmlElement
