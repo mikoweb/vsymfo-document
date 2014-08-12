@@ -82,6 +82,15 @@ class HtmlElement implements ElementInterface
     }
 
     /**
+     * Odłącz element od rodzica i przyłącz do roota
+     */
+    public function detach()
+    {
+        $this->element->parentNode->removeChild($this->element);
+        self::$DOM->appendChild($this->element);
+    }
+
+    /**
      * kopiowanie obiektu
      */
     public function __clone()
