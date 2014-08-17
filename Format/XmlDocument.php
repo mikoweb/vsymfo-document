@@ -144,7 +144,7 @@ class XmlDocument extends DocumentAbstract
     {
         $output = $this->prologRender();
 
-        preg_match('/<'.$this->root->name().'.*?>/', $this->root->render(), $result);
+        preg_match('/<'.$this->root->name().'.*?>/', $this->root->render(false, true), $result);
         $output .= isset($result[0])
             ? $result[0] . PHP_EOL
             : '<'.$this->root->name().'>' . PHP_EOL;
