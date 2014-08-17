@@ -11,7 +11,6 @@
  */
 
 use vSymfo\Component\Document\Format\RssDocument;
-use vSymfo\Component\Document\Element\HtmlElement;
 
 class RssDocumentTest extends \PHPUnit_Framework_TestCase
 {
