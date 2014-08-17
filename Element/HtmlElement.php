@@ -262,9 +262,15 @@ class HtmlElement implements ElementInterface
      * wstaw element do tego elementu
      * @param HtmlElement $element
      * @param int $where
+     * @throws \RuntimeException
      */
     public function insert(HtmlElement $element, $where = self::CHILD_APPEND)
     {
+        // idiotoodporne zabezpieczenie
+        if ($this->element === $element->getElement()) {
+            throw new \RuntimeException('You can not insert the Element into a self.');
+        }
+
         switch ($where) {
             case self::CHILD_APPEND:
                 $this->element->appendChild($element->getElement());
@@ -279,9 +285,15 @@ class HtmlElement implements ElementInterface
      * wstaw element do...
      * @param HtmlElement $element
      * @param int $where
+     * @throws \RuntimeException
      */
     public function insertTo(HtmlElement $element, $where = self::CHILD_APPEND)
     {
+        // idiotoodporne zabezpieczenie
+        if ($this->element === $element->getElement()) {
+            throw new \RuntimeException('You can not insert the Element into a self.');
+        }
+
         switch ($where) {
             case self::CHILD_APPEND:
                 $element->getElement()->appendChild($this->element);
