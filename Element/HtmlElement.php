@@ -293,16 +293,28 @@ class HtmlElement implements ElementInterface
     }
 
     /**
-     * Zapodaj kod HTML
+     * Zapodaj kod HTML.
+     * Jeśli argument $xmlMode jest true to kod będzie w
+     * konwencji XML np zamiast <link> będzie <link />.
      * @param boolean $inside
+     * @param boolean $xmlMode
      * @return string
      */
-    public function render($inside = false)
+    public function render($inside = false, $xmlMode = false)
     {
+        $dom = self::$DOM;
+        $saveCode = function (\DOMElement $element) use($xmlMode, $dom) {
+            if ($xmlMode) {
+                return $dom->saveXML($element);
+            }
+
+            return $dom->saveHTML($element);
+        };
+
         if (!$inside) {
-            return self::$DOM->saveHTML($this->element);
+            return $saveCode($this->element);
         } else {
-            preg_match("/<".$this->element->tagName."[^>]*>(.*?)<\/".$this->element->tagName.">/s", self::$DOM->saveHTML($this->element), $matches);
+            preg_match("/<".$this->element->tagName."[^>]*>(.*?)<\/".$this->element->tagName.">/s", $saveCode($this->element), $matches);
             return trim($matches[1]);
         }
     }
