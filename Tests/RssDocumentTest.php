@@ -23,15 +23,16 @@ class RssDocumentTest extends \PHPUnit_Framework_TestCase
 
     public function testElements()
     {
+        $this->doc->title('Sample RSS Feed');
         $this->doc->body('<lorem>Lorem ipsum</lorem>');
         $this->assertEquals('<lorem>Lorem ipsum</lorem>', $this->doc->body());
         $this->doc->body('');
         $this->assertEmpty($this->doc->body());
 
-        $this->doc->link("http://www.google.pl");
-        $this->assertEquals("http://www.google.pl", $this->doc->link());
         $this->doc->link('');
         $this->assertEmpty($this->doc->link());
+        $this->doc->link("http://www.google.pl");
+        $this->assertEquals("http://www.google.pl", $this->doc->link());
 
         $this->doc->language('pl-pl');
         $this->assertEquals('pl-pl', $this->doc->language());
