@@ -728,43 +728,37 @@ class RssDocument extends XmlDocument
     private function channelContent()
     {
         $output = '';
-        $output .= $this->title->render();
-        $output .= '<link>' . $this->link->text(). '</link>';
-        $output .= $this->description->render();
-        if (!$this->language->isEmpty()) $output .= $this->language->render();
-        if (!$this->copyright->isEmpty()) $output .= $this->copyright->render();
-        if (!$this->managingEditor->isEmpty()) $output .= $this->managingEditor->render();
-        if (!$this->webMaster->isEmpty()) $output .= $this->webMaster->render();
-        if (!$this->pubDate->isEmpty()) $output .= $this->pubDate->render();
-        if (!$this->lastBuildDate->isEmpty()) $output .= $this->lastBuildDate->render();
-        if (!$this->category->isEmpty()) $output .= $this->category->render();
-        if (!$this->generator->isEmpty()) $output .= $this->generator->render();
-        if (!$this->ttl->isEmpty()) $output .= $this->ttl->render();
+        $output .= $this->title->render(false, true);
+        $output .= $this->link->render(false, true);
+        $output .= $this->description->render(false, true);
+        if (!$this->language->isEmpty()) $output .= $this->language->render(false, true);
+        if (!$this->copyright->isEmpty()) $output .= $this->copyright->render(false, true);
+        if (!$this->managingEditor->isEmpty()) $output .= $this->managingEditor->render(false, true);
+        if (!$this->webMaster->isEmpty()) $output .= $this->webMaster->render(false, true);
+        if (!$this->pubDate->isEmpty()) $output .= $this->pubDate->render(false, true);
+        if (!$this->lastBuildDate->isEmpty()) $output .= $this->lastBuildDate->render(false, true);
+        if (!$this->category->isEmpty()) $output .= $this->category->render(false, true);
+        if (!$this->generator->isEmpty()) $output .= $this->generator->render(false, true);
+        if (!$this->ttl->isEmpty()) $output .= $this->ttl->render(false, true);
         if (!$this->imageUrl->isEmpty() && !$this->imageTitle->isEmpty() && !$this->imageLink->isEmpty()) {
-            $output .= str_replace(
-                "<link>", "<link>" . $this->imageLink->text() . "</link>",
-                $this->image->render()
-            );
+            $output .= $this->image->render(false, true);
         }
         if (!$this->textInputLink->isEmpty() && !$this->textInputTitle->isEmpty()
             && !$this->textInputDescription->isEmpty() && !$this->textInputName->isEmpty()
         ) {
-            $output .= str_replace(
-                "<link>", "<link>" . $this->textInputLink->text() . "</link>",
-                $this->textInput->render()
-            );
+            $output .= $this->textInput->render(false, true);
         }
         if ($this->skipHours->xpath('hour')->length) {
-            $output .= $this->skipHours->render();
+            $output .= $this->skipHours->render(false, true);
         }
         if ($this->skipDays->xpath('day')->length) {
-            $output .= $this->skipDays->render();
+            $output .= $this->skipDays->render(false, true);
         }
         $cloud = $this->cloud();
         if (!empty($cloud['domain']) && !empty($cloud['path']) && !empty($cloud['protocol'])
             && !empty($cloud['port']) && !empty($cloud['registerProcedure'])
         ) {
-            $output .= $this->cloud->render();
+            $output .= $this->cloud->render(false, true);
         }
         $output .= $this->body();
 
@@ -778,10 +772,11 @@ class RssDocument extends XmlDocument
     {
         // ten element na wyjściu będzie zamieniony na $this->body()
         $replaceBody = new HtmlElement('replace_body');
+        $replaceBody->text('replace');
         $replaceBody->insertTo($this->channel);
 
         $output = $this->prologRender();
-        $output .= str_replace("<replace_body></replace_body>", $this->channelContent(), $this->root->render());
+        $output .= str_replace("<replace_body>replace</replace_body>", $this->channelContent(), $this->root->render(false, true));
 
         // posprzątaj kod
         $replaceBody->destroy($replaceBody);
