@@ -230,6 +230,9 @@ class RssDocument extends XmlDocument
         $this->textInputLink = new HtmlElement('link');
         $this->textInputLink->insertTo($this->textInput);
 
+        // program generujący
+        $this->generator('vSymfo Document Component');
+
         // konfiguracja niektórych elementów
         $this->setImageResolver();
         $this->setTextInputResolver();
