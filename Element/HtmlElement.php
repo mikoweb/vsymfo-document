@@ -168,7 +168,7 @@ class HtmlElement implements ElementInterface
     public function text($text = null)
     {
         if (is_null($text)) {
-            return $this->element->nodeValue;
+            return (string)$this->element->nodeValue;
         } else if (is_string($text)) {
             $this->element->nodeValue = $text;
         } else {
