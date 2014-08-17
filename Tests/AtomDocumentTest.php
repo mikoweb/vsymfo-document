@@ -95,7 +95,5 @@ class AtomDocumentTest extends \PHPUnit_Framework_TestCase
                 'name' => 'test'
             ));
         $this->doc->removeContributor('test');
-
-        file_put_contents('tmp/atom.xml', $this->doc->render());
     }
 }
