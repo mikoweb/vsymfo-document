@@ -494,10 +494,23 @@ class RssDocument extends XmlDocument
     public function pubDate($set = null)
     {
         if (is_string($set)) {
-            $this->filterDate($this->pubDate, $set);
+            $this->createdDate($set);
         }
 
         return $this->pubDate->text();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function createdDate($set = null)
+    {
+        $createdDate = parent::createdDate($set);
+        if (is_string($set) && $createdDate instanceof \DateTime) {
+            $this->filterDate($this->pubDate, $createdDate->format(\DateTime::RSS));
+        }
+
+        return $createdDate;
     }
 
     /**
@@ -509,10 +522,23 @@ class RssDocument extends XmlDocument
     public function lastBuildDate($set = null)
     {
         if (is_string($set)) {
-            $this->filterDate($this->lastBuildDate, $set);
+            $this->lastModified($set);
         }
 
         return $this->lastBuildDate->text();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function lastModified($set = null)
+    {
+        $lastModified = parent::lastModified($set);
+        if (is_string($set) && $lastModified instanceof \DateTime) {
+            $this->filterDate($this->lastBuildDate, $lastModified->format(\DateTime::RSS));
+        }
+
+        return $lastModified;
     }
 
     /**

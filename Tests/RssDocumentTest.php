@@ -56,9 +56,15 @@ class RssDocumentTest extends \PHPUnit_Framework_TestCase
 
         $this->doc->pubDate('Wed, 02 Oct 2002 15:00:00 +0200');
         $this->assertEquals('Wed, 02 Oct 2002 15:00:00 +0200', $this->doc->pubDate());
+        $this->assertEquals('Wed, 02 Oct 2002 15:00:00 +0200', $this->doc->createdDate()->format(\DateTime::RSS));
+        $this->doc->createdDate('2011-10-31 12:40:20');
+        $this->assertEquals('Mon, 31 Oct 2011 12:40:20 +0100', $this->doc->pubDate());
 
         $this->doc->lastBuildDate('Wed, 02 Oct 2002 15:45:00 +0200');
         $this->assertEquals('Wed, 02 Oct 2002 15:45:00 +0200', $this->doc->lastBuildDate());
+        $this->assertEquals('Wed, 02 Oct 2002 15:45:00 +0200', $this->doc->lastModified()->format(\DateTime::RSS));
+        $this->doc->lastModified('2011-10-31 12:40:20');
+        $this->assertEquals('Mon, 31 Oct 2011 12:40:20 +0100', $this->doc->lastBuildDate());
 
         $this->doc->category('Lorem Ipsum');
         $this->assertEquals('Lorem Ipsum', $this->doc->category());
