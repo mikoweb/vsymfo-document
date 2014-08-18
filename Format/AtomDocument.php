@@ -320,10 +320,23 @@ class AtomDocument extends XmlDocument
     public function updated($set = null)
     {
         if (is_string($set)) {
-            $this->filterDate($this->updated, $set);
+            $this->lastModified($set);
         }
 
         return $this->updated->text();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function lastModified($set = null)
+    {
+        $lastModified = parent::lastModified($set);
+        if (is_string($set) && $lastModified instanceof \DateTime) {
+            $this->filterDate($this->updated, $lastModified->format(\DateTime::ATOM));
+        }
+
+        return $lastModified;
     }
 
     /**

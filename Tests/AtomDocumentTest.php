@@ -36,6 +36,9 @@ class AtomDocumentTest extends \PHPUnit_Framework_TestCase
 
         $this->doc->updated('2003-12-13T18:30:02Z');
         $this->assertEquals('2003-12-13T18:30:02+00:00', $this->doc->updated());
+        $this->assertEquals('2003-12-13T18:30:02+00:00', $this->doc->lastModified()->format(\DateTime::ATOM));
+        $this->doc->lastModified('2014-08-26T11:32:02Z');
+        $this->assertEquals('2014-08-26T11:32:02+00:00', $this->doc->updated());
 
         $this->doc->id('Nieprawidłowy format linku');
         $this->assertEmpty($this->doc->id());
