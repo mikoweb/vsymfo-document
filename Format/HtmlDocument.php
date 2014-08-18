@@ -256,9 +256,7 @@ class HtmlDocument extends DocumentAbstract
             if (!empty($set)) {
                 $el->insertTo($this->head);
             } else {
-                $new = new HtmlElement($el->name());
-                $el->destroy($el);
-                $el = $new;
+                $el->detach();
             }
 
             $update($el);

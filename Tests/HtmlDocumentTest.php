@@ -30,6 +30,10 @@ class HtmlDocumentTest extends \PHPUnit_Framework_TestCase
         $this->doc = new HtmlDocument();
         $this->doc->title('Sample Page');
         $this->doc->body('<body><p>lorem ipsum</p></body>');
+        $this->doc->author('John Doe');
+        $this->doc->authorUrl('http://www.john.doe');
+        $this->doc->description('Lorem Ipsum');
+        $this->doc->keywords('lorem, ipsum');
     }
 
     /**
