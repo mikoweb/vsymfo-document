@@ -34,6 +34,22 @@ class HtmlDocumentTest extends \PHPUnit_Framework_TestCase
         $this->doc->authorUrl('http://www.john.doe');
         $this->doc->description('Lorem Ipsum');
         $this->doc->keywords('lorem, ipsum');
+        $this->doc->addCustomHeadCode('<meta name="geo.region" content="GB">
+            <meta name="geo.placename" content="London">
+            <meta name="geo.position" content="51.588624;-0.221756">
+            <meta name="ICBM" content="51.588624, -0.221756">
+            <meta name="google-site-verification" content="pioZkfic7NF0XGSB20zQD0GDXGIM0f2gDtFOGuhngF8">
+            <meta name="msvalidate.01" content="6EC80C6BFFA2B5DE47F54F54E11C62D5">
+            <meta name="alexaVerifyID" content="qWY16DFqbiKdwIKdU4ySg3SJKoo">');
+        $this->doc->addCustomBottomCode("<script type=\"text/javascript\">
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+            ga('create', 'UA-17045015-2', 'auto');
+            ga('send', 'pageview');
+            </script>");
     }
 
     /**
@@ -122,6 +138,8 @@ class HtmlDocumentTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('/tmp/cache/framework.js', $xpath->query('head/script')->item(0)->getAttribute('src'));
         $this->assertEquals('/tmp/cache/core.js', $xpath->query('head/script')->item(1)->getAttribute('src'));
         $this->assertEquals('lorem ipsum', $xpath->query('body/p')->item(0)->nodeValue);
+        $this->assertEquals(1, $xpath->query('body/script')->length);
+        $this->assertEquals(1, $xpath->query('head/meta[@name="geo.region"]')->length);
 
         $this->assertTrue(file_exists(__DIR__ . '/tmp/cache/html_js.db'));
         $this->assertTrue(file_exists(__DIR__ . '/tmp/cache/html_less.db'));

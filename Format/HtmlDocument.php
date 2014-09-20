@@ -110,6 +110,16 @@ class HtmlDocument extends DocumentAbstract
     private $styleSheet = null;
 
     /**
+     * @var string
+     */
+    private $customHeadCode = '';
+
+    /**
+     * @var string
+     */
+    private $customBottomCode = '';
+
+    /**
      * @var \Closure
      */
     private $scriptOutput = null;
@@ -346,6 +356,28 @@ class HtmlDocument extends DocumentAbstract
     }
 
     /**
+     * własny kod w znaczniku head
+     * @param string $code
+     */
+    public function addCustomHeadCode($code)
+    {
+        if (is_string($code)) {
+            $this->customHeadCode .= $code;
+        }
+    }
+
+    /**
+     * własny kod w znaczniku head
+     * @param string $code
+     */
+    public function addCustomBottomCode($code)
+    {
+        if (is_string($code)) {
+            $this->customBottomCode .= $code;
+        }
+    }
+
+    /**
      * @return string
      */
     public function render()
@@ -382,8 +414,17 @@ class HtmlDocument extends DocumentAbstract
                 . $this->script->render() . '</script>' . PHP_EOL;
         }
 
+        $output .= $this->customHeadCode;
         $output .= '</head>' . PHP_EOL;
-        $output .= $this->body;
+
+        $bodyEndPos = strrpos($this->body, "</body>");
+        if ($bodyEndPos !== false) {
+            $output .= substr($this->body, 0, $bodyEndPos);
+            $output .= $this->customBottomCode . '</body>';
+        } else {
+            $output .= $this->body;
+        }
+
         $output .= '</html>';
 
         return $output;
