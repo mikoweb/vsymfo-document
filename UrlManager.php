@@ -12,7 +12,6 @@
 
 namespace vSymfo\Component\Document;
 
-use Purl\Url;
 use vSymfo\Component\Document\Interfaces\UrlManagerInterface;
 
 /**
@@ -79,11 +78,14 @@ class UrlManager implements UrlManagerInterface
      */
     public function setDomainPath($path)
     {
+        if(!filter_var($path, FILTER_VALIDATE_URL)) {
+            $path = 'http://' . $path;
+        }
+
         if (is_string($path) && !empty($path)) {
-            $url = new Url($path);
-            $url->query = '';
-            $url->path = '';
-            $this->domainPath = preg_replace("/\/$/", "", $url->getUrl());
+            $url = parse_url($path);
+            $this->domainPath = isset($url['scheme']) ? $url['scheme'] . '://' : '';
+            $this->domainPath .= preg_replace("/\/$/", "", isset($url['host']) ? $url['host'] : '');
         } else {
             $this->domainPath = '';
         }
@@ -104,28 +106,45 @@ class UrlManager implements UrlManagerInterface
         }
 
         if (!empty($path)) {
-            $url = new Url(str_replace('&amp;', '&', $path));
-            $scheme = trim($url->get('scheme'));
-            $domain = trim($url->registerableDomain);
-            $subdomain = trim($url->subdomain);
-            $full_domain = !empty($subdomain) ? $subdomain . '.' . $domain : $domain;
+            $url = parse_url(str_replace('&amp;', '&', $path));
+            $parsedUrl = str_replace('&amp;', '&', $path);
+            $scheme = trim(isset($url['scheme']) ? $url['scheme'] : '');
+            $domain = trim(isset($url['host']) ? $url['host'] : '');
+
+            // nazwa hosta
+            if (isset($_SERVER['HTTP_HOST']) && !empty($_SERVER['HTTP_HOST'])) {
+                $srvName =  $_SERVER['HTTP_HOST'];
+            } else {
+                $srvName = isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : '';
+            }
 
             // zewnętrzny zasób
-            $srvName = isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : '';
-            if (!empty($scheme) && !empty($full_domain)
-                && $domain !== 'index.php'
-                && $full_domain !== $srvName
-                && $full_domain !== 'www.' . $srvName
+            if (!empty($scheme) && !empty($domain)
+                && $domain !== $srvName
+                && $domain !== 'www.' . $srvName
             ) {
-                return $url->getUrl();
+                return $parsedUrl;
             } else { // lokalny zasób
                 // wersjonowanie
-                if ($this->versioning)
-                    $this->verTimestamp ? $url->query->set('version', time())
-                        : $url->query->set('version', $this->version);
+                if ($this->versioning) {
+                    if ($this->verTimestamp) {
+                        $parsedUrl = http_build_url($parsedUrl,
+                            array(
+                                'query' => 'version=' . time()
+                            ), HTTP_URL_STRIP_AUTH | HTTP_URL_JOIN_PATH | HTTP_URL_JOIN_QUERY | HTTP_URL_STRIP_FRAGMENT
+                        );
+                    } else {
+                        $parsedUrl = http_build_url($parsedUrl,
+                            array(
+                                'query' => 'version=' . $this->version
+                            ), HTTP_URL_STRIP_AUTH | HTTP_URL_JOIN_PATH | HTTP_URL_JOIN_QUERY | HTTP_URL_STRIP_FRAGMENT
+                        );
+                    }
+                }
 
-                $q = trim($url->getQuery());
-                $u = trim($url->getPath());
+                $tmpUrl = parse_url($parsedUrl);
+                $q = trim(isset($tmpUrl['query']) ? $tmpUrl['query'] : '');
+                $u = trim(isset($tmpUrl['path']) ? $tmpUrl['path'] : '');
                 $u .= !empty($q) ? '?'.$q  : '';
                 // slash zawsze na początku
                 $u = !preg_match('/^\//', $u) ? '/' . $u : $u;

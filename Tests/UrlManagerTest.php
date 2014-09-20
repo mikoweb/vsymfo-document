@@ -33,7 +33,7 @@ class UrlManagerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('https://www.google.pl/test.html', $url->url('/test.html'));
         $url->setDomainPath('ftp://google.pl');
         $this->assertEquals('ftp://google.pl/test.html', $url->url('/test.html'));
-        $url->setDomainPath('google.pl');
+        $url->setDomainPath('http://google.pl');
         $url->setBaseUrl('/root');
         $this->assertEquals('http://google.pl/root/test.html', $url->url('/test.html'));
     }
@@ -46,4 +46,3 @@ class UrlManagerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('/root/test.html?version=2.1', $url->url('/test.html'));
     }
 }
- 

@@ -12,7 +12,6 @@
 
 namespace vSymfo\Component\Document;
 
-use Purl\Url;
 use vSymfo\Component\Document\Resources\Interfaces\ResourceInterface;
 use vSymfo\Component\Document\Interfaces\UrlManagerInterface;
 
@@ -69,8 +68,8 @@ abstract class ResourceAbstract implements ResourceInterface
         // usuwanie ignorowanych ścieżek źródłowych
         $keys = array();
         foreach ($source as $k=>$v) {
-            $url = new Url($v);
-            $path = trim($url->getPath());
+            $url = parse_url($v);
+            $path = trim(isset($url['path']) ? $url['path'] : '');
             if (!empty($path) && in_array($path, $ignoring))
                 $keys[] = $k;
         }
