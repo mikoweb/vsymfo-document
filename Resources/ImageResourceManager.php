@@ -142,7 +142,7 @@ class ImageResourceManager extends ResourceManagerAbstract
         $img->attr('alt', htmlspecialchars($res->getName()));
 
         $tag = new HtmlElement('picture');
-        $tag->attr('alt', htmlspecialchars($res->getName()));
+        //$tag->attr('alt', htmlspecialchars($res->getName()));
         foreach ($data['attr'] as $k => $v) {
             $tag->attr(htmlspecialchars($k), htmlspecialchars($v));
         }
