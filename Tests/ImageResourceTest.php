@@ -128,7 +128,6 @@ class ImageResourceTest extends \PHPUnit_Framework_TestCase
 
             $this->assertEquals(1, $xpath->query('body/picture')->length);
             $el = $xpath->query('body/picture')->item(0);
-            $this->assertEquals('Ford Mustang 1972', $el->getAttribute('alt'));
             $this->assertEquals('test', $el->getAttribute('class'));
 
             $el = $xpath->query('/descendant::img')->item(0);
