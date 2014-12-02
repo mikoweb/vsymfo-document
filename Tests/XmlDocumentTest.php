@@ -14,26 +14,34 @@ use vSymfo\Component\Document\Format\XmlDocument;
 
 class XmlDocumentTest extends \PHPUnit_Framework_TestCase
 {
-    protected $doc;
-
-    public function __construct()
-    {
-        $this->doc = new XmlDocument();
-    }
-
     public function testProlog()
     {
-        $prolog = $this->doc->element('prolog');
+        $doc = new XmlDocument();
+        $prolog = $doc->element('prolog');
         $this->assertEquals('<?xml version="1.0" encoding="{{ encoding }}"?>', $prolog->render());
     }
 
     public function testRoot()
     {
-        $root = $this->doc->element('root');
+        $doc = new XmlDocument();
+        $root = $doc->element('root');
         $root->attr('test', 'ok');
         $this->assertEquals('<root test="ok"></root>', $root->render());
-        $this->doc->renameRoot('newroot');
-        $root = $this->doc->element('root');
+        $doc->renameRoot('newroot');
+        $root = $doc->element('root');
         $this->assertEquals('<newroot test="ok"></newroot>', $root->render());
+    }
+
+    public function testBody()
+    {
+        $doc = new XmlDocument();
+        $doc->renameRoot('myroot');
+        $root = $doc->element('root');
+        $root->attr('test', 'ok');
+        $equalCode = '<?xml version="1.0" encoding="UTF-8"?>' .  PHP_EOL;
+        $equalCode .= '<myroot test="ok">' .  PHP_EOL;
+        $equalCode .= '</myroot>';
+
+        $this->assertEquals($equalCode, $doc->render());
     }
 }

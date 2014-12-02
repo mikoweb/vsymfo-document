@@ -146,7 +146,7 @@ class XmlDocument extends DocumentAbstract
 
         preg_match('/<'.$this->root->name().'.*?>/', $this->root->render(false, true), $result);
         $output .= isset($result[0])
-            ? $result[0] . PHP_EOL
+            ? str_replace(array("/>", " />"), ">", $result[0]) . PHP_EOL
             : '<'.$this->root->name().'>' . PHP_EOL;
 
         $output .= $this->body;
