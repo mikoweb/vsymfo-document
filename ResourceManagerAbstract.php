@@ -62,6 +62,15 @@ abstract class ResourceManagerAbstract implements ResourceManagerInterface
     }
 
     /**
+     * kopiowanie obiektu
+     */
+    public function __clone()
+    {
+        $this->groups = new ResourceGroups();
+        $this->length = 0;
+    }
+
+    /**
      * utwórz funckcję wspomagającą dodawanie zasobów o podanej nazwie
      * @param string $name
      * @param \Closure $onAdd
