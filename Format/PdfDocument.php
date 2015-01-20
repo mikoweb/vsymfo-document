@@ -166,6 +166,15 @@ class PdfDocument extends HtmlDocument
     }
 
     /**
+     * Pobierz ścieżkę do pliku PDF
+     * @return string
+     */
+    public function getFilename()
+    {
+        return (string)$this->filename;
+    }
+
+    /**
      * dodaj nową okładkę
      * @param string $name
      * @param string $url
