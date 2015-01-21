@@ -236,7 +236,7 @@ class PdfDocument extends HtmlDocument
      */
     public function updateIfExpired($duration)
     {
-        if ($duration > -1) {
+        if ((int)$duration > -1) {
             $now = new \DateTime();
             if (file_exists($this->getFilename()) && filemtime($this->getFilename()) + (int)$duration < $now->getTimestamp()) {
                 $this->lastModified($now->format('Y-m-d H:i:s'));
