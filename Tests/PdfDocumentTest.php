@@ -32,7 +32,7 @@ class PdfDocumentTest extends \PHPUnit_Framework_TestCase
         $style->insertTo($head);
 
         $now = new DateTime();
-        //$doc->lastModified($now->format('Y-m-d H:i:s'));
+        $doc->lastModified($now->format('Y-m-d H:i:s'));
         $doc->setOptions(array(
             'dummy_pdf_url' => 'empty.pdf',
             'display_url' => 'test.pdf',
@@ -52,6 +52,6 @@ class PdfDocumentTest extends \PHPUnit_Framework_TestCase
         $doc->toc(true, __DIR__ . '/tmp/toc.xsl');
         $doc->addCover('start', 'http://www.loremipsum.net');
         $doc->addCover('end', 'http://www.loremipsum.net');
-        //var_dump($doc->render());
+        var_dump($doc->render());
     }
 }

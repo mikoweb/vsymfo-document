@@ -16,7 +16,7 @@ use vSymfo\Component\Document\Element\HtmlElement;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\Options;
 use vSymfo\Component\Document\Utility\QueuePdfDb;
-use WkHtmlToPdf;
+use mikehaertl\wkhtmlto\Pdf;
 use Stringy\Stringy as S;
 
 /**
@@ -34,7 +34,7 @@ class PdfDocument extends HtmlDocument
     private $options = null;
 
     /**
-     * @var WkHtmlToPdf
+     * @var Pdf
      */
     private $wkhtmltopdf = null;
 
@@ -68,7 +68,7 @@ class PdfDocument extends HtmlDocument
     public function __construct()
     {
         parent::__construct();
-        $this->wkhtmltopdf = new WkHtmlToPdf();
+        $this->wkhtmltopdf = new Pdf();
         $this->outputSelector = function() {
             return null;
         };
@@ -168,7 +168,6 @@ class PdfDocument extends HtmlDocument
 
         $this->options = $resolver->resolve($options);
         $this->wkhtmltopdf->setOptions($this->options['wkhtmltopdf_global']);
-        $this->wkhtmltopdf->setPageOptions($this->options['wkhtmltopdf_page']);
 
         // kolejka żądań utworzenia pliku
         $this->queue = QueuePdfDb::openFile($this->options['queue_db_path']);
@@ -369,7 +368,7 @@ class PdfDocument extends HtmlDocument
                 $this->wkhtmltopdf->addToc($this->options['wkhtmltopdf_toc']);
             }
 
-            $this->wkhtmltopdf->addPage($html);
+            $this->wkhtmltopdf->addPage($html, $this->options['wkhtmltopdf_page']);
 
             if (isset($this->covers['end'])) {
                 $this->wkhtmltopdf->addCover($this->covers['end']['url'], $this->covers['end']['options']);
