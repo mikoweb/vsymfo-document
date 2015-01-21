@@ -37,7 +37,13 @@ class PdfDocumentTest extends \PHPUnit_Framework_TestCase
             'dummy_pdf_url' => 'empty.pdf',
             'display_url' => 'test.pdf',
             'download_url' => 'test.pdf',
-            'remote_url' => 'http://www.foo.bar/test.pdf'
+            'remote_url' => 'http://www.foo.bar/test.pdf',
+            "pluginDetect_PDFReader_url" => "/pdf/PluginDetect_PDFReader.js",
+            "waiting_view_path" => __DIR__ . '/tmp/waiting-view.html',
+            "queue_db_path" => __DIR__ . '/tmp/pdf-queue.db',
+            "wkhtmltopdf_global" => array(
+                "binary" => "wkhtmltopdf"
+            )
         ));
         $doc->outputSelector(function() {
             return isset($_GET['do']) ? $_GET['do'] : null;
