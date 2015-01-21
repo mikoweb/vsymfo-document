@@ -231,6 +231,18 @@ class PdfDocument extends HtmlDocument
     }
 
     /**
+     * Wymuś aktualizację pliku PDF, jeżeli przekroczono czas trwania
+     * @param $duration czas trwania
+     */
+    public function updateIfExpired($duration)
+    {
+        $now = new \DateTime();
+        if (file_exists($this->getFilename()) && filemtime($this->getFilename()) + (int)$duration < $now->getTimestamp()) {
+            $this->lastModified($now->format('Y-m-d H:i:s'));
+        }
+    }
+
+    /**
      * pobieranie dokumentu
      */
     public function download()
