@@ -15,6 +15,7 @@ namespace vSymfo\Component\Document\Format;
 use vSymfo\Component\Document\Element\HtmlElement;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\Options;
+use vSymfo\Component\Document\Utility\QueuePdfDb;
 use WkHtmlToPdf;
 use Stringy\Stringy as S;
 
@@ -57,6 +58,12 @@ class PdfDocument extends HtmlDocument
      * @var \Closure
      */
     private $outputSelector = null;
+
+    /**
+     * Kolejka żądań utworzenia pliku
+     * @var QueuePdfDb
+     */
+    private $queue = null;
 
     public function __construct()
     {
@@ -110,7 +117,7 @@ class PdfDocument extends HtmlDocument
         $wkhtmltopdf_toc = array();
 
         $resolver = new OptionsResolver();
-        $resolver->setRequired(array('dummy_pdf_url', 'display_url', 'download_url', 'remote_url', 'pluginDetect_PDFReader_url'));
+        $resolver->setRequired(array('dummy_pdf_url', 'display_url', 'download_url', 'remote_url', 'pluginDetect_PDFReader_url', 'waiting_view_path', 'queue_db_path'));
         $resolver->setDefaults(array(
             'wkhtmltopdf_global' => array(),
             'wkhtmltopdf_page'   => array(),
@@ -129,6 +136,7 @@ class PdfDocument extends HtmlDocument
             'remote_url'         => 'string',
             // http://www.pinlady.net/PluginDetect/PDFReader/
             'pluginDetect_PDFReader_url' => 'string',
+            'waiting_view_path'  => 'string'
         ));
 
         $resolver->setNormalizers(array(
@@ -144,11 +152,26 @@ class PdfDocument extends HtmlDocument
             'wkhtmltopdf_toc' => function (Options $options, $value) use ($wkhtmltopdf_toc) {
                 return array_merge($wkhtmltopdf_toc, $value);
             },
+            'waiting_view_path' => function (Options $options, $value) {
+                if (!file_exists($value)) {
+                    throw new \UnexpectedValueException('Error during parse waiting_view_path: File not found.');
+                }
+
+                $info = pathinfo($value);
+                if ($info['extension'] != 'html') {
+                    throw new \UnexpectedValueException('Error during parse waiting_view_path: Unexpected file extension - ' . $info['extension']);
+                }
+
+                return $value;
+            },
         ));
 
         $this->options = $resolver->resolve($options);
         $this->wkhtmltopdf->setOptions($this->options['wkhtmltopdf_global']);
         $this->wkhtmltopdf->setPageOptions($this->options['wkhtmltopdf_page']);
+
+        // kolejka żądań utworzenia pliku
+        $this->queue = QueuePdfDb::openFile($this->options['queue_db_path']);
     }
 
     /**
@@ -172,6 +195,16 @@ class PdfDocument extends HtmlDocument
     public function getFilename()
     {
         return (string)$this->filename;
+    }
+
+    /**
+     * Ścieżka do pliku z rozszerzeniem HTML
+     * @return string
+     */
+    public function getFilenameToHtml()
+    {
+        $info = pathinfo($this->getFilename());
+        return $info['dirname'] . '/' . $info['filename'] . '.html';
     }
 
     /**
@@ -302,6 +335,20 @@ class PdfDocument extends HtmlDocument
     }
 
     /**
+     * Ten widok jest tworzony, gdy nie można utworzyć pliku PDF z poziomu skryptu PHP.
+     * Jest to widok, który odświeża się w regularnych odstępach czasu, oczekając na wygenerowanie pliku PDF,
+     * przez zewnętrzene oprogramowanie np. Crontab.
+     * Żądanie wygenerowania pliku jest zapisywane w bazie SQLite. Kiedy zewnętrzene oprogramowanie wegeneruje plik PDF,
+     * powinno się usąć żądanie z bazy.
+     *
+     * @return string
+     */
+    private function waitingView()
+    {
+        return file_get_contents($this->options['waiting_view_path']);
+    }
+
+    /**
      * @return string
      * @throws \Exception
      */
@@ -329,7 +376,19 @@ class PdfDocument extends HtmlDocument
             }
 
             if (!$this->wkhtmltopdf->saveAs($this->filename)) {
-                throw new \Exception('Could not create PDF: ' . $this->wkhtmltopdf->getError());
+                //throw new \Exception('Could not create PDF: ' . $this->wkhtmltopdf->getError());
+                file_put_contents($this->getFilenameToHtml(), $html);
+                $this->queue->beginTransaction();
+                if ($this->queue->select($this->getFilename()) == false) {
+                    $this->queue->insert($this->getFilename(), array(
+                        'date_added' => time(),
+                        'block' => 0,
+                        'html_file' => $this->getFilenameToHtml()
+                    ));
+                }
+                $this->queue->endTransaction();
+
+                return $this->waitingView();
             }
         }
 
@@ -372,5 +431,13 @@ class PdfDocument extends HtmlDocument
         ;
 
         return $viewer->render();
+    }
+
+    /**
+     * @return WkHtmlToPdf
+     */
+    public function getWkhtmltopdf()
+    {
+        return $this->wkhtmltopdf;
     }
 }
