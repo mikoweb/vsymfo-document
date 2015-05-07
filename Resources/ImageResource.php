@@ -96,7 +96,8 @@ class ImageResource extends ResourceAbstract implements MakeResourceInterface
                 'srcset-w' => 0,
                 'srcset-h' => 0,
                 'srcset-x' => 0,
-                'media-index' => -1
+                'media-index' => -1,
+                'use_only_width' => false
             ));
 
         $image->setAllowedTypes(array(
@@ -111,7 +112,8 @@ class ImageResource extends ResourceAbstract implements MakeResourceInterface
                 'srcset-w' => 'integer',
                 'srcset-h' => 'integer',
                 'srcset-x' => 'integer',
-                'media-index' => 'integer'
+                'media-index' => 'integer',
+                'use_only_width' => 'bool'
             ));
 
         $image->setAllowedValues(array(
@@ -229,12 +231,18 @@ class ImageResource extends ResourceAbstract implements MakeResourceInterface
                         mkdir($this->options['root_dir'] . $this->options['output_dir'], 0755, true);
                     }
 
-                    try {
+                    if ($image['use_only_width']) {
+                        $imageObj = $imagine->open($openfilename);
+                        $imageObj
+                            ->resize(new Box($image['width'], ($imageObj->getSize()->getHeight()/($imageObj->getSize()->getWidth()/$image['width']))))
+                            ->save($filename, $options)
+                        ;
+                    } else {
                         $imagine->open($openfilename)
                             ->thumbnail(new Box($image['width'], $image['height']), $image['mode'])
                             ->save($filename, $options)
                         ;
-                    } catch (\Exception $e) {}
+                    }
 
                     // dane zapisanego pliku
                     $result[$filename] = array(

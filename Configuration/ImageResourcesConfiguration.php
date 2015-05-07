@@ -135,6 +135,9 @@ class ImageResourcesConfiguration implements ConfigurationInterface
             ->integerNode('srcset-x')
                 ->min(0)
             ->end()
+            ->booleanNode('use_only_width')
+                ->defaultFalse()
+            ->end()
         ;
 
         $images->end()->end()->end();
