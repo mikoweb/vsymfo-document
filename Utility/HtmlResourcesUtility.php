@@ -83,7 +83,7 @@ class HtmlResourcesUtility
                 'less_import_dirs'  => 'array',
                 'less_globasls'     => 'array',
                 'versioning_enable'    => 'bool',
-                'versioning_version'   => 'integer',
+                'versioning_version'   => 'numeric',
                 'versioning_timestamp' => 'bool',
                 'cdn_enable'     => 'bool',
                 'cdn_javascript' => 'string',
