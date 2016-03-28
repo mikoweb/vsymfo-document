@@ -56,12 +56,12 @@ class HtmlResourcesUtility
     protected function setDefaultOptions(OptionsResolver $resolver)
     {
         $resolver->setRequired(array('cache_dir', 'cache_refresh', 'cache_lifetime', 'web_url'
-            , 'web_dir', 'web_cache_dir', 'web_cache_url', 'less_import_dirs', 'less_globasls'));
+            , 'web_dir', 'web_cache_dir', 'web_cache_url', 'less_import_dirs', 'less_variables'));
 
         $resolver->setDefaults(array(
             'ignoring_files'    => array(),
             'less_import_dirs'  => array(),
-            'less_globasls'     => array(),
+            'less_variables'     => array(),
             'versioning_enable'    => false,
             'versioning_version'   => 1,
             'versioning_timestamp' => false,
@@ -82,7 +82,7 @@ class HtmlResourcesUtility
             'web_cache_dir'  => 'string',
             'web_cache_url'  => 'string',
             'less_import_dirs'  => 'array',
-            'less_globasls'     => 'array',
+            'less_variables'     => 'array',
             'versioning_enable'    => 'bool',
             'versioning_version'   => 'numeric',
             'versioning_timestamp' => 'bool',
@@ -136,7 +136,7 @@ class HtmlResourcesUtility
 
             if ($type == 'stylesheet') {
                 $combine->setLessImportDirs($options['less_import_dirs']);
-                $combine->setLessGlobasls($options['less_globasls']);
+                $combine->setLessVariables($options['less_variables']);
             }
 
             $res->setCombineObject($combine);

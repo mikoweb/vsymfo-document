@@ -12,6 +12,9 @@
 
 namespace vSymfo\Component\Document\Resources;
 
+use vSymfo\Component\Document\CssPreprocessor\LessPreprocessor;
+use vSymfo\Component\Document\CssPreprocessor\NonePreprocessor;
+use vSymfo\Component\Document\CssPreprocessor\ScssPreprocessor;
 use vSymfo\Core\File\CombineFilesAbstract;
 
 /**
@@ -28,21 +31,44 @@ class StyleSheetCombineFiles extends CombineFilesAbstract
      * 
      * @var string
      */
-    protected $outputExtension = 'css';
+    protected $outputExtension;
 
     /**
      * Katalogi do importowania plików less
      * 
      * @var array
      */
-    protected $lessImportDirs = array();
+    protected $lessImportDirs;
 
     /**
-     * Zmienne globalne dla kompilatora
+     * Zmienne less
      * 
      * @var array
      */
-    protected $lessGlobasls = array();
+    protected $lessVariables;
+
+    /**
+     * @var array
+     */
+    protected $scssImportDirs;
+
+    /**
+     * @var array
+     */
+    protected $scssVariables;
+
+    /**
+     * @param array $sources
+     */
+    public function __construct(array $sources = array())
+    {
+        parent::__construct($sources);
+        $this->outputExtension = 'css';
+        $this->lessImportDirs = array();
+        $this->lessVariables = array();
+        $this->scssImportDirs = array();
+        $this->scssVariables = array();
+    }
 
     /**
      * Przetwórz zawartość pojedynczego pliku
@@ -71,22 +97,36 @@ class StyleSheetCombineFiles extends CombineFilesAbstract
      * 
      * @param string $path
      * @param array $cacheFiles
+     * @param string|null $relativePath
+     * 
      * @return string
      */
-    protected function fileGetContents($path, array &$cacheFiles)
+    protected function fileGetContents($path, array &$cacheFiles, $relativePath = null)
     {
         try {
-            $parser = new \Less_Parser(array(
-                'compress' => true
-            ));
-            if (!empty($this->lessImportDirs)) {
-                $parser->SetImportDirs($this->lessImportDirs);
+            $pathInfo = pathinfo($path);
+            $filename = $path;
+
+            switch ($pathInfo['extension']) {
+                case 'less':
+                case 'css':
+                    $preprocessor = new LessPreprocessor($this->lessVariables, $this->lessImportDirs);
+                    break;
+                case 'scss':
+                    $preprocessor = new ScssPreprocessor($this->scssVariables, $this->scssImportDirs);
+                    $filename = $relativePath;
+                    break;
+                default:
+                    $preprocessor = new NonePreprocessor();
+                    break;
             }
-            $parser->parseFile($path);
-            $parser->ModifyVars($this->lessGlobasls);
-            $css = $parser->getCss();
-            foreach ($parser->allParsedFiles() as $file) {
-                $cacheFiles[$file] = @filemtime($file);
+
+            $css = $preprocessor->compile($filename);
+
+            foreach ($preprocessor->getParsedFiles() as $file) {
+                if ($file !== $path) {
+                    $cacheFiles[$file] = @filemtime($file);
+                }
             }
 
             return $css;
@@ -100,7 +140,7 @@ class StyleSheetCombineFiles extends CombineFilesAbstract
      * 
      * @param array $dirs
      * 
-     * @return StyleSheetCombineFiles
+     * @return $this
      */
     public function setLessImportDirs(array $dirs)
     {
@@ -114,11 +154,35 @@ class StyleSheetCombineFiles extends CombineFilesAbstract
      * 
      * @param array $globals
      * 
-     * @return StyleSheetCombineFiles
+     * @return $this
      */
-    public function setLessGlobasls(array $globals)
+    public function setLessVariables(array $globals)
     {
-        $this->lessGlobasls = $globals;
+        $this->lessVariables = $globals;
+
+        return $this;
+    }
+
+    /**
+     * @param array $scssImportDirs
+     *
+     * @return $this
+     */
+    public function setScssImportDirs(array $scssImportDirs)
+    {
+        $this->scssImportDirs = $scssImportDirs;
+
+        return $this;
+    }
+
+    /**
+     * @param array $scssVariables
+     *
+     * @return $this
+     */
+    public function setScssVariables(array $scssVariables)
+    {
+        $this->scssVariables = $scssVariables;
 
         return $this;
     }

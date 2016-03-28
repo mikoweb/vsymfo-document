@@ -60,10 +60,11 @@ class JavaScriptCombineFiles extends CombineFilesAbstract
      * 
      * @param string $path
      * @param array $cacheFiles
+     * @param string|null $relativePath
      * 
      * @return string
      */
-    protected function fileGetContents($path, array &$cacheFiles)
+    protected function fileGetContents($path, array &$cacheFiles, $relativePath = null)
     {
         return (string)@file_get_contents($path);
     }

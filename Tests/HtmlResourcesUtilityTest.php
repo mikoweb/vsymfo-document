@@ -29,7 +29,7 @@ class HtmlResourcesUtilityTest extends \PHPUnit_Framework_TestCase
             'web_cache_dir'  => __DIR__ . '/tmp/cache',
             'web_cache_url'  => '/tmp/cache',
             'less_import_dirs' => array(__DIR__ . '/tmp/less'),
-            'less_globasls'    => array('foo' => 'bar')
+            'less_variables'    => array('foo' => 'bar')
         ));
 
         $utility->createResOnAdd($doc, "javascript", "default");

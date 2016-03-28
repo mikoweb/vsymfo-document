@@ -1,0 +1,10 @@
+@import "import";
+
+.main {
+    color: $foo;
+    background: red;
+
+    p {
+        font-size: 16px;
+    }
+}

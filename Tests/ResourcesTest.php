@@ -123,7 +123,12 @@ class ResourcesTest extends \PHPUnit_Framework_TestCase
                         )
                     )
                     ->setLessImportDirs(array(__DIR__ . '/tmp/cache/less'))
-                    ->setLessGlobasls(array('foo' => 'bar'))
+                    ->setLessVariables(array('foo' => 'bar'))
+                    ->setScssImportDirs(array(
+                        __DIR__,
+                        __DIR__ . '/tmp/scss'
+                    ))
+                    ->setScssVariables(array('foo' => 'bar'))
                 ;
 
                 $url = new UrlManager();
@@ -136,7 +141,7 @@ class ResourcesTest extends \PHPUnit_Framework_TestCase
 
         $res->add(
             new StyleSheetResource('foo',
-                array('/tmp/less/bootstrap.less'),
+                array('/tmp/less/bootstrap.less', '/tmp/scss/test.scss'),
                 array('combine' => true)
             ), 'bootstrap'
         );

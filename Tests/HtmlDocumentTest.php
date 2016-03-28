@@ -105,7 +105,7 @@ class HtmlDocumentTest extends \PHPUnit_Framework_TestCase
                     )
                 )
                 ->setLessImportDirs(array(__DIR__ . '/tmp/cache/less'))
-                ->setLessGlobasls(array('foo' => 'bar'))
+                ->setLessVariables(array('foo' => 'bar'))
             ;
 
             $res->setCombineObject($combine);
