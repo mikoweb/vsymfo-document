@@ -20,16 +20,17 @@ class HtmlResourcesUtilityTest extends \PHPUnit_Framework_TestCase
     {
         $doc = new HtmlDocument();
         $utility = new HtmlResourcesUtility(array(
-                'cache_dir'      => __DIR__ . '/tmp/cache',
-                'cache_refresh'  => true,
-                'cache_lifetime' => 0,
-                'web_dir'        => __DIR__,
-                'web_url'        => '/',
-                'web_cache_dir'  => __DIR__ . '/tmp/cache',
-                'web_cache_url'  => '/tmp/cache',
-                'less_import_dirs' => array(__DIR__ . '/tmp/less'),
-                'less_globasls'    => array('foo' => 'bar')
-            ));
+            'cache_dir'      => __DIR__ . '/tmp/cache',
+            'cache_db_dir'   => __DIR__ . '/tmp/cache_db/html_resources_utility',
+            'cache_refresh'  => true,
+            'cache_lifetime' => 0,
+            'web_dir'        => __DIR__,
+            'web_url'        => '/',
+            'web_cache_dir'  => __DIR__ . '/tmp/cache',
+            'web_cache_url'  => '/tmp/cache',
+            'less_import_dirs' => array(__DIR__ . '/tmp/less'),
+            'less_globasls'    => array('foo' => 'bar')
+        ));
 
         $utility->createResOnAdd($doc, "javascript", "default");
         $utility->createResOnAdd($doc, "stylesheet", "default");

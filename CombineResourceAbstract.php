@@ -16,7 +16,8 @@ use vSymfo\Component\Document\Resources\Interfaces\CombineResourceInterface;
 use vSymfo\Core\File\Interfaces\CombineFilesInterface;
 
 /**
- * pojedyńczy złączony zasób
+ * Pojedynczy złączony zasób
+ * 
  * @author Rafał Mikołajun <rafal@vision-web.pl>
  * @package vSymfo Component
  * @subpackage Document

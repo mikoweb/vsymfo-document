@@ -13,9 +13,8 @@
     ],
     "require": {
         "php": ">=5.3.3",
-
         "mikoweb/vsymfo-core": "dev-master",
-        "mikehaertl/phpwkhtmltopdf": "2.0.1"
+        "mikehaertl/phpwkhtmltopdf": "~2.1"
     },
     "autoload": {
         "psr-0": { "vSymfo\\Component\\Document\\": "" }

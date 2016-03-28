@@ -27,7 +27,8 @@ use vSymfo\Component\Document\UrlManager;
 use vSymfo\Core\File\CombineFilesCacheDB;
 
 /**
- * Zestaw użytecznych metod do szybszego zarządzania zasobami dokumentu HTML.
+ * Klasa do wytwarzania loadera zasobów
+ *
  * @author Rafał Mikołajun <rafal@vision-web.pl>
  * @package vSymfo Component
  * @subpackage Document_Utility
@@ -35,7 +36,6 @@ use vSymfo\Core\File\CombineFilesCacheDB;
 class HtmlResourcesUtility
 {
     /**
-     * opcje
      * @var array
      */
     protected $options = null;
@@ -51,7 +51,6 @@ class HtmlResourcesUtility
     }
 
     /**
-     * Domyślne opcje
      * @param OptionsResolver $resolver
      */
     protected function setDefaultOptions(OptionsResolver $resolver)
@@ -60,44 +59,46 @@ class HtmlResourcesUtility
             , 'web_dir', 'web_cache_dir', 'web_cache_url', 'less_import_dirs', 'less_globasls'));
 
         $resolver->setDefaults(array(
-                'ignoring_files'    => array(),
-                'less_import_dirs'  => array(),
-                'less_globasls'     => array(),
-                'versioning_enable'    => false,
-                'versioning_version'   => 1,
-                'versioning_timestamp' => false,
-                'cdn_enable'     => false,
-                'cdn_javascript' => '',
-                'cdn_css'        => ''
-            ));
+            'ignoring_files'    => array(),
+            'less_import_dirs'  => array(),
+            'less_globasls'     => array(),
+            'versioning_enable'    => false,
+            'versioning_version'   => 1,
+            'versioning_timestamp' => false,
+            'cdn_enable'     => false,
+            'cdn_javascript' => '',
+            'cdn_css'        => '',
+            'cache_db_dir'   => null,
+        ));
 
         $resolver->setAllowedTypes(array(
-                'ignoring_files' => 'array',
-                'cache_dir'      => 'string',
-                'cache_refresh'  => 'bool',
-                'cache_lifetime' => 'integer',
-                'web_dir'        => 'string',
-                'web_url'        => 'string',
-                'web_cache_dir'  => 'string',
-                'web_cache_url'  => 'string',
-                'less_import_dirs'  => 'array',
-                'less_globasls'     => 'array',
-                'versioning_enable'    => 'bool',
-                'versioning_version'   => 'numeric',
-                'versioning_timestamp' => 'bool',
-                'cdn_enable'     => 'bool',
-                'cdn_javascript' => 'string',
-                'cdn_css'        => 'string',
-            ));
+            'ignoring_files' => 'array',
+            'cache_dir'      => 'string',
+            'cache_db_dir'   => array('string', 'null'),
+            'cache_refresh'  => 'bool',
+            'cache_lifetime' => 'integer',
+            'web_dir'        => 'string',
+            'web_url'        => 'string',
+            'web_cache_dir'  => 'string',
+            'web_cache_url'  => 'string',
+            'less_import_dirs'  => 'array',
+            'less_globasls'     => 'array',
+            'versioning_enable'    => 'bool',
+            'versioning_version'   => 'numeric',
+            'versioning_timestamp' => 'bool',
+            'cdn_enable'     => 'bool',
+            'cdn_javascript' => 'string',
+            'cdn_css'        => 'string',
+        ));
     }
 
     /**
-     * Funkcja tworząca nowe zdarzenie onAdd
-     * w managerze zasobów, który jest powiązany z dokumentem
+     * Listener wykonywany przy dodawaniu nowego zasobu
      *
      * @param HtmlDocument $doc
      * @param string $type
      * @param string $name
+     *
      * @throws \UnexpectedValueException
      */
     public function createResOnAdd(HtmlDocument $doc, $type, $name)
@@ -118,8 +119,10 @@ class HtmlResourcesUtility
                     break;
             }
 
-            if (!empty($options['ignoring_files'])) {
-                $res->filter("ignoring", $options['ignoring_files']);
+            if (!empty($options['cache_db_dir'])) {
+                $cacheDb = $options['cache_db_dir'] . '.db';
+            } else {
+                $cacheDb = $options['web_cache_dir'] . '.db';
             }
 
             $combine->setInputDir($options['web_dir'])
@@ -128,7 +131,7 @@ class HtmlResourcesUtility
                 ->setOutputForceRefresh($options['cache_refresh'])
                 ->setOutputLifeTime($options['cache_lifetime'])
                 ->setOutputStrategy('manual')
-                ->setCacheDb(CombineFilesCacheDB::openFile($options['web_cache_dir'] . '.db'))
+                ->setCacheDb(CombineFilesCacheDB::openFile($cacheDb))
             ;
 
             if ($type == 'stylesheet') {
@@ -138,7 +141,7 @@ class HtmlResourcesUtility
 
             $res->setCombineObject($combine);
             $urlManager = new UrlManager();
-            $urlManager->setBaseurl($options['web_url']);
+            $urlManager->setBaseUrl($options['web_url']);
             $urlManager->setVersioning(
                 $options['versioning_enable'],
                 $options['versioning_version'],
@@ -159,26 +162,29 @@ class HtmlResourcesUtility
         switch ($type) {
             case 'javascript':
                 $manager->setOnAdd($name, function(JavaScriptResource $res) use($closure) {
-                        $closure($res);
-                    });
+                    $closure($res);
+                });
                 break;
             case 'stylesheet':
                 $manager->setOnAdd($name, function(StyleSheetResource $res) use($closure) {
-                        $closure($res);
-                    });
+                    $closure($res);
+                });
                 break;
         }
     }
 
     /**
-     * Tworzenie loadera zasobów.
+     * Tworzenie loadera zasobów
+     * 
      * @param HtmlDocument $doc
      * @param string $type
      * @param FileLocator $locator
      * @param string $baseurl
      * @param bool $combine
      * @param bool $async
+     * 
      * @return JavaScriptResourcesLoader|StyleSheetResourcesLoader
+     * 
      * @throws \UnexpectedValueException
      */
     public function createResourcesLoader(HtmlDocument $doc, $type, FileLocator $locator, $baseurl, $combine = true, $async = true)
