@@ -17,6 +17,7 @@ use vSymfo\Component\Document\Resources\Interfaces\ResourceGroupsInterface;
 
 /**
  * Grupowanie zasobów
+ * 
  * @author Rafał Mikołajun <rafal@vision-web.pl>
  * @package vSymfo Component
  * @subpackage Document
@@ -37,8 +38,10 @@ class ResourceGroups implements ResourceGroupsInterface
 
     /**
      * Utwórz nową grupę zasobów
+     * 
      * @param string $name
      * @param array $dependencies
+     * 
      * @throws \InvalidArgumentException
      */
     public function addGroup($name, $dependencies = array())
@@ -61,6 +64,7 @@ class ResourceGroups implements ResourceGroupsInterface
 
     /**
      * Umieść nowy zasób w tablicy
+     * 
      * @param ResourceInterface $res
      * @param string|null $group
      */
@@ -75,7 +79,9 @@ class ResourceGroups implements ResourceGroupsInterface
 
     /**
      * Zapodaj zasoby o podanej grupie
+     * 
      * @param string|null $name
+     * 
      * @return array
      */
     public function get($name)
@@ -92,6 +98,7 @@ class ResourceGroups implements ResourceGroupsInterface
     /**
      * Tablica z danymi grup posortowana według kolejności na liście
      * z uwzględnieniem wzajemnych zależności
+     * 
      * @return array
      */
     public function getAll()

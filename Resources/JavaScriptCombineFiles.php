@@ -17,6 +17,7 @@ use vSymfo\Core\File\CombineFilesAbstract;
 
 /**
  * Złączanie plików JavaScript
+ * 
  * @author Rafał Mikołajun <rafal@vision-web.pl>
  * @package vSymfo Component
  * @subpackage Document_Resources
@@ -25,13 +26,16 @@ class JavaScriptCombineFiles extends CombineFilesAbstract
 {
     /**
      * Rozszerzenie pliku wyjściowego
+     * 
      * @var string
      */
     protected $outputExtension = 'js';
 
     /**
      * Przetwórz zawartość pojedynczego pliku
+     * 
      * @param string $content
+     * 
      * @return string
      */
     protected function processOneFile(&$content)
@@ -41,7 +45,9 @@ class JavaScriptCombineFiles extends CombineFilesAbstract
 
     /**
      * Przetwórz zawartość złączonych plików
+     * 
      * @param string $content
+     * 
      * @return string
      */
     protected function processFiles(&$content)
@@ -51,8 +57,10 @@ class JavaScriptCombineFiles extends CombineFilesAbstract
 
     /**
      * Pobieranie zawartości pliku
+     * 
      * @param string $path
      * @param array $cacheFiles
+     * 
      * @return string
      */
     protected function fileGetContents($path, array &$cacheFiles)

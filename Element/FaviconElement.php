@@ -15,7 +15,8 @@ namespace vSymfo\Component\Document\Element;
 use vSymfo\Component\Document\Interfaces\ElementInterface;
 
 /**
- * Ikona strony w formacie HTML
+ * Favicon strony
+ * 
  * @author Rafał Mikołajun <rafal@vision-web.pl>
  * @package vSymfo Component
  * @subpackage Document_Element
@@ -43,7 +44,6 @@ class FaviconElement implements ElementInterface
      */
     private $faviconTemplate = '';
 
-
     public function __construct()
     {
         $this->enable(true);
@@ -69,7 +69,8 @@ class FaviconElement implements ElementInterface
     }
 
     /**
-     * Aktywuj/deaktywuj
+     * Aktywuj/dezaktywuj
+     * 
      * @param bool $enable
      */
     public function enable($enable)
@@ -78,7 +79,8 @@ class FaviconElement implements ElementInterface
     }
 
     /**
-     * Ustaw ścieżke bazową
+     * Ustaw ścieżkę bazową
+     * 
      * @param $path
      */
     public function setBasePath($path)
@@ -88,6 +90,7 @@ class FaviconElement implements ElementInterface
 
     /**
      * Kolor kafelka dla Windows 8
+     * 
      * @param $color
      */
     public function setTileColor($color)
@@ -97,6 +100,7 @@ class FaviconElement implements ElementInterface
 
     /**
      * Ustaw szablon faviconów. W kodzie można używać {{basepath}} i {{tileColor}}
+     * 
      * @param string $htmlCode kod html faviconów
      */
     public function setFaviconTemplate($htmlCode)

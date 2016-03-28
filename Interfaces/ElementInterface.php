@@ -13,7 +13,8 @@
 namespace vSymfo\Component\Document\Interfaces;
 
 /**
- * element dokumentu
+ * Element dokumentu
+ * 
  * @author Rafał Mikołajun <rafal@vision-web.pl>
  * @package vSymfo Component
  * @subpackage Document

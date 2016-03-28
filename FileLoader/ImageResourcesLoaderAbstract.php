@@ -25,6 +25,7 @@ use vSymfo\Component\Document\Resources\ImageResource;
 
 /**
  * Loader ilustracji
+ * 
  * @author Rafał Mikołajun <rafal@vision-web.pl>
  * @package vSymfo Component
  * @subpackage Document_FileLoader
@@ -48,7 +49,6 @@ abstract class ImageResourcesLoaderAbstract extends FileLoaderAbstract
     }
 
     /**
-     * Domyślne opcje
      * @param OptionsResolver $resolver
      */
     protected function setDefaultOptions(OptionsResolver $resolver)
@@ -56,16 +56,16 @@ abstract class ImageResourcesLoaderAbstract extends FileLoaderAbstract
         parent::setDefaultOptions($resolver);
         $resolver->setRequired(array('images_root_dir', 'images_output_dir', 'baseurl'));
         $resolver->setDefaults(array(
-                'layout'    => null,
-                'forcesave' => false
-            ));
+            'layout'    => null,
+            'forcesave' => false
+        ));
 
         $resolver->setAllowedTypes(array(
-                'forcesave' => 'bool',
-                'images_root_dir' => 'string',
-                'images_output_dir' => 'string',
-                'baseurl' => 'string'
-            ));
+            'forcesave' => 'bool',
+            'images_root_dir' => 'string',
+            'images_output_dir' => 'string',
+            'baseurl' => 'string'
+        ));
     }
 
     /**
@@ -100,6 +100,7 @@ abstract class ImageResourcesLoaderAbstract extends FileLoaderAbstract
 
     /**
      * Wczytywanie obrazków
+     * 
      * @param array $config
      * @param null|string $type
      */
@@ -107,6 +108,7 @@ abstract class ImageResourcesLoaderAbstract extends FileLoaderAbstract
 
     /**
      * Zapisywanie obrazków
+     * 
      * @param ImageResource $res
      * @param array $config
      * @param array $options
@@ -115,9 +117,11 @@ abstract class ImageResourcesLoaderAbstract extends FileLoaderAbstract
 
     /**
      * Tworzenie zasobu graficznego
+     * 
      * @param string $title
      * @param array $images
      * @param array $config
+     * 
      * @return ImageResource
      */
     abstract protected function createImageResource($title, array &$images, array &$config);

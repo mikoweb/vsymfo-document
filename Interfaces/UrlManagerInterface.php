@@ -13,7 +13,7 @@
 namespace vSymfo\Component\Document\Interfaces;
 
 /**
- * zarządzanie URL'em
+ * Zarządzanie URL'em
  * @author Rafał Mikołajun <rafal@vision-web.pl>
  * @package vSymfo Component
  * @subpackage Document_Interfaces
@@ -21,17 +21,21 @@ namespace vSymfo\Component\Document\Interfaces;
 interface UrlManagerInterface
 {
     /**
-     * zapodaj obrobiony adres URL
+     * Zapodaj obrobiony adres URL
+     *
      * @param string $path
      * @param bool $addBaseUrl
      * @param bool $checkBaseUrl
+     *
      * @return string
+     *
      * @throws \InvalidArgumentException
      */
     public function url($path, $addBaseUrl = true, $checkBaseUrl = false);
 
     /**
-     * ustaw ścieżkę bazową
+     * Ustaw ścieżkę bazową
+     *
      * @param string $url
      */
     public function setBaseUrl($url);
@@ -42,7 +46,8 @@ interface UrlManagerInterface
     public function setDomainPath($path);
 
     /**
-     * ustaw wersjonowanie
+     * Ustaw wersjonowanie
+     * 
      * @param bool $enable
      * @param int $v
      * @param bool $timestamp

@@ -18,6 +18,7 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 
 /**
  * Ustawienia ilustracji
+ * 
  * @author Rafał Mikołajun <rafal@vision-web.pl>
  * @package vSymfo Component
  * @subpackage Document_Configuration
@@ -44,6 +45,7 @@ class ImageResourcesConfiguration implements ConfigurationInterface
     /**
      * @param string $name
      * @param bool $multi
+     * 
      * @return TreeBuilder
      */
     private function addSectionNode($name, $multi)
@@ -156,9 +158,12 @@ class ImageResourcesConfiguration implements ConfigurationInterface
      * Jeśli w pliku konfiguracyjnym zostanie odnaleziony
      * układ określony drugim argumentem funkcji to funkcja
      * zwróci tablicę array_merge(global, local).
+     * 
      * @param array $config
      * @param string $layout
+     * 
      * @return array
+     * 
      * @throws \InvalidArgumentException
      */
     public static function layoutConfig(array $config, $layout = null)

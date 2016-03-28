@@ -16,6 +16,7 @@ use vSymfo\Component\Document\Resources\Interfaces\ResourceInterface;
 
 /**
  * Złączone zasoby dokumentu
+ * 
  * @author Rafał Mikołajun <rafal@vision-web.pl>
  * @package vSymfo Component
  * @subpackage Document
@@ -30,6 +31,7 @@ abstract class CombineResourceManagerAbstract extends ResourceManagerAbstract
 
     /**
      * Dodaj zasób
+     * 
      * @param ResourceInterface $res
      * @param string|null $group
      */

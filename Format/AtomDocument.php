@@ -19,6 +19,7 @@ use vSymfo\Component\Document\Element\HtmlElement;
 
 /**
  * Dokument Atom
+ * 
  * @author Rafał Mikołajun <rafal@vision-web.pl>
  * @package vSymfo Component
  * @subpackage Document_Type
@@ -167,6 +168,7 @@ class AtomDocument extends XmlDocument
     /**
      * Filtr tekstowy.
      * Wszystkie znaki w jednej linii + htmlspecialchars().
+     * 
      * @param HtmlElement $htmlElement
      * @param string $text
      * @param string $attr
@@ -194,6 +196,7 @@ class AtomDocument extends XmlDocument
 
     /**
      * Filtr na adres URL.
+     * 
      * @param HtmlElement $htmlElement
      * @param string $text
      * @param string $attr
@@ -240,8 +243,10 @@ class AtomDocument extends XmlDocument
 
     /**
      * Filtr na prawidłową datę.
+     * 
      * @param HtmlElement $htmlElement
      * @param string $text
+     * 
      * @throws \UnexpectedValueException
      */
     private function filterDate(HtmlElement $htmlElement, $text)
@@ -264,15 +269,15 @@ class AtomDocument extends XmlDocument
         $resolver->setRequired(array('name'));
 
         $resolver->setDefaults(array(
-                'email' => '',
-                'uri' => ''
-            ));
+            'email' => '',
+            'uri' => ''
+        ));
 
         $resolver->setAllowedTypes(array(
-                'name' => 'string',
-                'email' => 'string',
-                'uri' => 'string'
-            ));
+            'name' => 'string',
+            'email' => 'string',
+            'uri' => 'string'
+        ));
 
         $this->authorResolver = $resolver;
     }
@@ -287,15 +292,15 @@ class AtomDocument extends XmlDocument
         $resolver->setRequired(array('term'));
 
         $resolver->setDefaults(array(
-                'scheme' => '',
-                'label' => ''
-            ));
+            'scheme' => '',
+            'label' => ''
+        ));
 
         $resolver->setAllowedTypes(array(
-                'term' => 'string',
-                'scheme' => 'string',
-                'label' => 'string'
-            ));
+            'term' => 'string',
+            'scheme' => 'string',
+            'label' => 'string'
+        ));
 
         $this->categoryResolver = $resolver;
     }
@@ -311,10 +316,13 @@ class AtomDocument extends XmlDocument
     }
 
     /**
-     * Data kiedy ten plik został wygenerowany.
-     * W formacie rok-miesiąc-dzieńTgodzina:minuty:sekundyStrefaCzasowa.
+     * Data - kiedy ten plik został wygenerowany.
+     * Format: rok-miesiąc-dzieńTgodzina:minuty:sekundyStrefaCzasowa.
+     * 
      * @param string $set
+     * 
      * @return string
+     * 
      * @throws \UnexpectedValueException
      */
     public function updated($set = null)
@@ -343,7 +351,9 @@ class AtomDocument extends XmlDocument
      * Unikalny, niezmienny identyfikator: <id>
      * Każdy kanał musi mieć identyfikator w formacie URI,
      * który nigdy się nie zmieni i będzie wykorzystywany tylko do tego jednego kanału.
+     * 
      * @param string $set
+     * 
      * @return string
      */
     public function id($set = null)
@@ -428,6 +438,7 @@ class AtomDocument extends XmlDocument
 
     /**
      * Link do samego siebie
+     * 
      * @param string $set
      * @return string
      */
@@ -448,7 +459,9 @@ class AtomDocument extends XmlDocument
 
     /**
      * Podtytuł
+     * 
      * @param string $set
+     * 
      * @return string
      */
     public function subtitle($set = null)
@@ -467,7 +480,9 @@ class AtomDocument extends XmlDocument
 
     /**
      * Generator (program generujący) kanału
+     * 
      * @param string $set
+     * 
      * @return string
      */
     public function generator($set = null)
@@ -487,7 +502,9 @@ class AtomDocument extends XmlDocument
     /**
      * Zawartość tego elementu jest ścieżką do ikony kanału.
      * Ikona ma być kwadratowa i musi dobrze wyglądać przeskalowana do małych rozmiarów.
+     * 
      * @param string $set
+     * 
      * @return string
      */
     public function icon($set = null)
@@ -507,7 +524,9 @@ class AtomDocument extends XmlDocument
     /**
      * Zawartość tego elementu jest ścieżką do loga kanału.
      * Logo będzie wyświetlane większe, niż ikona i ma być dwa razy szersze, niż wyższe.
+     * 
      * @param string $set
+     * 
      * @return string
      */
     public function logo($set = null)
@@ -526,7 +545,9 @@ class AtomDocument extends XmlDocument
 
     /**
      * Informacje o prawie autorskim dotyczącym treści całego kanału lub jego wpisów.
+     * 
      * @param string $set
+     * 
      * @return string
      */
     public function rights($set = null)
@@ -545,7 +566,9 @@ class AtomDocument extends XmlDocument
 
     /**
      * Znajdź id kategorii o podanym atrybucie term.
+     * 
      * @param $term
+     * 
      * @return null|integer
      */
     private function getCategoryIdByTerm($term)
@@ -561,6 +584,7 @@ class AtomDocument extends XmlDocument
 
     /**
      * Dodaj kategorię kanału
+     * 
      * @param array $values
      */
     public function addCategory(array $values)
@@ -593,7 +617,9 @@ class AtomDocument extends XmlDocument
 
     /**
      * Usuń kategorię o atrybucie term="{$term}"
+     * 
      * @param string $term
+     * 
      * @throws \InvalidArgumentException
      */
     public function removeCategory($term)
@@ -611,7 +637,9 @@ class AtomDocument extends XmlDocument
 
     /**
      * Znajdź id współtwórcy/pomocnika o podanej nazwie.
+     * 
      * @param $name
+     * 
      * @return null|integer
      */
     private function getContributorIdByName($name)
@@ -629,6 +657,7 @@ class AtomDocument extends XmlDocument
      * Dodaj współtwórcę/pomocnika.
      * Zawiera takie same elementy jak <author>, ale oznacza, że opisywana
      * osoba nie jest autorem, ale miała swój wkład w powstanie tego, co przedstawia kanał/wpis.
+     * 
      * @param array $values
      */
     public function addContributor(array $values)
@@ -669,7 +698,9 @@ class AtomDocument extends XmlDocument
 
     /**
      * Usuń współtwórcę/pomocnika o podanej nazwie.
+     * 
      * @param string $name
+     * 
      * @throws \InvalidArgumentException
      */
     public function removeContributor($name)

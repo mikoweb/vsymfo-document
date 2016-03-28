@@ -19,7 +19,9 @@ use vSymfo\Component\Document\Resources\Interfaces\ResourceInterface;
 /**
  * Zasoby graficzne
  * Wsparcie dla atrybutu srcset i znacznika picture
+ * 
  * http://scottjehl.github.io/picturefill/
+ * 
  * @author Rafał Mikołajun <rafal@vision-web.pl>
  * @package vSymfo Component
  * @subpackage Document_Resources
@@ -28,8 +30,10 @@ class ImageResourceManager extends ResourceManagerAbstract
 {
     /**
      * Dodaj zasób
+     * 
      * @param ResourceInterface $res
      * @param string $group
+     * 
      * @throws \UnexpectedValueException
      */
     public function add(ResourceInterface $res, $group = null)
@@ -42,9 +46,11 @@ class ImageResourceManager extends ResourceManagerAbstract
     }
 
     /**
-     * zapodaj kod źródłowy w wybranym formacie
+     * Zapodaj kod źródłowy w wybranym formacie
+     * 
      * @param string $format
      * @param integer|string $group
+     * 
      * @return array
      */
     public function render($format, $group = 0)
@@ -63,7 +69,8 @@ class ImageResourceManager extends ResourceManagerAbstract
     }
 
     /**
-     * kod znacznika <img>
+     * Kod znacznika <img>
+     * 
      * @param ImageResource $res
      * @param string $output
      */
@@ -101,7 +108,8 @@ class ImageResourceManager extends ResourceManagerAbstract
     }
 
     /**
-     * kod znacznika <picture>
+     * Kod znacznika <picture>
+     * 
      * @param ImageResource $res
      * @param string $output
      */

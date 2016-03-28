@@ -16,6 +16,7 @@ use vSymfo\Component\Document\Interfaces\UrlManagerInterface;
 
 /**
  * Zarządzanie adresami URL na potrzeby dokumentu
+ * 
  * @author Rafał Mikołajun <rafal@vision-web.pl>
  * @package vSymfo Component
  * @subpackage Document
@@ -25,32 +26,37 @@ class UrlManager implements UrlManagerInterface
     /**
      * np. katalog: /strona
      * bez shasha na końcu
+     * 
      * @var string
      */
     private $baseurl = '';
 
     /**
-     * domena razem z protokołem np. http://static.mydomain.net
+     * Domena razem z protokołem np. http://static.mydomain.net
      * w większości przypadków ma być puste
      * bez shasha na końcu
+     * 
      * @var string
      */
     private $domainPath = '';
 
     /**
-     * czy wersjonować zasób
+     * Czy wersjonować zasób
+     * 
      * @var bool
      */
     private $versioning = false;
 
     /**
-     * czy używać timestamp do wersjonowania
+     * Czy używać timestamp do wersjonowania
+     * 
      * @var bool
      */
     private $verTimestamp = false;
 
     /**
-     * wersja zasobu
+     * Wersja zasobu
+     * 
      * @var float
      */
     private $version = 1;
@@ -65,7 +71,8 @@ class UrlManager implements UrlManagerInterface
     }
 
     /**
-     * ustaw ścieżkę bazową
+     * Ustaw ścieżkę bazową
+     * 
      * @param string $url
      */
     public function setBaseUrl($url)
@@ -92,11 +99,14 @@ class UrlManager implements UrlManagerInterface
     }
 
     /**
-     * zapodaj obrobiony adres URL
+     * Pobierz URL
+     * 
      * @param string $path
      * @param bool $addBaseUrl
      * @param bool $checkBaseUrl
+     * 
      * @return string
+     * 
      * @throws \InvalidArgumentException
      */
     public function url($path, $addBaseUrl = true, $checkBaseUrl = false)
@@ -164,7 +174,8 @@ class UrlManager implements UrlManagerInterface
     }
 
     /**
-     * ustaw wersjonowanie
+     * Ustaw wersjonowanie
+     * 
      * @param bool $enable
      * @param int $v
      * @param bool $timestamp

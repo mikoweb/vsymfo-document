@@ -16,7 +16,8 @@ use vSymfo\Component\Document\Resources\Interfaces\ResourceInterface;
 use vSymfo\Component\Document\Interfaces\UrlManagerInterface;
 
 /**
- * pojedyńczy zasób
+ * Pojedynczy zasób
+ * 
  * @author Rafał Mikołajun <rafal@vision-web.pl>
  * @package vSymfo Component
  * @subpackage Document
@@ -59,8 +60,10 @@ abstract class ResourceAbstract implements ResourceInterface
 
     /**
      * Filtruj ignorowane źródła
+     * 
      * @param array $source
      * @param array $ignoring
+     * 
      * @return bool
      */
     private static function ignoringFilter(array &$source, array $ignoring)
@@ -79,8 +82,10 @@ abstract class ResourceAbstract implements ResourceInterface
 
     /**
      * Filtrowanie źródeł
+     * 
      * @param string $type
      * @param array $args
+     * 
      * @throws \UnexpectedValueException
      * @throws \BadMethodCallException
      */
@@ -98,6 +103,7 @@ abstract class ResourceAbstract implements ResourceInterface
 
     /**
      * Zwraca nazwę zasobu
+     * 
      * @return string
      */
     public function getName()
@@ -107,7 +113,9 @@ abstract class ResourceAbstract implements ResourceInterface
 
     /**
      * Ustawia nazwę zasobu
+     * 
      * @param string $name
+     * 
      * @throws \InvalidArgumentException
      */
     public function setName($name)
@@ -121,6 +129,7 @@ abstract class ResourceAbstract implements ResourceInterface
 
     /**
      * Zwraca listę źródeł
+     * 
      * @return array
      */
     public function getSources()
@@ -130,6 +139,7 @@ abstract class ResourceAbstract implements ResourceInterface
 
     /**
      * Podaj tablicę adresów URL do zasobów
+     * 
      * @return array
      */
     public function getUrl()

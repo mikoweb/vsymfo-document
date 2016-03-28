@@ -16,6 +16,7 @@ use vSymfo\Core\File\CombineFilesCacheDB;
 
 /**
  * Baza danych z kolejką żądań wygenerowania plików PDF
+ * 
  * @author Rafał Mikołajun <rafal@vision-web.pl>
  * @package vSymfo Component
  * @subpackage Document_Utility
@@ -99,6 +100,7 @@ class QueuePdfDb extends CombineFilesCacheDB
 
     /**
      * @param string $filepath
+     * 
      * @return array|bool
      */
     public function select($filepath)
@@ -117,6 +119,7 @@ class QueuePdfDb extends CombineFilesCacheDB
     /**
      * @param string $filepath
      * @param array $cols
+     * 
      * @return bool
      */
     public function insert($filepath, array $cols)
@@ -132,6 +135,7 @@ class QueuePdfDb extends CombineFilesCacheDB
     /**
      * @param string $filepath
      * @param array $cols
+     * 
      * @return bool
      */
     public function update($filepath, array $cols)
@@ -142,6 +146,9 @@ class QueuePdfDb extends CombineFilesCacheDB
         );
     }
 
+    /**
+     * @return array|bool
+     */
     public function getQueue()
     {
         $results = $this->query(

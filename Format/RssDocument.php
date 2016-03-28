@@ -19,6 +19,7 @@ use vSymfo\Component\Document\Element\HtmlElement;
 
 /**
  * Dokument RSS
+ * 
  * @author Rafał Mikołajun <rafal@vision-web.pl>
  * @package vSymfo Component
  * @subpackage Document_Type
@@ -258,6 +259,7 @@ class RssDocument extends XmlDocument
     /**
      * Filtr tekstowy.
      * Wszystkie znaki w jednej linii + htmlspecialchars().
+     * 
      * @param HtmlElement $htmlElement
      * @param string $text
      */
@@ -274,6 +276,7 @@ class RssDocument extends XmlDocument
 
     /**
      * Filtr na adres URL.
+     * 
      * @param HtmlElement $htmlElement
      * @param string $text
      */
@@ -288,8 +291,10 @@ class RssDocument extends XmlDocument
 
     /**
      * Filtr na prawidłową datę.
+     * 
      * @param HtmlElement $htmlElement
      * @param string $text
+     * 
      * @throws \UnexpectedValueException
      */
     private function filterDate(HtmlElement $htmlElement, $text)
@@ -312,44 +317,44 @@ class RssDocument extends XmlDocument
         $resolver->setRequired(array('url', 'title', 'link'));
 
         $resolver->setDefaults(array(
-                'description' => '',
-                'width' => 0,
-                'height' => 0
-            ));
+            'description' => '',
+            'width' => 0,
+            'height' => 0
+        ));
 
         $resolver->setAllowedTypes(array(
-                'url' => 'string',
-                'title' => 'string',
-                'link' => 'string',
-                'description' => 'string',
-                'width' => 'integer',
-                'height' => 'integer'
-            ));
+            'url' => 'string',
+            'title' => 'string',
+            'link' => 'string',
+            'description' => 'string',
+            'width' => 'integer',
+            'height' => 'integer'
+        ));
 
         $resolver->setNormalizers(array(
-                'width' => function (Options $options, $value) {
-                        if (is_int($value)) {
-                            if ($value > 144) {
-                                $value = 144;
-                            } elseif ($value < 0) {
-                                $value = 0;
-                            }
-                        }
+            'width' => function (Options $options, $value) {
+                if (is_int($value)) {
+                    if ($value > 144) {
+                        $value = 144;
+                    } elseif ($value < 0) {
+                        $value = 0;
+                    }
+                }
 
-                        return $value;
-                    },
-                'height' => function (Options $options, $value) {
-                        if (is_int($value)) {
-                            if ($value > 400) {
-                                $value = 400;
-                            } elseif ($value < 0) {
-                                $value = 0;
-                            }
-                        }
+                return $value;
+            },
+            'height' => function (Options $options, $value) {
+                if (is_int($value)) {
+                    if ($value > 400) {
+                        $value = 400;
+                    } elseif ($value < 0) {
+                        $value = 0;
+                    }
+                }
 
-                        return $value;
-                    },
-            ));
+                return $value;
+            },
+        ));
 
         $this->imageResolver = $resolver;
     }
@@ -364,11 +369,11 @@ class RssDocument extends XmlDocument
         $resolver->setRequired(array('title', 'link', 'description', 'name'));
 
         $resolver->setAllowedTypes(array(
-                'title' => 'string',
-                'link' => 'string',
-                'description' => 'string',
-                'name' => 'string'
-            ));
+            'title' => 'string',
+            'link' => 'string',
+            'description' => 'string',
+            'name' => 'string'
+        ));
 
         $this->textInputResolver = $resolver;
     }
@@ -383,12 +388,12 @@ class RssDocument extends XmlDocument
         $resolver->setRequired(array('domain', 'port', 'path', 'registerProcedure', 'protocol'));
 
         $resolver->setAllowedTypes(array(
-                'domain' => 'string',
-                'port' => 'integer',
-                'path' => 'string',
-                'registerProcedure' => 'string',
-                'protocol' => 'string'
-            ));
+            'domain' => 'string',
+            'port' => 'integer',
+            'path' => 'string',
+            'registerProcedure' => 'string',
+            'protocol' => 'string'
+        ));
 
         $this->cloudResolver = $resolver;
     }
@@ -417,7 +422,9 @@ class RssDocument extends XmlDocument
 
     /**
      * Link do serwisu
+     * 
      * @param string $set
+     * 
      * @return string
      */
     public function link($set = null)
@@ -431,7 +438,9 @@ class RssDocument extends XmlDocument
 
     /**
      * Język kanału
+     * 
      * @param string $set
+     * 
      * @return string
      */
     public function language($set = null)
@@ -445,7 +454,9 @@ class RssDocument extends XmlDocument
 
     /**
      * Prawa autorskie
+     * 
      * @param string $set
+     * 
      * @return string
      */
     public function copyright($set = null)
@@ -459,7 +470,9 @@ class RssDocument extends XmlDocument
 
     /**
      * Kontakt z redaktorem
+     * 
      * @param string $set
+     * 
      * @return string
      */
     public function managingEditor($set = null)
@@ -473,7 +486,9 @@ class RssDocument extends XmlDocument
 
     /**
      * Kontakt z webmasterem
+     * 
      * @param string $set
+     * 
      * @return string
      */
     public function webMaster($set = null)
@@ -487,8 +502,11 @@ class RssDocument extends XmlDocument
 
     /**
      * Data opublikowania treści
+     * 
      * @param string $set
+     * 
      * @return string
+     * 
      * @throws \UnexpectedValueException
      */
     public function pubDate($set = null)
@@ -515,8 +533,11 @@ class RssDocument extends XmlDocument
 
     /**
      * Data ostatniej zmiany
+     * 
      * @param string $set
+     * 
      * @return string
+     * 
      * @throws \UnexpectedValueException
      */
     public function lastBuildDate($set = null)
@@ -543,7 +564,9 @@ class RssDocument extends XmlDocument
 
     /**
      * Kategoria kanału
+     * 
      * @param string $set
+     * 
      * @return string
      */
     public function category($set = null)
@@ -557,7 +580,9 @@ class RssDocument extends XmlDocument
 
     /**
      * Generator (program generujący) kanału
+     * 
      * @param string $set
+     * 
      * @return string
      */
     public function generator($set = null)
@@ -570,9 +595,10 @@ class RssDocument extends XmlDocument
     }
 
     /**
-     * Jak długo wpisy mają być w cache'u czytnika.
-     * W minutach.
+     * Jak długo wpisy mają być w cache'u czytnika. W minutach.
+     * 
      * @param string $set
+     * 
      * @return string
      */
     public function ttl($set = null)
@@ -586,7 +612,9 @@ class RssDocument extends XmlDocument
 
     /**
      * Ilustracja kanału
+     * 
      * @param array $set
+     * 
      * @return array
      */
     public function image(array $set = null)
@@ -635,7 +663,9 @@ class RssDocument extends XmlDocument
 
     /**
      * Pole tekstowe na kanale
+     * 
      * @param array $set
+     * 
      * @return array
      */
     public function textInput(array $set = null)
@@ -658,7 +688,9 @@ class RssDocument extends XmlDocument
 
     /**
      * Pomiń godziny
+     * 
      * @param array $set
+     * 
      * @return array
      */
     public function skipHours(array $set = null)
@@ -691,7 +723,9 @@ class RssDocument extends XmlDocument
 
     /**
      * Pomiń dni
+     * 
      * @param array $set
+     * 
      * @return array
      */
     public function skipDays(array $set = null)
@@ -727,7 +761,9 @@ class RssDocument extends XmlDocument
 
     /**
      * Chmura RSS
+     * 
      * @param array $set
+     * 
      * @return array
      */
     public function cloud(array $set = null)
@@ -752,6 +788,7 @@ class RssDocument extends XmlDocument
 
     /**
      * Zawartość znacznika channel
+     * 
      * @return string
      */
     private function channelContent()

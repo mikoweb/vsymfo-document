@@ -18,6 +18,7 @@ use vSymfo\Component\Document\Resources\Interfaces\ResourceManagerInterface;
 
 /**
  * Zasoby dokumentu
+ * 
  * @author Rafał Mikołajun <rafal@vision-web.pl>
  * @package vSymfo Component
  * @subpackage Document
@@ -25,7 +26,7 @@ use vSymfo\Component\Document\Resources\Interfaces\ResourceManagerInterface;
 abstract class ResourceManagerAbstract implements ResourceManagerInterface
 {
     /**
-     * grupowanie
+     * Grupowanie
      * @var ResourceGroupsInterface
      */
     protected $groups = null;
@@ -42,14 +43,15 @@ abstract class ResourceManagerAbstract implements ResourceManagerInterface
     protected $chooseOnAdd = array();
 
     /**
-     * liczba zasobów
+     * Liczba zasobów
      * @var int
      */
     protected $length = 0;
 
     /**
      * @param ResourceGroupsInterface $groups
-     * @param callable $onAdd
+     * @param \Closure $onAdd
+     * 
      * @throws \Exception
      */
     public function __construct(ResourceGroupsInterface $groups, \Closure $onAdd = null)
@@ -62,7 +64,7 @@ abstract class ResourceManagerAbstract implements ResourceManagerInterface
     }
 
     /**
-     * kopiowanie obiektu
+     * Kopiowanie obiektu
      */
     public function __clone()
     {
@@ -71,9 +73,11 @@ abstract class ResourceManagerAbstract implements ResourceManagerInterface
     }
 
     /**
-     * utwórz funckcję wspomagającą dodawanie zasobów o podanej nazwie
+     * Utwórz funkcję wspomagającą dodawanie zasobów o podanej nazwie
+     * 
      * @param string $name
      * @param \Closure $onAdd
+     * 
      * @throws \RuntimeException
      * @throws \InvalidArgumentException
      */
@@ -100,9 +104,11 @@ abstract class ResourceManagerAbstract implements ResourceManagerInterface
     }
 
     /**
-     * wybierz funkcje wspomagającą
+     * Wybierz funkcje wspomagającą
      * jeśli name == null, to zostanie wyłączone
+     * 
      * @param string|null $name
+     * 
      * @throws \RuntimeException
      * @throws \InvalidArgumentException
      */
@@ -124,7 +130,8 @@ abstract class ResourceManagerAbstract implements ResourceManagerInterface
     }
 
     /**
-     * lista nazw zarejestrowanych funkcji wspomagających
+     * Lista nazw zarejestrowanych funkcji wspomagających
+     * 
      * @return array
      */
     public function getOnAddNames()
@@ -139,6 +146,7 @@ abstract class ResourceManagerAbstract implements ResourceManagerInterface
 
     /**
      * Zapodaj obiekt grupowania
+     * 
      * @return ResourceGroupsInterface
      */
     public function getGroups()
@@ -148,6 +156,7 @@ abstract class ResourceManagerAbstract implements ResourceManagerInterface
 
     /**
      * Zwraca tablice obiketów SingleResource
+     * 
      * @return array
      */
     public function resources()
@@ -171,6 +180,7 @@ abstract class ResourceManagerAbstract implements ResourceManagerInterface
 
     /**
      * Dodaj zasób
+     * 
      * @param ResourceInterface $res
      * @param string|null $group
      */
@@ -185,6 +195,7 @@ abstract class ResourceManagerAbstract implements ResourceManagerInterface
 
     /**
      * liczba zasobów
+     * 
      * @return integer
      */
     public function length()
@@ -194,11 +205,14 @@ abstract class ResourceManagerAbstract implements ResourceManagerInterface
 
 
     /**
-     * automatyczny wybór metody formatowania
+     * Automatyczny wybór metody formatowania
+     * 
      * @param string $format
      * @param integer|string $group
      * @param mixed $output
+     * 
      * @return mixed
+     * 
      * @throws \Exception
      */
     final protected function callRender($format, $group, &$output)

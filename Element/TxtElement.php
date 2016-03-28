@@ -15,7 +15,8 @@ namespace vSymfo\Component\Document\Element;
 use vSymfo\Component\Document\Interfaces\ElementInterface;
 
 /**
- * Zwykły tekst
+ * Element tekstowy
+ * 
  * @author Rafał Mikołajun <rafal@vision-web.pl>
  * @package vSymfo Component
  * @subpackage Document_Element
@@ -57,15 +58,16 @@ class TxtElement implements ElementInterface
     }
 
     /**
-     * manipulowanie zawartością
-     * @param callable $closure
+     * Manipulowanie zawartością
+     * @param \Closure $closure
+     * 
      * @throws \Exception
      */
     public function update(\Closure $closure)
     {
         $val = $closure($this->text);
         if (!is_string($val)) {
-            throw new \Exception('udating value is not string');
+            throw new \Exception('updating value is not string');
         }
 
         $this->text = $val;

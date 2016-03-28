@@ -18,6 +18,7 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 
 /**
  * Loader zasobów JavaScript
+ * 
  * @author Rafał Mikołajun <rafal@vision-web.pl>
  * @package vSymfo Component
  * @subpackage Document_FileLoader
@@ -27,6 +28,7 @@ class JavaScriptResourcesLoader extends ResourcesLoaderAbstract
     /**
      * @param string $filename
      * @param null|string $type
+     * 
      * @throws \Exception
      */
     protected function process($filename, $type = null)

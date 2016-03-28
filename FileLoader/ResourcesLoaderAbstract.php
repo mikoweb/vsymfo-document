@@ -24,6 +24,7 @@ use Symfony\Component\Yaml\Yaml;
 
 /**
  * Loader zasobów dokumentu
+ * 
  * @author Rafał Mikołajun <rafal@vision-web.pl>
  * @package vSymfo Component
  * @subpackage Document_FileLoader
@@ -31,7 +32,6 @@ use Symfony\Component\Yaml\Yaml;
 abstract class ResourcesLoaderAbstract extends FileLoaderAbstract
 {
     /**
-     * Domyślne opcje
      * @param OptionsResolver $resolver
      */
     protected function setDefaultOptions(OptionsResolver $resolver)

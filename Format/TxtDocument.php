@@ -17,6 +17,7 @@ use vSymfo\Component\Document\Element\TxtElement;
 
 /**
  * Dokument tekstowy
+ * 
  * @author Rafał Mikołajun <rafal@vision-web.pl>
  * @package vSymfo Component
  * @subpackage Document
@@ -43,8 +44,11 @@ class TxtDocument extends DocumentAbstract
 
     /**
      * Zasoby
+     * 
      * @param string $name
+     * 
      * @return null
+     * 
      * @throws \Exception
      */
     public function resources($name)
@@ -54,8 +58,11 @@ class TxtDocument extends DocumentAbstract
 
     /**
      * Elementy
+     * 
      * @param string $name
+     * 
      * @return TxtElement
+     * 
      * @throws \Exception
      */
     public function element($name)
@@ -70,7 +77,9 @@ class TxtDocument extends DocumentAbstract
 
     /**
      * Treść dokumentu
+     * 
      * @param string
+     * 
      * @return TxtElement
      */
     public function body($set = null)

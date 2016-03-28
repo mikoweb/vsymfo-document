@@ -17,6 +17,7 @@ use vSymfo\Component\Document\Element\HtmlElement;
 
 /**
  * Dokument XML
+ * 
  * @author Rafał Mikołajun <rafal@vision-web.pl>
  * @package vSymfo Component
  * @subpackage Document_Type
@@ -59,9 +60,12 @@ class XmlDocument extends DocumentAbstract
     }
 
     /**
-     * elementy
+     * Elementy
+     * 
      * @param string $name
+     * 
      * @return HtmlElement|TxtElement
+     * 
      * @throws \Exception
      */
     public function element($name)
@@ -80,8 +84,11 @@ class XmlDocument extends DocumentAbstract
 
     /**
      * Zasoby
+     * 
      * @param string $name
+     * 
      * @return null
+     * 
      * @throws \Exception
      */
     public function resources($name)
@@ -90,8 +97,10 @@ class XmlDocument extends DocumentAbstract
     }
 
     /**
-     * treść
+     * Treść
+     * 
      * @param string
+     * 
      * @return string
      */
     public function body($set = null)
@@ -105,6 +114,7 @@ class XmlDocument extends DocumentAbstract
 
     /**
      * @param string $name
+     * 
      * @throws \InvalidArgumentException
      */
     public function renameRoot($name)
@@ -124,6 +134,7 @@ class XmlDocument extends DocumentAbstract
 
     /**
      * Kod samego prologu
+     * 
      * @return string
      */
     protected function prologRender()

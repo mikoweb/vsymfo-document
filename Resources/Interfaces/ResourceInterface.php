@@ -15,7 +15,8 @@ namespace vSymfo\Component\Document\Resources\Interfaces;
 use vSymfo\Component\Document\Interfaces\UrlManagerInterface;
 
 /**
- * pojedyńczy zasób
+ * Pojedynczy zasób
+ * 
  * @author Rafał Mikołajun <rafal@vision-web.pl>
  * @package vSymfo Component
  * @subpackage Document_Resources_Interfaces
@@ -31,8 +32,10 @@ interface ResourceInterface
 
     /**
      * Filtrowanie źródeł
+     * 
      * @param string $type
      * @param array $args
+     * 
      * @throws \UnexpectedValueException
      * @throws \BadMethodCallException
      */
@@ -40,24 +43,28 @@ interface ResourceInterface
 
     /**
      * Zwraca nazwę zasobu
+     * 
      * @return string
      */
     public function getName();
 
     /**
      * Ustawia nazwę zasobu
+     * 
      * @param string $name
      */
     public function setName($name);
 
     /**
      * Zwraca listę źródeł
+     * 
      * @return array
      */
     public function getSources();
 
     /**
      * Zwraca tablicę adresów URL do zasobów
+     * 
      * @return array
      */
     public function getUrl();

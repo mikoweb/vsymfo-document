@@ -15,7 +15,8 @@ namespace vSymfo\Component\Document\Resources;
 use vSymfo\Core\File\CombineFilesAbstract;
 
 /**
- * Złączanie arkuszów stylów
+ * Złączanie arkuszy stylów
+ * 
  * @author Rafał Mikołajun <rafal@vision-web.pl>
  * @package vSymfo Component
  * @subpackage Document_Resources
@@ -24,24 +25,28 @@ class StyleSheetCombineFiles extends CombineFilesAbstract
 {
     /**
      * Rozszerzenie pliku wyjściowego
+     * 
      * @var string
      */
     protected $outputExtension = 'css';
 
     /**
      * Katalogi do importowania plików less
+     * 
      * @var array
      */
     protected $lessImportDirs = array();
 
     /**
      * Zmienne globalne dla kompilatora
+     * 
      * @var array
      */
     protected $lessGlobasls = array();
 
     /**
      * Przetwórz zawartość pojedynczego pliku
+     * 
      * @param string $content
      * @return string
      */
@@ -52,6 +57,7 @@ class StyleSheetCombineFiles extends CombineFilesAbstract
 
     /**
      * Przetwórz zawartość złączonych plików
+     * 
      * @param string $content
      * @return string
      */
@@ -62,6 +68,7 @@ class StyleSheetCombineFiles extends CombineFilesAbstract
 
     /**
      * Pobieranie zawartości pliku
+     * 
      * @param string $path
      * @param array $cacheFiles
      * @return string
@@ -90,7 +97,9 @@ class StyleSheetCombineFiles extends CombineFilesAbstract
 
     /**
      * Ustaw katalogi do importowania plików less
+     * 
      * @param array $dirs
+     * 
      * @return StyleSheetCombineFiles
      */
     public function setLessImportDirs(array $dirs)
@@ -102,7 +111,9 @@ class StyleSheetCombineFiles extends CombineFilesAbstract
 
     /**
      * Ustaw zmienne globalne kompilatora
+     * 
      * @param array $globals
+     * 
      * @return StyleSheetCombineFiles
      */
     public function setLessGlobasls(array $globals)

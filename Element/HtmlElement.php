@@ -15,7 +15,8 @@ namespace vSymfo\Component\Document\Element;
 use vSymfo\Component\Document\Interfaces\ElementInterface;
 
 /**
- * element dokumentu HTML
+ * Element dokumentu HTML
+ * 
  * @author Rafał Mikołajun <rafal@vision-web.pl>
  * @package vSymfo Component
  * @subpackage Document_Element
@@ -23,12 +24,12 @@ use vSymfo\Component\Document\Interfaces\ElementInterface;
 class HtmlElement implements ElementInterface
 {
     /**
-     * wstaw na początek węzła
+     * Wstaw na początku węzła
      */
     const CHILD_PREPEND = 1;
 
     /**
-     * wstaw na koniec węzła
+     * Wstaw na końcu węzła
      */
     const CHILD_APPEND = 0;
 
@@ -45,6 +46,7 @@ class HtmlElement implements ElementInterface
     /**
      * @param string $name
      * @param string $content
+     * 
      * @throws \InvalidArgumentException
      */
     public function __construct($name, $content = null)
@@ -68,7 +70,11 @@ class HtmlElement implements ElementInterface
     }
 
     /**
-     * niszczenie obiektu
+     * Zniszcz element
+     * 
+     * @param HtmlElement $element
+     * 
+     * @throws \Exception
      */
     public function destroy(HtmlElement $element)
     {
@@ -91,7 +97,7 @@ class HtmlElement implements ElementInterface
     }
 
     /**
-     * kopiowanie obiektu
+     * Kopiowanie elementu
      */
     public function __clone()
     {
@@ -101,6 +107,7 @@ class HtmlElement implements ElementInterface
 
     /**
      * Nazwa elementu
+     * 
      * @return string
      */
     public function name()
@@ -110,6 +117,7 @@ class HtmlElement implements ElementInterface
 
     /**
      * @param $query
+     * 
      * @return \DOMNodeList
      */
     public function xpath($query)
@@ -127,10 +135,13 @@ class HtmlElement implements ElementInterface
     }
 
     /**
-     * dodaj kod wewnątrz elementu
+     * Dodaj kod wewnątrz elementu
+     * 
      * @param string $content
      * @param int $where
+     * 
      * @throws \UnexpectedValueException
+     * 
      * @return HtmlElement
      */
     public function insertHtml($content, $where = self::CHILD_APPEND)
@@ -160,9 +171,12 @@ class HtmlElement implements ElementInterface
     }
 
     /**
-     * zwróć lub ustaw zawartość tekstową
+     * Zwróć lub ustaw zawartość tekstową
+     * 
      * @param null|string $text
+     * 
      * @return string|HtmlElement
+     * 
      * @throws \UnexpectedValueException
      */
     public function text($text = null)
@@ -179,10 +193,13 @@ class HtmlElement implements ElementInterface
     }
 
     /**
-     * zwróć lub ustaw atrybut
+     * Zwróć lub ustaw atrybut
+     * 
      * @param string $name
      * @param null|string $value
+     * 
      * @return string|HtmlElement
+     * 
      * @throws \UnexpectedValueException
      */
     public function attr($name, $value = null)
@@ -203,9 +220,12 @@ class HtmlElement implements ElementInterface
     }
 
     /**
-     * usuń atrybut
+     * Usuń atrybut
+     * 
      * @param string $name
+     * 
      * @return HtmlElement
+     * 
      * @throws \UnexpectedValueException
      */
     public function removeAttr($name)
@@ -219,9 +239,12 @@ class HtmlElement implements ElementInterface
     }
 
     /**
-     * dodaj klasę
+     * Dodaj klasę HTML
+     * 
      * @param string $className
+     * 
      * @return HtmlElement
+     * 
      * @throws \UnexpectedValueException
      */
     public function addClass($className)
@@ -239,9 +262,12 @@ class HtmlElement implements ElementInterface
     }
 
     /**
-     * usuń klasę
+     * Usuń klasę HTML
+     * 
      * @param string $className
+     * 
      * @return HtmlElement
+     * 
      * @throws \UnexpectedValueException
      */
     public function removeClass($className)
@@ -259,14 +285,15 @@ class HtmlElement implements ElementInterface
     }
 
     /**
-     * wstaw element do tego elementu
+     * Wstaw element wewnątrz obecnego elementu
+     * 
      * @param HtmlElement $element
      * @param int $where
+     * 
      * @throws \RuntimeException
      */
     public function insert(HtmlElement $element, $where = self::CHILD_APPEND)
     {
-        // idiotoodporne zabezpieczenie
         if ($this->element === $element->getElement()) {
             throw new \RuntimeException('You can not insert the Element into a self.');
         }
@@ -282,14 +309,15 @@ class HtmlElement implements ElementInterface
     }
 
     /**
-     * wstaw element do...
+     * wstaw element obecny element do innego elementu
+     * 
      * @param HtmlElement $element
      * @param int $where
+     * 
      * @throws \RuntimeException
      */
     public function insertTo(HtmlElement $element, $where = self::CHILD_APPEND)
     {
-        // idiotoodporne zabezpieczenie
         if ($this->element === $element->getElement()) {
             throw new \RuntimeException('You can not insert the Element into a self.');
         }
@@ -306,10 +334,13 @@ class HtmlElement implements ElementInterface
 
     /**
      * Zapodaj kod HTML.
+     * 
      * Jeśli argument $xmlMode jest true to kod będzie w
      * konwencji XML np zamiast <link> będzie <link />.
+     * 
      * @param boolean $inside
      * @param boolean $xmlMode
+     * 
      * @return string
      */
     public function render($inside = false, $xmlMode = false)
@@ -333,6 +364,7 @@ class HtmlElement implements ElementInterface
 
     /**
      * Sprawdzanie czy element jest pusty
+     * 
      * @return bool
      */
     public function isEmpty()
@@ -342,7 +374,7 @@ class HtmlElement implements ElementInterface
     }
 
     /**
-     * drukuj obiekt
+     * Drukuj obiekt
      */
     public function __toString()
     {
@@ -350,7 +382,8 @@ class HtmlElement implements ElementInterface
     }
 
     /**
-     * zapodaj kod wszystkich elemetów
+     * Zapodaj kod wszystkich elementów podłączonych do drzewo DOM
+     * 
      * @return string
      */
     final public static function renderAll()

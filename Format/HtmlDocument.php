@@ -23,6 +23,7 @@ use JShrink\Minifier;
 
 /**
  * Dokument HTML
+ * 
  * @author Rafał Mikołajun <rafal@vision-web.pl>
  * @package vSymfo Component
  * @subpackage Document_Type
@@ -160,8 +161,8 @@ class HtmlDocument extends DocumentAbstract
         $this->javaScript = new JavaScriptResourceManager(new ResourceGroups());
         $this->styleSheet = new StyleSheetResourceManager(new ResourceGroups());
         $this->setScriptOutput(function(JavaScriptResourceManager $manager) {
-                return $manager->render('html');
-            });
+            return $manager->render('html');
+        });
     }
 
     /**
@@ -173,7 +174,8 @@ class HtmlDocument extends DocumentAbstract
     }
 
     /**
-     * ustaw wyjście skryptów
+     * Ustaw wyjście skryptów
+     * 
      * @param \Closure $output
      * @throws \Exception
      */
@@ -192,9 +194,12 @@ class HtmlDocument extends DocumentAbstract
     }
 
     /**
-     * zasoby
+     * Zasoby
+     * 
      * @param string $name
+     * 
      * @return ResourcesInterface
+     * 
      * @throws \Exception
      */
     public function resources($name)
@@ -210,9 +215,12 @@ class HtmlDocument extends DocumentAbstract
     }
 
     /**
-     * elementy
+     * Elementy
+     * 
      * @param string $name
+     * 
      * @return HtmlElement|TxtElement|FaviconElement
+     * 
      * @throws \Exception
      */
     public function element($name)
@@ -240,10 +248,12 @@ class HtmlDocument extends DocumentAbstract
     }
 
     /**
-     * tytuł
+     * Tytuł
+     * 
      * @param string $set
      * @param integer $mode
      * @param string $separator
+     * 
      * @return string
      */
     public function title($set = null, $mode = self::TITLE_ONLY_TITLE, $separator = '-')
@@ -254,11 +264,10 @@ class HtmlDocument extends DocumentAbstract
     }
 
     /**
-     * wstaw określony element do nagłówka
-     * tylko wtedy gdy nie jest pusty
+     * Wstaw określony element do nagłówka, tylko wtedy gdy nie jest pusty
      * @param HtmlElement $el
      * @param string $set
-     * @param callable $update
+     * @param \Closure $update
      */
     private function insertToHead(HtmlElement $el, $set, \Closure $update)
     {
@@ -274,8 +283,10 @@ class HtmlDocument extends DocumentAbstract
     }
 
     /**
-     * autor
+     * Autor
+     * 
      * @param string $set
+     * 
      * @return string
      */
     public function author($set = null)
@@ -291,8 +302,10 @@ class HtmlDocument extends DocumentAbstract
     }
 
     /**
-     * strona autora
+     * Strona autora
+     * 
      * @param string $set
+     * 
      * @return string
      */
     public function authorUrl($set = null)
@@ -308,8 +321,10 @@ class HtmlDocument extends DocumentAbstract
     }
 
     /**
-     * opis
+     * Opis
+     * 
      * @param string $set
+     * 
      * @return string
      */
     public function description($set = null)
@@ -325,7 +340,7 @@ class HtmlDocument extends DocumentAbstract
     }
 
     /**
-     * słowa kluczowe
+     * Słowa kluczowe
      * @param string $set
      * @return string
      */
@@ -342,7 +357,8 @@ class HtmlDocument extends DocumentAbstract
     }
 
     /**
-     * treść
+     * Treść
+     * 
      * @param string
      * @return string
      */
@@ -356,7 +372,8 @@ class HtmlDocument extends DocumentAbstract
     }
 
     /**
-     * własny kod w znaczniku head
+     * Własny kod w znaczniku head
+     * 
      * @param string $code
      */
     public function addCustomHeadCode($code)
@@ -367,7 +384,8 @@ class HtmlDocument extends DocumentAbstract
     }
 
     /**
-     * własny kod w znaczniku head
+     * Własny kod na dole body
+     * 
      * @param string $code
      */
     public function addCustomBottomCode($code)

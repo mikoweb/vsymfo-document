@@ -17,6 +17,7 @@ use vSymfo\Core\File\Interfaces\CombineFilesInterface;
 
 /**
  * Pojedynczy zasób JavaScript
+ * 
  * @author Rafał Mikołajun <rafal@vision-web.pl>
  * @package vSymfo Component
  * @subpackage Document_Resources
@@ -25,12 +26,14 @@ class JavaScriptResource extends CombineResourceAbstract
 {
     /**
      * Czy wczytywać listę plików źródłowych asynchronicznie?
+     * 
      * @var bool
      */
     protected $async = true;
 
     /**
-     * domyślne opcje konstruktora
+     * Domyślne opcje konstruktora
+     * 
      * @var array
      */
     protected $defaults = array();
@@ -48,7 +51,8 @@ class JavaScriptResource extends CombineResourceAbstract
     }
 
     /**
-     * domyślne opcje konstruktora
+     * Domyślne opcje konstruktora
+     * 
      * @param array $options
      * @return array
      */
@@ -65,6 +69,7 @@ class JavaScriptResource extends CombineResourceAbstract
 
     /**
      * Czy jest asynchroniczny
+     * 
      * @return bool
      */
     public function isAsync()
@@ -74,6 +79,7 @@ class JavaScriptResource extends CombineResourceAbstract
 
     /**
      * @param CombineFilesInterface $combine
+     * 
      * @throws \UnexpectedValueException
      */
     public function setCombineObject(CombineFilesInterface $combine)

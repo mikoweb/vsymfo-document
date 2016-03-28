@@ -16,7 +16,8 @@ use vSymfo\Component\Document\Interfaces\DocumentInterface;
 use Stringy\Stringy as S;
 
 /**
- * Dokument tekstowy
+ * Dokument
+ * 
  * @author Rafał Mikołajun <rafal@vision-web.pl>
  * @package vSymfo Component
  * @subpackage Document
@@ -76,6 +77,7 @@ abstract class DocumentAbstract implements DocumentInterface
 
     /**
      * Dodaj tłumaczenia
+     * 
      * @param array $strings
      */
     final public function addTranslation(array $strings)
@@ -96,8 +98,10 @@ abstract class DocumentAbstract implements DocumentInterface
 
     /**
      * Tłumacz tekst
+     * 
      * @param string $text
      * @param string $regex
+     * 
      * @return string
      */
     final protected function transText($text, $regex = '/<trans>(.*?)<\/trans>/i')
@@ -119,8 +123,10 @@ abstract class DocumentAbstract implements DocumentInterface
     }
 
     /**
-     * nazwa
+     * Nazwa
+     * 
      * @param string $set
+     * 
      * @return string
      */
     public function name($set = null)
@@ -135,10 +141,12 @@ abstract class DocumentAbstract implements DocumentInterface
     }
 
     /**
-     * tytuł
+     * Tytuł
+     * 
      * @param string $set
      * @param integer $mode
      * @param string $separator
+     * 
      * @return string
      */
     public function title($set = null, $mode = self::TITLE_ONLY_TITLE, $separator = '-')
@@ -168,8 +176,10 @@ abstract class DocumentAbstract implements DocumentInterface
     }
 
     /**
-     * autor
+     * Autor
+     * 
      * @param string $set
+     * 
      * @return string
      */
     public function author($set = null)
@@ -184,8 +194,10 @@ abstract class DocumentAbstract implements DocumentInterface
     }
 
     /**
-     * strona autora
+     * Strona autora
+     * 
      * @param string $set
+     * 
      * @return string
      */
     public function authorUrl($set = null)
@@ -200,8 +212,10 @@ abstract class DocumentAbstract implements DocumentInterface
     }
 
     /**
-     * data utworzenia
+     * Data utworzenia
+     * 
      * @param string $set
+     * 
      * @return \DateTime
      */
     public function createdDate($set = null)
@@ -214,8 +228,10 @@ abstract class DocumentAbstract implements DocumentInterface
     }
 
     /**
-     * data modyfikacji
+     * Data modyfikacji
+     * 
      * @param string $set
+     * 
      * @return \DateTime
      */
     public function lastModified($set = null)
@@ -228,8 +244,10 @@ abstract class DocumentAbstract implements DocumentInterface
     }
 
     /**
-     * opis
+     * Opis
+     * 
      * @param string $set
+     * 
      * @return string
      */
     public function description($set = null)
@@ -244,8 +262,10 @@ abstract class DocumentAbstract implements DocumentInterface
     }
 
     /**
-     * słowa kluczowe
+     * Słowa kluczowe
+     * 
      * @param string $set
+     * 
      * @return string
      */
     public function keywords($set = null)

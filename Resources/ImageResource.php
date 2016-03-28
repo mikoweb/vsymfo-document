@@ -23,6 +23,7 @@ use Imagine\Image\ImageInterface;
 
 /**
  * Zasób obrazka (wsparcie dla RWD)
+ * 
  * @author Rafał Mikołajun <rafal@vision-web.pl>
  * @package vSymfo Component
  * @subpackage Document_Resources
@@ -30,13 +31,15 @@ use Imagine\Image\ImageInterface;
 class ImageResource extends ResourceAbstract implements MakeResourceInterface
 {
     /**
-     * opcje
+     * Opcje
+     * 
      * @var array
      */
     protected $options = null;
 
     /**
-     * dane obrazków
+     * Dane obrazków
+     * 
      * @var array
      */
     protected $imageData = null;
@@ -55,137 +58,138 @@ class ImageResource extends ResourceAbstract implements MakeResourceInterface
     }
 
     /**
-     * Domyślne opcje
      * @param OptionsResolver $resolver
      */
     protected function setDefaultOptions(OptionsResolver $resolver)
     {
         $resolver->setRequired(array('root_dir', 'output_dir'));
         $resolver->setDefaults(array(
-                'images' => array(),
-                'sizes'  => '',
-                'media'  => array(),
-                'attr'   => array(),
-                'src-index' => 0,
-                'compare_image_mode' => 'simple'
-            ));
+            'images' => array(),
+            'sizes'  => '',
+            'media'  => array(),
+            'attr'   => array(),
+            'src-index' => 0,
+            'compare_image_mode' => 'simple'
+        ));
 
         $resolver->setAllowedValues(array(
-                'compare_image_mode' => array('simple', 'full'),
-            ));
+            'compare_image_mode' => array('simple', 'full'),
+        ));
 
         $resolver->setAllowedTypes(array(
-                'root_dir'   => 'string',
-                'output_dir' => 'string',
-                'images'     => 'array',
-                'sizes'      => 'string',
-                'media'      => 'array',
-                'attr'       => 'array',
-                'src-index'  => 'integer',
-                'compare_image_mode' => 'string'
-            ));
+            'root_dir'   => 'string',
+            'output_dir' => 'string',
+            'images'     => 'array',
+            'sizes'      => 'string',
+            'media'      => 'array',
+            'attr'       => 'array',
+            'src-index'  => 'integer',
+            'compare_image_mode' => 'string'
+        ));
 
         $image = new OptionsResolver();
         $image->setRequired(array('width', 'height', 'format'));
         $image->setDefaults(array(
-                'index' => 0,
-                'suffix' => '',
-                'jpeg_quality' => 80,
-                'png_compression_level' => 9,
-                'mode' => ImageInterface::THUMBNAIL_OUTBOUND,
-                'srcset-w' => 0,
-                'srcset-h' => 0,
-                'srcset-x' => 0,
-                'media-index' => -1,
-                'use_only_width' => false
-            ));
+            'index' => 0,
+            'suffix' => '',
+            'jpeg_quality' => 80,
+            'png_compression_level' => 9,
+            'mode' => ImageInterface::THUMBNAIL_OUTBOUND,
+            'srcset-w' => 0,
+            'srcset-h' => 0,
+            'srcset-x' => 0,
+            'media-index' => -1,
+            'use_only_width' => false
+        ));
 
         $image->setAllowedTypes(array(
-                'index'   => 'integer',
-                'suffix'  => 'string',
-                'width'   => 'integer',
-                'height'  => 'integer',
-                'format'  => 'string',
-                'jpeg_quality' => 'integer',
-                'png_compression_level' => 'integer',
-                'mode' => 'string',
-                'srcset-w' => 'integer',
-                'srcset-h' => 'integer',
-                'srcset-x' => 'integer',
-                'media-index' => 'integer',
-                'use_only_width' => 'bool'
-            ));
+            'index'   => 'integer',
+            'suffix'  => 'string',
+            'width'   => 'integer',
+            'height'  => 'integer',
+            'format'  => 'string',
+            'jpeg_quality' => 'integer',
+            'png_compression_level' => 'integer',
+            'mode' => 'string',
+            'srcset-w' => 'integer',
+            'srcset-h' => 'integer',
+            'srcset-x' => 'integer',
+            'media-index' => 'integer',
+            'use_only_width' => 'bool'
+        ));
 
         $image->setAllowedValues(array(
-                'format' => array('jpg', 'png', 'gif'),
-                'mode' => array(
-                    ImageInterface::THUMBNAIL_INSET,
-                    ImageInterface::THUMBNAIL_OUTBOUND
-                ),
-            ));
+            'format' => array('jpg', 'png', 'gif'),
+            'mode' => array(
+                ImageInterface::THUMBNAIL_INSET,
+                ImageInterface::THUMBNAIL_OUTBOUND
+            ),
+        ));
 
         $source = $this->source;
         $resolver->setNormalizers(array(
-                'media' => function (Options $options, $value) {
-                        $tmp = array();
-                        foreach ($value as $k => $v) {
-                            if (!is_string($v)) {
-                                throw new \UnexpectedValueException('option [' . $k . '] is not string');
-                            }
+            'media' => function (Options $options, $value) {
+                $tmp = array();
+                foreach ($value as $k => $v) {
+                    if (!is_string($v)) {
+                        throw new \UnexpectedValueException('option [' . $k . '] is not string');
+                    }
 
-                            $tmp[] = $v;
-                        }
+                    $tmp[] = $v;
+                }
 
-                        return $tmp;
-                    },
-                'images' => function (Options $options, $value) use($image, $source) {
-                        $tmp = array();
-                        if (count($value) === 0) {
-                            throw new \LengthException('images array cannot be empty');
-                        }
-                        foreach ($value as $img) {
-                            $opt = $tmp[] =  $image->resolve($img);
-                            if (!isset($source[$opt['index']])) {
-                                throw new \OutOfRangeException('there is no source with index ' . $opt['index']);
-                            }
+                return $tmp;
+            },
+            'images' => function (Options $options, $value) use($image, $source) {
+                $tmp = array();
+                if (count($value) === 0) {
+                    throw new \LengthException('images array cannot be empty');
+                }
+                foreach ($value as $img) {
+                    $opt = $tmp[] =  $image->resolve($img);
+                    if (!isset($source[$opt['index']])) {
+                        throw new \OutOfRangeException('there is no source with index ' . $opt['index']);
+                    }
 
-                            if ($opt['media-index'] < -1) {
-                                throw new \UnexpectedValueException('media-index must be greater than or equal to -1');
-                            }
+                    if ($opt['media-index'] < -1) {
+                        throw new \UnexpectedValueException('media-index must be greater than or equal to -1');
+                    }
 
-                            if ($opt['media-index'] > -1 && !isset($options['media'][$opt['media-index']])) {
-                                throw new \OutOfRangeException('there is no Media Query with index ' . $opt['media-index']);
-                            }
-                        }
+                    if ($opt['media-index'] > -1 && !isset($options['media'][$opt['media-index']])) {
+                        throw new \OutOfRangeException('there is no Media Query with index ' . $opt['media-index']);
+                    }
+                }
 
-                        return $tmp;
-                    },
-                'attr' => function (Options $options, $value) {
-                        foreach ($value as $k => $v) {
-                            if (!is_string($k)) {
-                                throw new \UnexpectedValueException('attribute key is not string');
-                            }
+                return $tmp;
+            },
+            'attr' => function (Options $options, $value) {
+                foreach ($value as $k => $v) {
+                    if (!is_string($k)) {
+                        throw new \UnexpectedValueException('attribute key is not string');
+                    }
 
-                            if (!is_string($v)) {
-                                throw new \UnexpectedValueException('option [' . $k . '] is not string');
-                            }
-                        }
+                    if (!is_string($v)) {
+                        throw new \UnexpectedValueException('option [' . $k . '] is not string');
+                    }
+                }
 
-                        return $value;
-                    },
-                'src-index' => function (Options $options, $value) {
-                        if (!isset($options['images'][$value])) {
-                            throw new \OutOfRangeException('there is no image with index ' . $value);
-                        }
+                return $value;
+            },
+            'src-index' => function (Options $options, $value) {
+                if (!isset($options['images'][$value])) {
+                    throw new \OutOfRangeException('there is no image with index ' . $value);
+                }
 
-                        return $value;
-                    },
-            ));
+                return $value;
+            },
+        ));
     }
 
     /**
-     * zapisz pliki
+     * Zapisz pliki
+     * 
      * @param array $options
+     * 
      * @return array
      */
     public function save(array $options = null)
@@ -274,8 +278,10 @@ class ImageResource extends ResourceAbstract implements MakeResourceInterface
      * Wartość true oznacza, że nastąpiły jakieś istotne zmiany
      * i należy zapisać ilustracje na nowo.
      * False - nic nie zmieniono => pomiń zapis.
+     * 
      * @param array $imageData
      * @param array $image
+     * 
      * @return bool
      */
     protected function compareImageData(array &$imageData, array &$image)
@@ -356,7 +362,7 @@ class ImageResource extends ResourceAbstract implements MakeResourceInterface
     }
 
     /**
-     * posprzątaj po sobie
+     * Czyszczenie
      */
     public function cleanup()
     {
@@ -378,7 +384,8 @@ class ImageResource extends ResourceAbstract implements MakeResourceInterface
     }
 
     /**
-     * tablica z danymi obrazków pogrupowanymi według atrybutu media
+     * Tablica z danymi obrazków pogrupowanymi według atrybutu media
+     * 
      * @return array
      */
     public function imageData()
@@ -416,6 +423,7 @@ class ImageResource extends ResourceAbstract implements MakeResourceInterface
 
     /**
      * Podaj tablicę adresów URL do zasobów
+     * 
      * @return array
      */
     public function getUrl()
@@ -435,6 +443,7 @@ class ImageResource extends ResourceAbstract implements MakeResourceInterface
 
     /**
      * Nazwa nowo wygenerowanego pliku
+     * 
      * @param array $img
      * @return string
      */

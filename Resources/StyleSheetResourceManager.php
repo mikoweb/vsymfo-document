@@ -18,6 +18,7 @@ use vSymfo\Component\Document\Resources\Interfaces\ResourceInterface;
 
 /**
  * Zasoby CSS
+ * 
  * @author Rafał Mikołajun <rafal@vision-web.pl>
  * @package vSymfo Component
  * @subpackage Document_Resources
@@ -26,8 +27,10 @@ class StyleSheetResourceManager extends CombineResourceManagerAbstract
 {
     /**
      * Dodaj zasób
+     * 
      * @param ResourceInterface $res
      * @param string $group
+     * 
      * @throws \UnexpectedValueException
      */
     public function add(ResourceInterface $res, $group = null)
@@ -40,10 +43,13 @@ class StyleSheetResourceManager extends CombineResourceManagerAbstract
     }
 
     /**
-     * zapodaj kod źródłowy w wybranym formacie
+     * Zapodaj kod źródłowy w wybranym formacie
+     * 
      * @param string $format
      * @param integer|string $group
+     * 
      * @return string
+     * 
      * @throws \Exception
      */
     public function render($format, $group = 0)
@@ -53,7 +59,8 @@ class StyleSheetResourceManager extends CombineResourceManagerAbstract
     }
 
     /**
-     * kod źródłowy w formacie HTML
+     * Kod źródłowy w formacie HTML
+     * 
      * @param StyleSheetResource $res
      * @param string $output
      */

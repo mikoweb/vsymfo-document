@@ -20,7 +20,7 @@ use mikehaertl\wkhtmlto\Pdf;
 use Stringy\Stringy as S;
 
 /**
- * Dokument pdf
+ * Dokument PDF
  * @author Rafał Mikołajun <rafal@vision-web.pl>
  * @package vSymfo Component
  * @subpackage Document
@@ -28,7 +28,6 @@ use Stringy\Stringy as S;
 class PdfDocument extends HtmlDocument
 {
     /**
-     * opcje
      * @var array
      */
     private $options = null;
@@ -44,7 +43,7 @@ class PdfDocument extends HtmlDocument
     private $filename = null;
 
     /**
-     * tablica ze ścieżkami (pliki html) do okładek
+     * Tablica ze ścieżkami (pliki html) do okładek
      * @var array
      */
     private $covers = array();
@@ -83,7 +82,8 @@ class PdfDocument extends HtmlDocument
     }
 
     /**
-     * ustawienia dokumentu i WkHtmlToPdf
+     * Ustawienia dokumentu i WkHtmlToPdf
+     * 
      * @param array $options
      * @link https://github.com/mikehaertl/phpwkhtmltopdf
      * @link http://wkhtmltopdf.org/usage/wkhtmltopdf.txt
@@ -174,8 +174,10 @@ class PdfDocument extends HtmlDocument
     }
 
     /**
-     * ustaw docelową ścieżkę, gdzie zostanie zapisany plik
+     * Ustaw docelową ścieżkę, gdzie zostanie zapisany plik
+     * 
      * @param string $filename
+     * 
      * @throws \InvalidArgumentException
      */
     public function setFilename($filename)
@@ -189,6 +191,7 @@ class PdfDocument extends HtmlDocument
 
     /**
      * Pobierz ścieżkę do pliku PDF
+     * 
      * @return string
      */
     public function getFilename()
@@ -198,6 +201,7 @@ class PdfDocument extends HtmlDocument
 
     /**
      * Ścieżka do pliku z rozszerzeniem HTML
+     * 
      * @return string
      */
     public function getFilenameToHtml()
@@ -207,10 +211,12 @@ class PdfDocument extends HtmlDocument
     }
 
     /**
-     * dodaj nową okładkę
+     * Dodaj nową okładkę
+     * 
      * @param string $name
      * @param string $url
      * @param array $options
+     * 
      * @throws \InvalidArgumentException
      */
     public function addCover($name, $url, array $options = null)
@@ -231,8 +237,10 @@ class PdfDocument extends HtmlDocument
 
     /**
      * Wstaw spis treści
+     * 
      * @param bool $use
      * @param string $xslStyleSheet
+     * 
      * @throws \InvalidArgumentException
      */
     public function toc($use, $xslStyleSheet = null)
@@ -248,7 +256,8 @@ class PdfDocument extends HtmlDocument
     }
 
     /**
-     * Rzuć wyjątek jeżeli nie ustawiono wymanych pól
+     * Rzuć wyjątek jeżeli nie ustawiono wymaganych pól
+     * 
      * @throws \RuntimeException
      */
     private function optionsTest()
@@ -263,7 +272,8 @@ class PdfDocument extends HtmlDocument
     }
 
     /**
-     * Wymuś aktualizację pliku PDF, jeżeli przekroczono czas trwania
+     * Wymuś aktualizację pliku PDF, jeżeli przekroczono czas oczekiwania
+     * 
      * @param $duration czas trwania
      */
     public function updateIfExpired($duration)
@@ -277,7 +287,7 @@ class PdfDocument extends HtmlDocument
     }
 
     /**
-     * pobieranie dokumentu
+     * Pobieranie dokumentu
      */
     public function download()
     {
@@ -301,7 +311,7 @@ class PdfDocument extends HtmlDocument
     }
 
     /**
-     * wyświetlanie dokumentu
+     * Wyświetlanie dokumentu
      */
     public function display()
     {
@@ -320,12 +330,13 @@ class PdfDocument extends HtmlDocument
     }
 
     /**
-     * Domknięcie zadyceduje o tym w jaki sposób zostanie wysłany dokument do użytkownika.
+     * Domknięcie zadecyduje o tym w jaki sposób zostanie wysłany dokument do użytkownika.
      * Aktualnie obsługiwane są dwa parametry.
      * Jeśli domknięcie zwróci:
      *  "download" => nastąpi pobieranie dokumentu
      *  "display" => wyświetlenie pdf za pomocą natywnego readera
      *  inna wartość (np. null) => wyświetlenie strony i testowanie przeglądarki
+     * 
      * @param \Closure $closure
      */
     public function outputSelector(\Closure $closure)
@@ -335,10 +346,10 @@ class PdfDocument extends HtmlDocument
 
     /**
      * Ten widok jest tworzony, gdy nie można utworzyć pliku PDF z poziomu skryptu PHP.
-     * Jest to widok, który odświeża się w regularnych odstępach czasu, oczekając na wygenerowanie pliku PDF,
-     * przez zewnętrzene oprogramowanie np. Crontab.
-     * Żądanie wygenerowania pliku jest zapisywane w bazie SQLite. Kiedy zewnętrzene oprogramowanie wegeneruje plik PDF,
-     * powinno się usąć żądanie z bazy.
+     * Jest to widok, który odświeża się w regularnych odstępach czasu, oczekując na wygenerowanie pliku PDF,
+     * przez zewnętrzne oprogramowanie np. Crontab.
+     * Żądanie wygenerowania pliku jest zapisywane w bazie SQLite. Kiedy zewnętrzne oprogramowanie wegeneruje plik PDF,
+     * żądanie powinno się usunąć z bazy danych.
      *
      * @return string
      */
@@ -349,6 +360,7 @@ class PdfDocument extends HtmlDocument
 
     /**
      * @return string
+     * 
      * @throws \Exception
      */
     public function render()

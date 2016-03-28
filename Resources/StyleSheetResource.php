@@ -17,6 +17,7 @@ use vSymfo\Core\File\Interfaces\CombineFilesInterface;
 
 /**
  * Pojedynczy zasób CSS
+ * 
  * @author Rafał Mikołajun <rafal@vision-web.pl>
  * @package vSymfo Component
  * @subpackage Document_Resources
@@ -25,6 +26,7 @@ class StyleSheetResource extends CombineResourceAbstract
 {
     /**
      * @param CombineFilesInterface $combine
+     * 
      * @throws \UnexpectedValueException
      */
     public function setCombineObject(CombineFilesInterface $combine)

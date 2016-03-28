@@ -18,6 +18,7 @@ use vSymfo\Component\Document\Resources\Interfaces\ResourceInterface;
 
 /**
  * Zasoby JavaScript
+ * 
  * @author Rafał Mikołajun <rafal@vision-web.pl>
  * @package vSymfo Component
  * @subpackage Document_Resources
@@ -26,6 +27,7 @@ class JavaScriptResourceManager extends CombineResourceManagerAbstract
 {
     /**
      * Dodaj zasób
+     * 
      * @param ResourceInterface $res
      * @param string $group
      * @throws \UnexpectedValueException
@@ -40,9 +42,11 @@ class JavaScriptResourceManager extends CombineResourceManagerAbstract
     }
 
     /**
-     * zapodaj kod źródłowy w wybranym formacie
+     * Zapodaj kod źródłowy w wybranym formacie
+     * 
      * @param string $format
      * @param integer|string $group
+     * 
      * @return string|array
      */
     public function render($format, $group = 0)
@@ -59,7 +63,8 @@ class JavaScriptResourceManager extends CombineResourceManagerAbstract
     }
 
     /**
-     * format tablicowy
+     * Format tablicowy
+     * 
      * @return array
      */
     private function formatArray()
@@ -101,7 +106,8 @@ class JavaScriptResourceManager extends CombineResourceManagerAbstract
     }
 
     /**
-     * kod źródłowy w formacie JSON
+     * Kod źródłowy w formacie JSON
+     * 
      * @return string
      */
     private function json() {
@@ -109,7 +115,8 @@ class JavaScriptResourceManager extends CombineResourceManagerAbstract
     }
 
     /**
-     * kod źródłowy w formacie HTML
+     * Kod źródłowy w formacie HTML
+     * 
      * @param JavaScriptResource $res
      * @param string $output
      */

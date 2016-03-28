@@ -17,6 +17,7 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 /**
  * Plik konfiguracyjny zasobów dokumentu
+ * 
  * @author Rafał Mikołajun <rafal@vision-web.pl>
  * @package vSymfo Component
  * @subpackage Document_Configuration

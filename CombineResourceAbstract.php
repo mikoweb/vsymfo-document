@@ -49,8 +49,10 @@ abstract class CombineResourceAbstract extends ResourceAbstract implements Combi
     }
 
     /**
-     * domyślne opcje konstruktora
+     * Domyślne opcje konstruktora
+     * 
      * @param array $options
+     * 
      * @return array
      */
     protected function defaults(array $options)
@@ -65,7 +67,9 @@ abstract class CombineResourceAbstract extends ResourceAbstract implements Combi
 
     /**
      * Ustawia nazwę zasobu
+     * 
      * @param string $name
+     * 
      * @throws \InvalidArgumentException
      */
     public function setName($name)
@@ -83,7 +87,9 @@ abstract class CombineResourceAbstract extends ResourceAbstract implements Combi
 
     /**
      * Ustawia obiekt służący do złączania plików
+     * 
      * @param CombineFilesInterface $combine
+     * 
      * @return void
      */
     public function setCombineObject(CombineFilesInterface $combine)
@@ -101,6 +107,7 @@ abstract class CombineResourceAbstract extends ResourceAbstract implements Combi
 
     /**
      * Podaj tablicę adresów URL do zasobów
+     * 
      * @return array
      */
     public function getUrl()

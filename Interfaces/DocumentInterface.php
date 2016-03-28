@@ -14,6 +14,7 @@ namespace vSymfo\Component\Document\Interfaces;
 
 /**
  * Interfejs dokumentu
+ * 
  * @author Rafał Mikołajun <rafal@vision-web.pl>
  * @package vSymfo Component
  * @subpackage Document_Interfaces
@@ -21,79 +22,100 @@ namespace vSymfo\Component\Document\Interfaces;
 interface DocumentInterface
 {
     /**
-     * zasoby
+     * Zasoby
+     * 
      * @param string $name
+     * 
      * @return ResourcesInterface
      */
     public function resources($name);
 
     /**
-     * elementy
+     * Elementy
+     * 
      * @param string $name
+     * 
      * @return ElementInterface
      */
     public function element($name);
 
     /**
-     * dodaj tłumaczenia
+     * Dodaj tłumaczenia
+     * 
      * @param array $strings
      */
     public function addTranslation(array $strings);
 
     /**
-     * treść
+     * Treść
+     * 
      * @param string
+     * 
      * @return string
      */
     public function body($set = null);
 
     /**
-     * nazwa
+     * Nazwa
+     * 
      * @param string $set
+     * 
      * @return string
      */
     public function name($set = null);
 
     /**
-     * tytuł
+     * Tytuł
+     * 
      * @param string $set
      * @param integer $mode
      * @param string $separator
+     * 
      * @return string
      */
     public function title($set = null, $mode = 0, $separator = '-');
 
     /**
-     * autor
+     * Autor
+     * 
      * @param string $set
+     * 
      * @return string
      */
     public function author($set = null);
 
     /**
-     * strona autora
+     * Strona autora
+     * 
      * @param string $set
+     * 
      * @return string
      */
     public function authorUrl($set = null);
 
     /**
-     * data utworzenia
+     * Data utworzenia
+     * 
      * @param string $set
+     * 
      * @return \DateTime
      */
     public function createdDate($set = null);
 
     /**
-     * opis
+     * Opis
+     * 
      * @param string $set
+     * 
      * @return string
      */
     public function description($set = null);
 
     /**
-     * słowa kluczowe
+     * Słowa kluczowe
+     * 
      * @param string $set
+     * 
      * @return string
      */
     public function keywords($set = null);
@@ -104,7 +126,8 @@ interface DocumentInterface
     public function render();
 
     /**
-     * nazwa formatu dokumentu
+     * Nazwa formatu dokumentu
+     * 
      * @return string
      */
     public function formatName();

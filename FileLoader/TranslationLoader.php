@@ -25,6 +25,7 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 
 /**
  * loader tłumaczeń
+ * 
  * @author Rafał Mikołajun <rafal@vision-web.pl>
  * @package vSymfo Component
  * @subpackage Document_FileLoader
