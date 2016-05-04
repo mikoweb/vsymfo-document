@@ -1,9 +1,9 @@
 {
     "name": "mikoweb/vsymfo-document",
-    "type": "library",
+    "type": "symfony-bundle",
     "description": "vSymfo Document Component",
     "homepage": "http://vision-web.pl",
-    "license": "CC-BY-NC-ND",
+    "license": "GPLv3",
     "authors": [
         {
             "name": "Rafał Mikołajun",
