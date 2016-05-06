@@ -42,9 +42,6 @@ class ResourcesTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(0, $all['groups'][1]['value']['resources']);
     }
 
-    /**
-     * testowanie js
-     */
     public function testJavaScript()
     {
         $groups = new ResourceGroups();
@@ -100,9 +97,6 @@ class ResourcesTest extends \PHPUnit_Framework_TestCase
         $this->assertNotEmpty($res->render('html'));
     }
 
-    /**
-     * testowanie arkuszów stylów
-     */
     public function testStyleSheet()
     {
         $groups = new ResourceGroups();
@@ -152,6 +146,48 @@ class ResourcesTest extends \PHPUnit_Framework_TestCase
                 $this->assertTrue(file_exists(__DIR__ . $url));
             }
         }
+
+        $this->assertNotEmpty($res->render('html'));
+    }
+
+    public function testGrunt()
+    {
+        $groups = new ResourceGroups();
+        $groups->addGroup('grunt_scss');
+
+        $res = new StyleSheetResourceManager($groups,
+            function(StyleSheetResource $res) {
+                $combine = new StyleSheetCombineFiles();
+                $combine->setInputDir(__DIR__)
+                    ->setOutputDir(__DIR__ . '/tmp/cache')
+                    ->setOutputBaseUrl('/tmp/cache')
+                    ->setOutputForceRefresh(true)
+                    ->setOutputLifeTime(0)
+                    ->setOutputStrategy('manual')
+                    ->setCacheDb(CombineFilesCacheDB::openFile(__DIR__ . '/tmp/cache/grunt.db'))
+                    ->setScssImportDirs(array(
+                        __DIR__ . '/tmp/scss/grunt_import',
+                        __DIR__ . '/tmp/scss/grunt',
+                        __DIR__,
+                    ))
+                    ->setScssVariables(array(
+                        'path-background' => '/images/bg.png',
+                        'foo' => 'red'
+                    ))
+                ;
+
+                $url = new UrlManager();
+                $res->setCombineObject($combine);
+                $res->setUrlManager($url);
+            }
+        );
+
+        $res->add(
+            new StyleSheetResource('style',
+                array('/tmp/scss/style.scss,grunt'),
+                array('combine' => true)
+            ), 'grunt_scss'
+        );
 
         $this->assertNotEmpty($res->render('html'));
     }

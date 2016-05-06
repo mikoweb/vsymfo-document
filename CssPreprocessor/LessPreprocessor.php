@@ -48,7 +48,7 @@ class LessPreprocessor implements PreprocessorInterface
     /**
      * {@inheritdoc}
      */
-    public function compile($path)
+    public function compile($path, $relativePath)
     {
         $this->parsedFiles = array();
         $parser = new \Less_Parser(array(

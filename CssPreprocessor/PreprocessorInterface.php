@@ -20,11 +20,12 @@ namespace vSymfo\Component\Document\CssPreprocessor;
 interface PreprocessorInterface
 {
     /**
-     * @param string
+     * @param string $path
+     * @param string $relativePath
      * 
      * @return string
      */
-    public function compile($path);
+    public function compile($path, $relativePath);
 
     /**
      * @return array

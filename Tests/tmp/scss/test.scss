@@ -1,7 +1,7 @@
 @import "import";
 
 .main {
-    color: $foo;
+    color: unquote($foo);
     background: red;
 
     p {

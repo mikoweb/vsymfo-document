@@ -12,6 +12,7 @@
 
 namespace vSymfo\Component\Document\Resources;
 
+use vSymfo\Component\Document\CssPreprocessor\GruntPreprocessor;
 use vSymfo\Component\Document\CssPreprocessor\LessPreprocessor;
 use vSymfo\Component\Document\CssPreprocessor\NonePreprocessor;
 use vSymfo\Component\Document\CssPreprocessor\ScssPreprocessor;
@@ -105,28 +106,29 @@ class StyleSheetCombineFiles extends CombineFilesAbstract
     {
         try {
             $pathInfo = pathinfo($path);
-            $filename = $path;
 
             switch ($pathInfo['extension']) {
-                case 'less':
-                case 'css':
-                    $preprocessor = new LessPreprocessor($this->lessVariables, $this->lessImportDirs);
+                case 'scss,grunt':
+                    $preprocessor = new GruntPreprocessor($this->scssVariables, $this->scssImportDirs);
+                    $path = substr($path, 0, -6);
+                    $relativePath = substr($relativePath, 0, -6);
                     break;
                 case 'scss':
                     $preprocessor = new ScssPreprocessor($this->scssVariables, $this->scssImportDirs);
-                    $filename = $relativePath;
+                    break;
+                case 'less':
+                case 'css':
+                    $preprocessor = new LessPreprocessor($this->lessVariables, $this->lessImportDirs);
                     break;
                 default:
                     $preprocessor = new NonePreprocessor();
                     break;
             }
 
-            $css = $preprocessor->compile($filename);
+            $css = $preprocessor->compile($path, $relativePath[0] === '/' ? substr($relativePath, 1) : $relativePath);
 
             foreach ($preprocessor->getParsedFiles() as $file) {
-                if ($file !== $path) {
-                    $cacheFiles[$file] = @filemtime($file);
-                }
+                $cacheFiles[$file] = @filemtime($file);
             }
 
             return $css;

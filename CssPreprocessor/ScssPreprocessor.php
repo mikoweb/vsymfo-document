@@ -24,17 +24,17 @@ class ScssPreprocessor implements PreprocessorInterface
     /**
      * @var array
      */
-    private $parsedFiles;
+    protected $parsedFiles;
 
     /**
      * @var array
      */
-    private $variables;
+    protected $variables;
 
     /**
      * @var array
      */
-    private $importDirs;
+    protected $importDirs;
 
     /**
      * @param array $variables
@@ -50,7 +50,7 @@ class ScssPreprocessor implements PreprocessorInterface
     /**
      * {@inheritdoc}
      */
-    public function compile($path)
+    public function compile($path, $relativePath)
     {
         $this->parsedFiles = array();
         $scss = new Compiler();
@@ -61,7 +61,7 @@ class ScssPreprocessor implements PreprocessorInterface
         }
 
         $content = $this->overrideVariables();
-        $content .= '@import "' . $path . '";' . "\n";
+        $content .= '@import "' . $relativePath . '";' . "\n";
         $css = $scss->compile($content);
         $parsedFiles = array();
         foreach ($scss->getParsedFiles() as $file => $time) {
@@ -83,12 +83,12 @@ class ScssPreprocessor implements PreprocessorInterface
     /**
      * @return string
      */
-    private function overrideVariables()
+    protected function overrideVariables()
     {
         $code = '';
 
         foreach ($this->variables as $k => $v) {
-            $code .= "\$$k: $v;\n";
+            $code .= "\$$k: \"$v\";\n";
         }
 
         return $code;

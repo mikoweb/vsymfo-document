@@ -32,7 +32,7 @@ class NonePreprocessor implements PreprocessorInterface
     /**
      * {@inheritdoc}
      */
-    public function compile($path)
+    public function compile($path, $relativePath)
     {
         return (string)@file_get_contents($path);
     }

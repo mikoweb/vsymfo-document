@@ -14,7 +14,8 @@
     "require": {
         "php": ">=5.3.3",
         "mikoweb/vsymfo-core": ">=0.0.6",
-        "mikehaertl/phpwkhtmltopdf": "~2.1"
+        "mikehaertl/phpwkhtmltopdf": "~2.1",
+        "symfony/process": "~2.8"
     },
     "autoload": {
         "psr-0": { "vSymfo\\Component\\Document\\": "" }
