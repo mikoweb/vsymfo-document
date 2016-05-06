@@ -171,7 +171,7 @@ class ResourcesTest extends \PHPUnit_Framework_TestCase
                         __DIR__,
                     ))
                     ->setScssVariables(array(
-                        'path-background' => '/images/bg.png',
+                        'path-background' => '"/images/bg.png"',
                         'foo' => 'red'
                     ))
                 ;

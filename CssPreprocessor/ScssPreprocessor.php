@@ -88,7 +88,7 @@ class ScssPreprocessor implements PreprocessorInterface
         $code = '';
 
         foreach ($this->variables as $k => $v) {
-            $code .= "\$$k: \"$v\";\n";
+            $code .= "\$$k: $v;\n";
         }
 
         return $code;
