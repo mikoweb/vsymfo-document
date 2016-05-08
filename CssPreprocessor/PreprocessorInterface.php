@@ -28,7 +28,7 @@ interface PreprocessorInterface
     public function compile($path, $relativePath);
 
     /**
-     * @return array
+     * @return array|false
      */
     public function getParsedFiles();
 }

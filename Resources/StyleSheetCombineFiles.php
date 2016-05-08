@@ -127,12 +127,18 @@ class StyleSheetCombineFiles extends CombineFilesAbstract
 
             $css = $preprocessor->compile($path, $relativePath[0] === '/' ? substr($relativePath, 1) : $relativePath);
 
-            foreach ($preprocessor->getParsedFiles() as $file) {
-                $cacheFiles[$file] = @filemtime($file);
+            $parsedFiles = $preprocessor->getParsedFiles();
+            if ($parsedFiles === false) {
+                $cacheFiles[$path] = 0;
+            } elseif (is_array($parsedFiles)) {
+                foreach ($parsedFiles as $file) {
+                    $cacheFiles[$file] = @filemtime($file);
+                }
             }
 
             return $css;
         } catch (\Exception $e) {
+            $cacheFiles[$path] = 0;
             return $e->getMessage();
         }
     }
