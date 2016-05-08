@@ -63,7 +63,7 @@ class GruntPreprocessor extends ScssPreprocessor implements PreprocessorInterfac
                 $process->mustRun();
             } catch (ProcessFailedException $e) {
                 if ($process->getExitCode() === 127) {
-                    parent::compile($path, $relativePath);
+                    return parent::compile($path, $relativePath);
                 } else {
                     throw $e;
                 }
