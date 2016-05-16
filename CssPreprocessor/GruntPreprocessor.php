@@ -73,13 +73,15 @@ class GruntPreprocessor extends ScssPreprocessor implements PreprocessorInterfac
         $uniqId = uniqid($pathInfo['filename']);
         $sourceFileName = $pathInfo['dirname'] . '/' . $uniqId . '.scss';
         $outputFileName = $pathInfo['dirname'] . '/' . $uniqId . '.css';
-        $loadPath = json_encode($this->importDirs, JSON_UNESCAPED_SLASHES);
+        $loadPath = str_replace(['\\', '//'], ['/', '/'], json_encode($this->importDirs, JSON_UNESCAPED_SLASHES));
 
         $content = $this->overrideVariables();
         $content .= '@import "' . $relativePath . '";' . "\n";
         file_put_contents($sourceFileName, $content);
 
-        $process = new Process("cd $pathInfo[dirname] && grunt vsymfo-scss -options='{\"src\": \"$sourceFileName\", \"output\": \"$outputFileName\", \"loadPath\": $loadPath}'");
+        $processOptions = '{"src": "' . str_replace('\\', '/', $sourceFileName) . '", "output": "' . str_replace('\\', '/', $outputFileName) . '", "loadPath": ' . $loadPath . '}';
+        $processOptions = str_replace('"', '\"', $processOptions);
+        $process = new Process("cd $pathInfo[dirname] && grunt vsymfo-scss -options=\"$processOptions\"");
 
         try {
             $process->mustRun();
