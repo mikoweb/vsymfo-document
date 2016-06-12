@@ -12,15 +12,18 @@
         }
     ],
     "require": {
-        "php": ">=5.3.3",
-        "mikoweb/vsymfo-core": ">=0.0.6",
+        "php": ">=5.5.9",
+        "mikoweb/vsymfo-core": ">=0.1.0",
+        "tedivm/jshrink": "~1.0",
+        "oyejorge/less.php": "~1.7",
+        "leafo/scssphp": "~0.6.0",
+        "imagine/imagine": "~0.6",
         "mikehaertl/phpwkhtmltopdf": "~2.1",
-        "symfony/process": "~2.8"
+        "symfony/process": "~2.8|~3.0"
     },
     "autoload": {
-        "psr-0": { "vSymfo\\Component\\Document\\": "" }
+        "psr-4": { "vSymfo\\Component\\Document\\": "" }
     },
-    "target-dir": "vSymfo/Component/Document",
     "minimum-stability": "dev",
     "prefer-stable": true
 }
