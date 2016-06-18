@@ -137,19 +137,11 @@ class UrlManager implements UrlManagerInterface
             } else { // lokalny zasób
                 // wersjonowanie
                 if ($this->versioning) {
-                    if ($this->verTimestamp) {
-                        $parsedUrl = http_build_url($parsedUrl,
-                            array(
-                                'query' => 'version=' . time()
-                            ), HTTP_URL_STRIP_AUTH | HTTP_URL_JOIN_PATH | HTTP_URL_JOIN_QUERY | HTTP_URL_STRIP_FRAGMENT
-                        );
-                    } else {
-                        $parsedUrl = http_build_url($parsedUrl,
-                            array(
-                                'query' => 'version=' . $this->version
-                            ), HTTP_URL_STRIP_AUTH | HTTP_URL_JOIN_PATH | HTTP_URL_JOIN_QUERY | HTTP_URL_STRIP_FRAGMENT
-                        );
-                    }
+                    $parsedUrl = http_build_url($parsedUrl,
+                        array(
+                            'query' => 'v=' . ($this->verTimestamp ? time() : $this->version)
+                        ), HTTP_URL_STRIP_AUTH | HTTP_URL_JOIN_PATH | HTTP_URL_JOIN_QUERY | HTTP_URL_STRIP_FRAGMENT
+                    );
                 }
 
                 $tmpUrl = parse_url($parsedUrl);
@@ -159,10 +151,10 @@ class UrlManager implements UrlManagerInterface
                 // slash zawsze na początku
                 $u = !preg_match('/^\//', $u) ? '/' . $u : $u;
                 if ($addBaseUrl && !$checkBaseUrl) {
-                    // dodaj baseurl zawsze
+                    // dodaj baseUrl, zawsze
                     $u = $this->baseurl . $u;
                 } else if ($addBaseUrl && $checkBaseUrl) {
-                    // dodaj baseurl jeśli nie ma
+                    // dodaj baseUrl, jeśli go brak
                     $u = !preg_match('/^' . str_replace('/', '\/', $this->baseurl) . '/', $u) ? $this->baseurl . $u : $u;
                 }
 
