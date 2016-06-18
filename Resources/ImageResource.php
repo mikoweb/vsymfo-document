@@ -119,7 +119,7 @@ class ImageResource extends ResourceAbstract implements MakeResourceInterface
         ]);
 
         $source = $this->source;
-        $resolver->setNormalizers('media', function (Options $options, $value) {
+        $resolver->setNormalizer('media', function (Options $options, $value) {
             $tmp = array();
             foreach ($value as $k => $v) {
                 if (!is_string($v)) {
@@ -132,7 +132,7 @@ class ImageResource extends ResourceAbstract implements MakeResourceInterface
             return $tmp;
         });
 
-        $resolver->setNormalizers('images', function (Options $options, $value) use($image, $source) {
+        $resolver->setNormalizer('images', function (Options $options, $value) use($image, $source) {
             $tmp = array();
             if (count($value) === 0) {
                 throw new \LengthException('images array cannot be empty');
@@ -155,7 +155,7 @@ class ImageResource extends ResourceAbstract implements MakeResourceInterface
             return $tmp;
         });
 
-        $resolver->setNormalizers('attr', function (Options $options, $value) {
+        $resolver->setNormalizer('attr', function (Options $options, $value) {
             foreach ($value as $k => $v) {
                 if (!is_string($k)) {
                     throw new \UnexpectedValueException('attribute key is not string');
@@ -169,7 +169,7 @@ class ImageResource extends ResourceAbstract implements MakeResourceInterface
             return $value;
         });
 
-        $resolver->setNormalizers('src-index', function (Options $options, $value) {
+        $resolver->setNormalizer('src-index', function (Options $options, $value) {
             if (!isset($options['images'][$value])) {
                 throw new \OutOfRangeException('there is no image with index ' . $value);
             }
