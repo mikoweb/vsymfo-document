@@ -14,7 +14,6 @@ namespace vSymfo\Component\Document\Utility;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\OptionsResolver\Options;
 use vSymfo\Component\Document\CombineResourceAbstract;
 use vSymfo\Component\Document\FileLoader\JavaScriptResourcesLoader;
 use vSymfo\Component\Document\FileLoader\StyleSheetResourcesLoader;
@@ -73,27 +72,25 @@ class HtmlResourcesUtility
             'cache_db_dir'   => null,
         ));
 
-        $resolver->setAllowedTypes(array(
-            'ignoring_files' => 'array',
-            'cache_dir'      => 'string',
-            'cache_db_dir'   => array('string', 'null'),
-            'cache_refresh'  => 'bool',
-            'cache_lifetime' => 'integer',
-            'web_dir'        => 'string',
-            'web_url'        => 'string',
-            'web_cache_dir'  => 'string',
-            'web_cache_url'  => 'string',
-            'less_import_dirs'  => 'array',
-            'less_variables'    => 'array',
-            'scss_import_dirs'  => 'array',
-            'scss_variables'    => 'array',
-            'versioning_enable'    => 'bool',
-            'versioning_version'   => 'numeric',
-            'versioning_timestamp' => 'bool',
-            'cdn_enable'     => 'bool',
-            'cdn_javascript' => 'string',
-            'cdn_css'        => 'string',
-        ));
+        $resolver->setAllowedTypes('ignoring_files', 'array');
+        $resolver->setAllowedTypes('cache_dir', 'string');
+        $resolver->setAllowedTypes('cache_db_dir', ['string', 'null']);
+        $resolver->setAllowedTypes('cache_refresh', 'bool');
+        $resolver->setAllowedTypes('cache_lifetime', 'integer');
+        $resolver->setAllowedTypes('web_dir', 'string');
+        $resolver->setAllowedTypes('web_url', 'string');
+        $resolver->setAllowedTypes('web_cache_dir', 'string');
+        $resolver->setAllowedTypes('web_cache_url', 'string');
+        $resolver->setAllowedTypes('less_import_dirs', 'array');
+        $resolver->setAllowedTypes('less_variables', 'array');
+        $resolver->setAllowedTypes('scss_import_dirs', 'array');
+        $resolver->setAllowedTypes('scss_variables', 'array');
+        $resolver->setAllowedTypes('versioning_enable', 'bool');
+        $resolver->setAllowedTypes('versioning_version', 'numeric');
+        $resolver->setAllowedTypes('versioning_timestamp', 'bool');
+        $resolver->setAllowedTypes('cdn_enable', 'bool');
+        $resolver->setAllowedTypes('cdn_javascript', 'string');
+        $resolver->setAllowedTypes('cdn_css', 'string');
     }
 
     /**

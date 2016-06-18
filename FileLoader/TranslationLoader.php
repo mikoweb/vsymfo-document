@@ -40,23 +40,18 @@ class TranslationLoader extends FileLoaderAbstract
     {
         parent::setDefaultOptions($resolver);
         $resolver->setRequired(array('document', 'trans_closure'));
-        $resolver->setAllowedTypes(array(
-            'document' => 'object'
-        ));
+        $resolver->setAllowedTypes('document', 'object');
 
         $that = $this;
-        $resolver->setNormalizers(array(
-            'document' => function (Options $options, $value) use($that) {
-                $that->compareOptionType('document', $value
-                    , 'vSymfo\Component\Document\Interfaces\DocumentInterface');
-                return $value;
-            },
-            'trans_closure' => function (Options $options, $value) use($that) {
-                $that->compareOptionType('trans_closure', $value
-                    , '\Closure');
-                return $value;
-            },
-        ));
+        $resolver->setNormalizer('document', function (Options $options, $value) use($that) {
+            $that->compareOptionType('document', $value
+                , 'vSymfo\Component\Document\Interfaces\DocumentInterface');
+            return $value;
+        });
+        $resolver->setNormalizer('trans_closure', function (Options $options, $value) use($that) {
+            $that->compareOptionType('trans_closure', $value, '\Closure');
+            return $value;
+        });
     }
 
     /**

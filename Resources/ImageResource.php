@@ -72,20 +72,16 @@ class ImageResource extends ResourceAbstract implements MakeResourceInterface
             'compare_image_mode' => 'simple'
         ));
 
-        $resolver->setAllowedValues(array(
-            'compare_image_mode' => array('simple', 'full'),
-        ));
+        $resolver->setAllowedValues('compare_image_mode', ['simple', 'full']);
 
-        $resolver->setAllowedTypes(array(
-            'root_dir'   => 'string',
-            'output_dir' => 'string',
-            'images'     => 'array',
-            'sizes'      => 'string',
-            'media'      => 'array',
-            'attr'       => 'array',
-            'src-index'  => 'integer',
-            'compare_image_mode' => 'string'
-        ));
+        $resolver->setAllowedTypes('root_dir', 'string');
+        $resolver->setAllowedTypes('output_dir', 'string');
+        $resolver->setAllowedTypes('images', 'array');
+        $resolver->setAllowedTypes('sizes', 'string');
+        $resolver->setAllowedTypes('media', 'array');
+        $resolver->setAllowedTypes('attr', 'array');
+        $resolver->setAllowedTypes('src-index', 'integer');
+        $resolver->setAllowedTypes('compare_image_mode', 'string');
 
         $image = new OptionsResolver();
         $image->setRequired(array('width', 'height', 'format'));
@@ -102,87 +98,84 @@ class ImageResource extends ResourceAbstract implements MakeResourceInterface
             'use_only_width' => false
         ));
 
-        $image->setAllowedTypes(array(
-            'index'   => 'integer',
-            'suffix'  => 'string',
-            'width'   => 'integer',
-            'height'  => 'integer',
-            'format'  => 'string',
-            'jpeg_quality' => 'integer',
-            'png_compression_level' => 'integer',
-            'mode' => 'string',
-            'srcset-w' => 'integer',
-            'srcset-h' => 'integer',
-            'srcset-x' => 'integer',
-            'media-index' => 'integer',
-            'use_only_width' => 'bool'
-        ));
+        $image->setAllowedTypes('index', 'integer');
+        $image->setAllowedTypes('suffix', 'string');
+        $image->setAllowedTypes('width', 'integer');
+        $image->setAllowedTypes('height', 'integer');
+        $image->setAllowedTypes('format', 'string');
+        $image->setAllowedTypes('jpeg_quality', 'integer');
+        $image->setAllowedTypes('png_compression_level', 'integer');
+        $image->setAllowedTypes('mode', 'string');
+        $image->setAllowedTypes('srcset-w', 'integer');
+        $image->setAllowedTypes('srcset-h', 'integer');
+        $image->setAllowedTypes('srcset-x', 'integer');
+        $image->setAllowedTypes('media-index', 'integer');
+        $image->setAllowedTypes('use_only_width', 'bool');
 
-        $image->setAllowedValues(array(
-            'format' => array('jpg', 'png', 'gif'),
-            'mode' => array(
-                ImageInterface::THUMBNAIL_INSET,
-                ImageInterface::THUMBNAIL_OUTBOUND
-            ),
-        ));
+        $image->setAllowedValues('format', ['jpg', 'png', 'gif']);
+        $image->setAllowedValues('mode', [
+            ImageInterface::THUMBNAIL_INSET,
+            ImageInterface::THUMBNAIL_OUTBOUND
+        ]);
 
         $source = $this->source;
-        $resolver->setNormalizers(array(
-            'media' => function (Options $options, $value) {
-                $tmp = array();
-                foreach ($value as $k => $v) {
-                    if (!is_string($v)) {
-                        throw new \UnexpectedValueException('option [' . $k . '] is not string');
-                    }
-
-                    $tmp[] = $v;
+        $resolver->setNormalizers('media', function (Options $options, $value) {
+            $tmp = array();
+            foreach ($value as $k => $v) {
+                if (!is_string($v)) {
+                    throw new \UnexpectedValueException('option [' . $k . '] is not string');
                 }
 
-                return $tmp;
-            },
-            'images' => function (Options $options, $value) use($image, $source) {
-                $tmp = array();
-                if (count($value) === 0) {
-                    throw new \LengthException('images array cannot be empty');
-                }
-                foreach ($value as $img) {
-                    $opt = $tmp[] =  $image->resolve($img);
-                    if (!isset($source[$opt['index']])) {
-                        throw new \OutOfRangeException('there is no source with index ' . $opt['index']);
-                    }
+                $tmp[] = $v;
+            }
 
-                    if ($opt['media-index'] < -1) {
-                        throw new \UnexpectedValueException('media-index must be greater than or equal to -1');
-                    }
+            return $tmp;
+        });
 
-                    if ($opt['media-index'] > -1 && !isset($options['media'][$opt['media-index']])) {
-                        throw new \OutOfRangeException('there is no Media Query with index ' . $opt['media-index']);
-                    }
+        $resolver->setNormalizers('images', function (Options $options, $value) use($image, $source) {
+            $tmp = array();
+            if (count($value) === 0) {
+                throw new \LengthException('images array cannot be empty');
+            }
+            foreach ($value as $img) {
+                $opt = $tmp[] =  $image->resolve($img);
+                if (!isset($source[$opt['index']])) {
+                    throw new \OutOfRangeException('there is no source with index ' . $opt['index']);
                 }
 
-                return $tmp;
-            },
-            'attr' => function (Options $options, $value) {
-                foreach ($value as $k => $v) {
-                    if (!is_string($k)) {
-                        throw new \UnexpectedValueException('attribute key is not string');
-                    }
-
-                    if (!is_string($v)) {
-                        throw new \UnexpectedValueException('option [' . $k . '] is not string');
-                    }
+                if ($opt['media-index'] < -1) {
+                    throw new \UnexpectedValueException('media-index must be greater than or equal to -1');
                 }
 
-                return $value;
-            },
-            'src-index' => function (Options $options, $value) {
-                if (!isset($options['images'][$value])) {
-                    throw new \OutOfRangeException('there is no image with index ' . $value);
+                if ($opt['media-index'] > -1 && !isset($options['media'][$opt['media-index']])) {
+                    throw new \OutOfRangeException('there is no Media Query with index ' . $opt['media-index']);
+                }
+            }
+
+            return $tmp;
+        });
+
+        $resolver->setNormalizers('attr', function (Options $options, $value) {
+            foreach ($value as $k => $v) {
+                if (!is_string($k)) {
+                    throw new \UnexpectedValueException('attribute key is not string');
                 }
 
-                return $value;
-            },
-        ));
+                if (!is_string($v)) {
+                    throw new \UnexpectedValueException('option [' . $k . '] is not string');
+                }
+            }
+
+            return $value;
+        });
+
+        $resolver->setNormalizers('src-index', function (Options $options, $value) {
+            if (!isset($options['images'][$value])) {
+                throw new \OutOfRangeException('there is no image with index ' . $value);
+            }
+
+            return $value;
+        });
     }
 
     /**

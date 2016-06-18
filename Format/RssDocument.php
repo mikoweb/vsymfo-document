@@ -322,39 +322,36 @@ class RssDocument extends XmlDocument
             'height' => 0
         ));
 
-        $resolver->setAllowedTypes(array(
-            'url' => 'string',
-            'title' => 'string',
-            'link' => 'string',
-            'description' => 'string',
-            'width' => 'integer',
-            'height' => 'integer'
-        ));
+        $resolver->setAllowedTypes('url', 'string');
+        $resolver->setAllowedTypes('title', 'string');
+        $resolver->setAllowedTypes('link', 'string');
+        $resolver->setAllowedTypes('description', 'string');
+        $resolver->setAllowedTypes('width', 'integer');
+        $resolver->setAllowedTypes('height', 'integer');
 
-        $resolver->setNormalizers(array(
-            'width' => function (Options $options, $value) {
-                if (is_int($value)) {
-                    if ($value > 144) {
-                        $value = 144;
-                    } elseif ($value < 0) {
-                        $value = 0;
-                    }
+        $resolver->setNormalizer('width', function (Options $options, $value) {
+            if (is_int($value)) {
+                if ($value > 144) {
+                    $value = 144;
+                } elseif ($value < 0) {
+                    $value = 0;
                 }
+            }
 
-                return $value;
-            },
-            'height' => function (Options $options, $value) {
-                if (is_int($value)) {
-                    if ($value > 400) {
-                        $value = 400;
-                    } elseif ($value < 0) {
-                        $value = 0;
-                    }
+            return $value;
+        });
+
+        $resolver->setNormalizer('height', function (Options $options, $value) {
+            if (is_int($value)) {
+                if ($value > 400) {
+                    $value = 400;
+                } elseif ($value < 0) {
+                    $value = 0;
                 }
-
-                return $value;
-            },
-        ));
+            }
+    
+            return $value;
+        });
 
         $this->imageResolver = $resolver;
     }
@@ -368,12 +365,10 @@ class RssDocument extends XmlDocument
         $resolver = new OptionsResolver();
         $resolver->setRequired(array('title', 'link', 'description', 'name'));
 
-        $resolver->setAllowedTypes(array(
-            'title' => 'string',
-            'link' => 'string',
-            'description' => 'string',
-            'name' => 'string'
-        ));
+        $resolver->setAllowedTypes('title', 'string');
+        $resolver->setAllowedTypes('link', 'string');
+        $resolver->setAllowedTypes('description', 'string');
+        $resolver->setAllowedTypes('name', 'string');
 
         $this->textInputResolver = $resolver;
     }
@@ -387,13 +382,11 @@ class RssDocument extends XmlDocument
         $resolver = new OptionsResolver();
         $resolver->setRequired(array('domain', 'port', 'path', 'registerProcedure', 'protocol'));
 
-        $resolver->setAllowedTypes(array(
-            'domain' => 'string',
-            'port' => 'integer',
-            'path' => 'string',
-            'registerProcedure' => 'string',
-            'protocol' => 'string'
-        ));
+        $resolver->setAllowedTypes('domain', 'string');
+        $resolver->setAllowedTypes('port', 'integer');
+        $resolver->setAllowedTypes('path', 'string');
+        $resolver->setAllowedTypes('registerProcedure', 'string');
+        $resolver->setAllowedTypes('protocol', 'string');
 
         $this->cloudResolver = $resolver;
     }

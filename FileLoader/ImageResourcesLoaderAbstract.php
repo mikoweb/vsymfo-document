@@ -17,7 +17,6 @@ use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Config\FileLocatorInterface;
 use Symfony\Component\Config\Resource\FileResource;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\Yaml\Yaml;
 use vSymfo\Core\FileLoaderAbstract;
 use vSymfo\Component\Document\Configuration\ImageResourcesConfiguration;
@@ -60,12 +59,10 @@ abstract class ImageResourcesLoaderAbstract extends FileLoaderAbstract
             'forcesave' => false
         ));
 
-        $resolver->setAllowedTypes(array(
-            'forcesave' => 'bool',
-            'images_root_dir' => 'string',
-            'images_output_dir' => 'string',
-            'baseurl' => 'string'
-        ));
+        $resolver->setAllowedTypes('forcesave', 'bool');
+        $resolver->setAllowedTypes('images_root_dir', 'string');
+        $resolver->setAllowedTypes('images_output_dir', 'string');
+        $resolver->setAllowedTypes('baseurl', 'string');
     }
 
     /**

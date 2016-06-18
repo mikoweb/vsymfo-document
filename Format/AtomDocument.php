@@ -14,7 +14,6 @@ namespace vSymfo\Component\Document\Format;
 
 use Stringy\Stringy as S;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\OptionsResolver\Options;
 use vSymfo\Component\Document\Element\HtmlElement;
 
 /**
@@ -273,11 +272,9 @@ class AtomDocument extends XmlDocument
             'uri' => ''
         ));
 
-        $resolver->setAllowedTypes(array(
-            'name' => 'string',
-            'email' => 'string',
-            'uri' => 'string'
-        ));
+        $resolver->setAllowedTypes('name', 'string');
+        $resolver->setAllowedTypes('email', 'string');
+        $resolver->setAllowedTypes('uri', 'string');
 
         $this->authorResolver = $resolver;
     }
@@ -296,11 +293,9 @@ class AtomDocument extends XmlDocument
             'label' => ''
         ));
 
-        $resolver->setAllowedTypes(array(
-            'term' => 'string',
-            'scheme' => 'string',
-            'label' => 'string'
-        ));
+        $resolver->setAllowedTypes('term', 'string');
+        $resolver->setAllowedTypes('scheme', 'string');
+        $resolver->setAllowedTypes('label', 'string');
 
         $this->categoryResolver = $resolver;
     }

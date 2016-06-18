@@ -125,46 +125,42 @@ class PdfDocument extends HtmlDocument
             'wkhtmltopdf_toc'    => array()
         ));
 
-        $resolver->setAllowedTypes(array(
-            'wkhtmltopdf_global' => 'array',
-            'wkhtmltopdf_page'   => 'array',
-            'wkhtmltopdf_cover'  => 'array',
-            'wkhtmltopdf_toc'    => 'array',
-            'dummy_pdf_url'      => 'string',
-            'display_url'        => 'string',
-            'download_url'       => 'string',
-            'remote_url'         => 'string',
-            // http://www.pinlady.net/PluginDetect/PDFReader/
-            'pluginDetect_PDFReader_url' => 'string',
-            'waiting_view_path'  => 'string'
-        ));
+        $resolver->setAllowedTypes('wkhtmltopdf_global', 'array');
+        $resolver->setAllowedTypes('wkhtmltopdf_page', 'array');
+        $resolver->setAllowedTypes('wkhtmltopdf_cover', 'array');
+        $resolver->setAllowedTypes('wkhtmltopdf_toc', 'array');
+        $resolver->setAllowedTypes('dummy_pdf_url', 'string');
+        $resolver->setAllowedTypes('display_url', 'string');
+        $resolver->setAllowedTypes('download_url', 'string');
+        $resolver->setAllowedTypes('remote_url', 'string');
+        // http://www.pinlady.net/PluginDetect/PDFReader/
+        $resolver->setAllowedTypes('pluginDetect_PDFReader_url', 'string');
+        $resolver->setAllowedTypes('waiting_view_path', 'string');
 
-        $resolver->setNormalizers(array(
-            'wkhtmltopdf_global' => function (Options $options, $value) use ($wkhtmltopdf_global) {
-                return array_merge($wkhtmltopdf_global, $value);
-            },
-            'wkhtmltopdf_page' => function (Options $options, $value) use ($wkhtmltopdf_page) {
-                return array_merge($wkhtmltopdf_page, $value);
-            },
-            'wkhtmltopdf_cover' => function (Options $options, $value) use ($wkhtmltopdf_cover) {
-                return array_merge($wkhtmltopdf_cover, $value);
-            },
-            'wkhtmltopdf_toc' => function (Options $options, $value) use ($wkhtmltopdf_toc) {
-                return array_merge($wkhtmltopdf_toc, $value);
-            },
-            'waiting_view_path' => function (Options $options, $value) {
-                if (!file_exists($value)) {
-                    throw new \UnexpectedValueException('Error during parse waiting_view_path: File not found.');
-                }
-
-                $info = pathinfo($value);
-                if ($info['extension'] != 'html') {
-                    throw new \UnexpectedValueException('Error during parse waiting_view_path: Unexpected file extension - ' . $info['extension']);
-                }
-
-                return $value;
-            },
-        ));
+        $resolver->setNormalizer('wkhtmltopdf_global', function (Options $options, $value) use ($wkhtmltopdf_global) {
+            return array_merge($wkhtmltopdf_global, $value);
+        });
+        $resolver->setNormalizer('wkhtmltopdf_page', function (Options $options, $value) use ($wkhtmltopdf_page) {
+            return array_merge($wkhtmltopdf_page, $value);
+        });
+        $resolver->setNormalizer('wkhtmltopdf_cover', function (Options $options, $value) use ($wkhtmltopdf_cover) {
+            return array_merge($wkhtmltopdf_cover, $value);
+        });
+        $resolver->setNormalizer('wkhtmltopdf_toc', function (Options $options, $value) use ($wkhtmltopdf_toc) {
+            return array_merge($wkhtmltopdf_toc, $value);
+        });
+        $resolver->setNormalizer('waiting_view_path', function (Options $options, $value) {
+            if (!file_exists($value)) {
+                throw new \UnexpectedValueException('Error during parse waiting_view_path: File not found.');
+            }
+    
+            $info = pathinfo($value);
+            if ($info['extension'] != 'html') {
+                throw new \UnexpectedValueException('Error during parse waiting_view_path: Unexpected file extension - ' . $info['extension']);
+            }
+    
+            return $value;
+        });
 
         $this->options = $resolver->resolve($options);
         $this->wkhtmltopdf->setOptions($this->options['wkhtmltopdf_global']);

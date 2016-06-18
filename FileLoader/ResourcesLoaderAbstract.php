@@ -44,22 +44,18 @@ abstract class ResourcesLoaderAbstract extends FileLoaderAbstract
             'async'   => true
         ));
 
-        $resolver->setAllowedTypes(array(
-            'baseurl' => 'string',
-            'name'    => 'string',
-            'combine' => 'bool',
-            'async'   => 'bool',
-            'resources' => 'object'
-        ));
+        $resolver->setAllowedTypes('baseurl', 'string');
+        $resolver->setAllowedTypes('name', 'string');
+        $resolver->setAllowedTypes('combine', 'bool');
+        $resolver->setAllowedTypes('async', 'bool');
+        $resolver->setAllowedTypes('resources', 'object');
 
         $that = $this;
-        $resolver->setNormalizers(array(
-            'resources' => function (Options $options, $value) use($that) {
-                $that->compareOptionType('resources', $value
-                    , 'vSymfo\Component\Document\Resources\Interfaces\ResourceManagerInterface');
-                return $value;
-            },
-        ));
+        $resolver->setNormalizer('resources', function (Options $options, $value) use($that) {
+            $that->compareOptionType('resources', $value
+                , 'vSymfo\Component\Document\Resources\Interfaces\ResourceManagerInterface');
+            return $value;
+        });
     }
 
     /**
