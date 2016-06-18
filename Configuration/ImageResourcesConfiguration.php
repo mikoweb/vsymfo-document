@@ -12,6 +12,7 @@
 
 namespace vSymfo\Component\Document\Configuration;
 
+use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
@@ -46,7 +47,7 @@ class ImageResourcesConfiguration implements ConfigurationInterface
      * @param string $name
      * @param bool $multi
      * 
-     * @return TreeBuilder
+     * @return NodeDefinition
      */
     private function addSectionNode($name, $multi)
     {
