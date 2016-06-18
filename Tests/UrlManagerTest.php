@@ -43,6 +43,6 @@ class UrlManagerTest extends \PHPUnit_Framework_TestCase
         $url = new UrlManager();
         $url->setBaseUrl('/root');
         $url->setVersioning(true, '2.1');
-        $this->assertEquals('/root/test.html?version=2.1', $url->url('/test.html'));
+        $this->assertEquals('/root/test.html?v=2.1', $url->url('/test.html'));
     }
 }
