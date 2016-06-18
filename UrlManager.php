@@ -67,7 +67,7 @@ class UrlManager implements UrlManagerInterface
     public function __construct(array $options = null)
     {
         if (isset($options['baseurl']) && is_string($options['baseurl']))
-            $this->setBaseurl($options['baseurl']);
+            $this->setBaseUrl($options['baseurl']);
     }
 
     /**
