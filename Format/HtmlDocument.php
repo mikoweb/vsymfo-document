@@ -19,7 +19,6 @@ use vSymfo\Component\Document\Element\FaviconElement;
 use vSymfo\Component\Document\Resources\JavaScriptResourceManager;
 use vSymfo\Component\Document\Resources\StyleSheetResourceManager;
 use vSymfo\Component\Document\ResourceGroups;
-use JShrink\Minifier;
 
 /**
  * Dokument HTML
