@@ -65,7 +65,7 @@ abstract class ResourcesLoaderAbstract extends FileLoaderAbstract
     protected function refreshCache($filename,  ConfigCache $cache)
     {
         $processor = new Processor();
-        $content = Yaml::parse($filename);
+        $content = Yaml::parse(file_get_contents($filename));
         $resource = new FileResource($filename);
         if (is_array($content)) {
             $processor->processConfiguration(

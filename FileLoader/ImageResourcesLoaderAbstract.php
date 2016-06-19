@@ -71,7 +71,7 @@ abstract class ImageResourcesLoaderAbstract extends FileLoaderAbstract
      */
     protected function refreshCache($filename, ConfigCache $cache)
     {
-        $content = Yaml::parse($filename);
+        $content = Yaml::parse(file_get_contents($filename));
         $resource = new FileResource($filename);
         $processor = new Processor();
         if (is_array($content)) {
