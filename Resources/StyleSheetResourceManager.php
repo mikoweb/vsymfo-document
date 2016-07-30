@@ -25,6 +25,20 @@ use vSymfo\Component\Document\Resources\Interfaces\ResourceInterface;
  */
 class StyleSheetResourceManager extends CombineResourceManagerAbstract
 {
+    const FORMAT_HTML = 'html';
+
+    static protected $supportedFormats = [
+        self::FORMAT_HTML,
+    ];
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSupportedFormats()
+    {
+        return self::$supportedFormats;
+    }
+
     /**
      * Dodaj zasób
      * 

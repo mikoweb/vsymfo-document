@@ -223,7 +223,7 @@ abstract class ResourceManagerAbstract implements ResourceManagerInterface
 
         $call = "render_$format";
         if (!method_exists($this, $call)) {
-            throw new \Exception('unallowed format: ' . $format);
+            throw new \UnexpectedValueException('Unexpected format: ' . $format);
         }
 
         if ($group === 0) {

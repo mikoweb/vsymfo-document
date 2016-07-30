@@ -28,6 +28,24 @@ use vSymfo\Component\Document\Resources\Interfaces\ResourceInterface;
  */
 class ImageResourceManager extends ResourceManagerAbstract
 {
+    const FORMAT_HTML = 'html';
+    const FORMAT_HTML_PICTURE = 'html_picture';
+    const FORMAT_HTML_IMG = 'html_img';
+
+    static protected $supportedFormats = [
+        self::FORMAT_HTML_PICTURE,
+        self::FORMAT_HTML_IMG,
+        self::FORMAT_HTML,
+    ];
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSupportedFormats()
+    {
+        return self::$supportedFormats;
+    }
+
     /**
      * Dodaj zasób
      * 

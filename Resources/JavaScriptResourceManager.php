@@ -25,6 +25,24 @@ use vSymfo\Component\Document\Resources\Interfaces\ResourceInterface;
  */
 class JavaScriptResourceManager extends CombineResourceManagerAbstract
 {
+    const FORMAT_HTML = 'html';
+    const FORMAT_JSON = 'json';
+    const FORMAT_ARRAY = 'array';
+
+    static protected $supportedFormats = [
+        self::FORMAT_HTML,
+        self::FORMAT_JSON,
+        self::FORMAT_ARRAY
+    ];
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSupportedFormats()
+    {
+        return self::$supportedFormats;
+    }
+
     /**
      * Dodaj zasób
      * 

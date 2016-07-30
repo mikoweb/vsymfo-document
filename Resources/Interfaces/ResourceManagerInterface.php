@@ -90,4 +90,11 @@ interface ResourceManagerInterface
      * @return array
      */
     public function getOnAddNames();
+
+    /**
+     * Zwraca listę obsługiwanych formatów
+     * 
+     * @return array
+     */
+    public function getSupportedFormats();
 }
