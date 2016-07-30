@@ -139,7 +139,7 @@ class StyleSheetCombineFiles extends CombineFilesAbstract
             return $css;
         } catch (\Exception $e) {
             $cacheFiles[$path] = 0;
-            return $e->getMessage();
+            return str_replace(str_replace($relativePath, '', $path), '{SERVER_DIRECTORY}', $e->getMessage());
         }
     }
 
