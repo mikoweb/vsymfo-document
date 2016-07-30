@@ -14,6 +14,7 @@ use vSymfo\Component\Document\UrlManager;
 use vSymfo\Component\Document\Resources\ImageResource;
 use vSymfo\Component\Document\Resources\ImageResourceManager;
 use vSymfo\Component\Document\ResourceGroups;
+use vSymfo\Component\Document\Resources\Storage\ImagineImagesStorage;
 use Imagine\Image\ImageInterface;
 use Imagine\Gd\Imagine;
 
@@ -49,6 +50,13 @@ class ImageResourceTest extends \PHPUnit_Framework_TestCase
         );
         $url = new UrlManager();
         $url->setBaseUrl('/tmp/');
+
+        $imageStorage = new ImagineImagesStorage();
+        $imageStorage->setOptions($image->getOptions());
+        $imageStorage->setSources($image->getSources());
+        $imageStorage->setUrlManager($url);
+
+        $image->setImagesStorage($imageStorage);
         $image->setUrlManager($url);
         $image->save();
 
@@ -77,6 +85,11 @@ class ImageResourceTest extends \PHPUnit_Framework_TestCase
                 $url = new UrlManager();
                 $url->setBaseUrl('/tmp/');
                 $res->setUrlManager($url);
+                $imageStorage = new ImagineImagesStorage();
+                $imageStorage->setUrlManager($url);
+                $imageStorage->setSources($res->getSources());
+                $imageStorage->setOptions($res->getOptions());
+                $res->setImagesStorage($imageStorage);
             }
         );
 

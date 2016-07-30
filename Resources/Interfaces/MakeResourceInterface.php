@@ -13,7 +13,7 @@
 namespace vSymfo\Component\Document\Resources\Interfaces;
 
 /**
- * Zasób operujący na dodatkowych plikach
+ * Resource that has files storage.
  * 
  * @author Rafał Mikołajun <rafal@vision-web.pl>
  * @package vSymfo Component
@@ -22,17 +22,18 @@ namespace vSymfo\Component\Document\Resources\Interfaces;
 interface MakeResourceInterface extends ResourceInterface
 {
     /**
-     * Zapisz pliki
-     * 
+     * Save images to storage.
+     *
      * @param array $options
-     * @return null|array
+     *
+     * @return null|array Data of stored files.
      */
     public function save(array $options = null);
 
     /**
-     * Posprzątaj po sobie
-     * 
-     * @return null|array
+     * Save files from storage.
+     *
+     * @return null|array List of removed files.
      */
     public function cleanup();
 }
