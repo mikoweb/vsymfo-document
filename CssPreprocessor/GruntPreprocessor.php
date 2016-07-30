@@ -89,6 +89,10 @@ class GruntPreprocessor extends ScssPreprocessor implements PreprocessorInterfac
             if ($process->getExitCode() === 127) {
                 $this->cleanUp($outputFileName, $sourceFileName);
                 return parent::compile($path, $relativePath);
+            } else if ($process->getExitCode() > 0 && $process->getExitCode() < 7) {
+                /** Grunt error @link http://gruntjs.com/api/exit-codes */
+                $this->cleanUp($outputFileName, $sourceFileName);
+                throw $e;
             } else if (file_exists($outputFileName)) {
                 $content = file_get_contents($outputFileName);
                 $this->cleanUp($outputFileName, $sourceFileName);
