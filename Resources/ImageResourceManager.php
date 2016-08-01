@@ -116,7 +116,9 @@ class ImageResourceManager extends ResourceManagerAbstract
 
         $urls = $res->getUrl();
         $tag->attr('src', $urls[$data['src-index']]);
-        $tag->attr('srcset', substr($srcset, 0, -2));
+        if (!empty($srcset)) {
+            $tag->attr('srcset', substr($srcset, 0, -2));
+        }
         $tag->attr('alt', htmlspecialchars($res->getName()));
         foreach ($data['attr'] as $k => $v) {
             $tag->attr(htmlspecialchars($k), htmlspecialchars($v));
