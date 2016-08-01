@@ -110,8 +110,8 @@ class ImageResourceTest extends \PHPUnit_Framework_TestCase
                             'width' => 1000,
                             'height' => 800,
                             'format' => 'jpg',
-                            'srcset-x' => 2,
-                            'media-index' => 0
+                            'srcset_x' => 2,
+                            'media_index' => 0
                         ),
                         array(
                             'index' => 1,

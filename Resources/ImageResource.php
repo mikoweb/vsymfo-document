@@ -96,10 +96,10 @@ class ImageResource extends ResourceAbstract implements MakeResourceInterface
             'jpeg_quality' => 80,
             'png_compression_level' => 9,
             'mode' => ImageInterface::THUMBNAIL_OUTBOUND,
-            'srcset-w' => 0,
-            'srcset-h' => 0,
-            'srcset-x' => 0,
-            'media-index' => -1,
+            'srcset_w' => 0,
+            'srcset_h' => 0,
+            'srcset_x' => 0,
+            'media_index' => -1,
             'use_only_width' => false,
             'format' => 'jpg',
         ));
@@ -112,10 +112,10 @@ class ImageResource extends ResourceAbstract implements MakeResourceInterface
         $image->setAllowedTypes('jpeg_quality', 'integer');
         $image->setAllowedTypes('png_compression_level', 'integer');
         $image->setAllowedTypes('mode', 'string');
-        $image->setAllowedTypes('srcset-w', 'integer');
-        $image->setAllowedTypes('srcset-h', 'integer');
-        $image->setAllowedTypes('srcset-x', 'integer');
-        $image->setAllowedTypes('media-index', 'integer');
+        $image->setAllowedTypes('srcset_w', 'integer');
+        $image->setAllowedTypes('srcset_h', 'integer');
+        $image->setAllowedTypes('srcset_x', 'integer');
+        $image->setAllowedTypes('media_index', 'integer');
         $image->setAllowedTypes('use_only_width', 'bool');
 
         $image->setAllowedValues('format', ['jpg', 'png', 'gif']);
@@ -149,12 +149,12 @@ class ImageResource extends ResourceAbstract implements MakeResourceInterface
                     throw new \OutOfRangeException('there is no source with index ' . $opt['index']);
                 }
 
-                if ($opt['media-index'] < -1) {
-                    throw new \UnexpectedValueException('media-index must be greater than or equal to -1');
+                if ($opt['media_index'] < -1) {
+                    throw new \UnexpectedValueException('media_index must be greater than or equal to -1');
                 }
 
-                if ($opt['media-index'] > -1 && !isset($options['media'][$opt['media-index']])) {
-                    throw new \OutOfRangeException('there is no Media Query with index ' . $opt['media-index']);
+                if ($opt['media_index'] > -1 && !isset($options['media'][$opt['media_index']])) {
+                    throw new \OutOfRangeException('there is no Media Query with index ' . $opt['media_index']);
                 }
             }
 
@@ -202,10 +202,10 @@ class ImageResource extends ResourceAbstract implements MakeResourceInterface
             );
 
             foreach ($this->options['images'] as $k => $image) {
-                if (!isset($this->imageData[$image['media-index']])) {
-                    $this->imageData[$image['media-index']] = array();
+                if (!isset($this->imageData[$image['media_index']])) {
+                    $this->imageData[$image['media_index']] = array();
 
-                    if ($image['media-index'] !== -1) {
+                    if ($image['media_index'] !== -1) {
                         $this->imageData['length']++;
                     }
                 }
@@ -215,7 +215,7 @@ class ImageResource extends ResourceAbstract implements MakeResourceInterface
                     'data' => $image
                 );
 
-                $this->imageData[$image['media-index']][] = $item;
+                $this->imageData[$image['media_index']][] = $item;
             }
         }
 
