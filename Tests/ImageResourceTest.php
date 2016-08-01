@@ -52,12 +52,8 @@ class ImageResourceTest extends \PHPUnit_Framework_TestCase
         $url->setBaseUrl('/tmp/');
 
         $imageStorage = new ImagineImagesStorage();
-        $imageStorage->setOptions($image->getOptions());
-        $imageStorage->setSources($image->getSources());
-        $imageStorage->setUrlManager($url);
-
-        $image->setImagesStorage($imageStorage);
         $image->setUrlManager($url);
+        $image->setImagesStorage($imageStorage);
         $image->save();
 
         $imagine = new Imagine();
@@ -86,9 +82,6 @@ class ImageResourceTest extends \PHPUnit_Framework_TestCase
                 $url->setBaseUrl('/tmp/');
                 $res->setUrlManager($url);
                 $imageStorage = new ImagineImagesStorage();
-                $imageStorage->setUrlManager($url);
-                $imageStorage->setSources($res->getSources());
-                $imageStorage->setOptions($res->getOptions());
                 $res->setImagesStorage($imageStorage);
             }
         );

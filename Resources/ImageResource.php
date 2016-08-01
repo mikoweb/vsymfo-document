@@ -70,7 +70,9 @@ class ImageResource extends ResourceAbstract implements MakeResourceInterface
             'media'  => array(),
             'attr'   => array(),
             'src-index' => 0,
-            'compare_image_mode' => 'simple'
+            'compare_image_mode' => 'simple',
+            'filter' => null,
+            'alt_property' => null,
         ));
 
         $resolver->setAllowedValues('compare_image_mode', ['simple', 'full']);
@@ -83,9 +85,11 @@ class ImageResource extends ResourceAbstract implements MakeResourceInterface
         $resolver->setAllowedTypes('attr', 'array');
         $resolver->setAllowedTypes('src-index', 'integer');
         $resolver->setAllowedTypes('compare_image_mode', 'string');
+        $resolver->setAllowedTypes('filter', ['string', 'null']);
+        $resolver->setAllowedTypes('alt_property', ['string', 'null']);
 
         $image = new OptionsResolver();
-        $image->setRequired(array('width', 'height', 'format'));
+        $image->setRequired(array('width', 'height'));
         $image->setDefaults(array(
             'index' => 0,
             'suffix' => '',
@@ -96,7 +100,8 @@ class ImageResource extends ResourceAbstract implements MakeResourceInterface
             'srcset-h' => 0,
             'srcset-x' => 0,
             'media-index' => -1,
-            'use_only_width' => false
+            'use_only_width' => false,
+            'format' => 'jpg',
         ));
 
         $image->setAllowedTypes('index', 'integer');
@@ -223,6 +228,9 @@ class ImageResource extends ResourceAbstract implements MakeResourceInterface
     public function setImagesStorage(ImagesStorageInterface $imagesStorage = null)
     {
         $this->imagesStorage = $imagesStorage;
+        $this->imagesStorage->setOptions($this->options);
+        $this->imagesStorage->setSources($this->source);
+        $this->imagesStorage->setUrlManager($this->urlManager);
     }
 
     /**

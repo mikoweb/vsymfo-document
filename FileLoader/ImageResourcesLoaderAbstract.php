@@ -20,10 +20,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Yaml\Yaml;
 use vSymfo\Core\FileLoaderAbstract;
 use vSymfo\Component\Document\Configuration\ImageResourcesConfiguration;
-use vSymfo\Component\Document\Resources\ImageResource;
 
 /**
- * Loader ilustracji
+ * Images resources loader.
  * 
  * @author Rafał Mikołajun <rafal@vision-web.pl>
  * @package vSymfo Component
@@ -55,7 +54,6 @@ abstract class ImageResourcesLoaderAbstract extends FileLoaderAbstract
         parent::setDefaultOptions($resolver);
         $resolver->setRequired(array('images_root_dir', 'images_output_dir', 'baseurl'));
         $resolver->setDefaults(array(
-            'layout'    => null,
             'forcesave' => false
         ));
 
@@ -74,12 +72,10 @@ abstract class ImageResourcesLoaderAbstract extends FileLoaderAbstract
         $content = Yaml::parse(file_get_contents($filename));
         $resource = new FileResource($filename);
         $processor = new Processor();
-        if (is_array($content)) {
-            $processor->processConfiguration(
-                new ImageResourcesConfiguration(),
-                $content
-            );
-        }
+        $processor->processConfiguration(
+            new ImageResourcesConfiguration(),
+            is_null($content) ? [] : $content
+        );
 
         $this->writeCache($cache, $resource, $content);
     }
@@ -91,35 +87,16 @@ abstract class ImageResourcesLoaderAbstract extends FileLoaderAbstract
      */
     protected function process($filename, $type = null)
     {
-        $config = ImageResourcesConfiguration::layoutConfig(self::$yaml[$filename], $this->options['layout']);
-        $this->loadImages($config, $type);
+        $config = ImageResourcesConfiguration::layoutConfig(self::$yaml[$filename], $type);
+        $this->loadImages($config, self::$yaml[$filename], $type);
     }
 
     /**
-     * Wczytywanie obrazków
+     * Processing a configuration of the images.
      * 
      * @param array $config
+     * @param array $fullConfig
      * @param null|string $type
      */
-    abstract protected function loadImages(array &$config, $type = null);
-
-    /**
-     * Zapisywanie obrazków
-     * 
-     * @param ImageResource $res
-     * @param array $config
-     * @param array $options
-     */
-    abstract public function saveImages(ImageResource $res, array &$config, array $options = null);
-
-    /**
-     * Tworzenie zasobu graficznego
-     * 
-     * @param string $title
-     * @param array $images
-     * @param array $config
-     * 
-     * @return ImageResource
-     */
-    abstract protected function createImageResource($title, array &$images, array &$config);
+    abstract protected function loadImages(array $config, array $fullConfig, $type = null);
 }

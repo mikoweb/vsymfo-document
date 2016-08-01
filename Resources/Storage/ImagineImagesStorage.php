@@ -44,6 +44,11 @@ class ImagineImagesStorage implements ImagesStorageInterface
      */
     private $source;
 
+    /**
+     * @var bool
+     */
+    private $refresh;
+
     public function __construct()
     {
         $this->urls = null;
@@ -57,6 +62,7 @@ class ImagineImagesStorage implements ImagesStorageInterface
      */
     public function setOptions(array $options = [])
     {
+        $this->refresh = true;
         $this->options = $options;
     }
 
@@ -65,6 +71,7 @@ class ImagineImagesStorage implements ImagesStorageInterface
      */
     public function setUrlManager(UrlManagerInterface $urlManager = null)
     {
+        $this->refresh = true;
         $this->urlManager = $urlManager;
     }
 
@@ -73,6 +80,7 @@ class ImagineImagesStorage implements ImagesStorageInterface
      */
     public function setSources(array $sources = [])
     {
+        $this->refresh = true;
         $this->source = $sources;
     }
 
@@ -81,13 +89,14 @@ class ImagineImagesStorage implements ImagesStorageInterface
      */
     public function getUrls()
     {
-        if (is_null($this->urls)) {
+        if (is_null($this->urls) || $this->refresh === true) {
             $this->urls = array();
+            $this->refresh = false;
             foreach ($this->options['images'] as &$image) {
                 $this->urls[] = !is_null($this->urlManager)
                     ? $this->urlManager->url($this->options['output_dir']
                         . DIRECTORY_SEPARATOR . $this->filename($image))
-                    : $source;
+                    : $this->source[$image['index']];
             }
         }
 
