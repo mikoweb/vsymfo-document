@@ -100,12 +100,12 @@ class ImageResourceManager extends ResourceManagerAbstract
         if (isset($data[-1])) {
             foreach ($data[-1] as &$img) {
                 $srcset .= $img['url'];
-                $srcset .= !empty($img['data']['srcset-w'])
-                    ? (' ' . $img['data']['srcset-w'] . 'w') : '';
-                $srcset .= !empty($img['data']['srcset-h'])
-                    ? (' ' . $img['data']['srcset-h'] . 'h') : '';
-                $srcset .= !empty($img['data']['srcset-x'])
-                    ? (' ' . $img['data']['srcset-x'] . 'x') : '';
+                $srcset .= !empty($img['data']['srcset_w'])
+                    ? (' ' . $img['data']['srcset_w'] . 'w') : '';
+                $srcset .= !empty($img['data']['srcset_h'])
+                    ? (' ' . $img['data']['srcset_h'] . 'h') : '';
+                $srcset .= !empty($img['data']['srcset_x'])
+                    ? (' ' . $img['data']['srcset_x'] . 'x') : '';
                 $srcset .= ', ';
             }
         }
@@ -116,8 +116,12 @@ class ImageResourceManager extends ResourceManagerAbstract
 
         $urls = $res->getUrl();
         $tag->attr('src', $urls[$data['src-index']]);
+
         if (!empty($srcset)) {
-            $tag->attr('srcset', substr($srcset, 0, -2));
+            $srcset = substr($srcset, 0, -2);
+            if ($srcset !== $tag->attr('src')) {
+                $tag->attr('srcset', $srcset);
+            }
         }
         $tag->attr('alt', htmlspecialchars($res->getName()));
         foreach ($data['attr'] as $k => $v) {
@@ -142,12 +146,12 @@ class ImageResourceManager extends ResourceManagerAbstract
             $srcset = '';
             foreach ($arr as &$img) {
                 $srcset .= $img['url'];
-                $srcset .= !empty($img['data']['srcset-x'])
-                    ? (' ' . $img['data']['srcset-x'] . 'x') : '';
+                $srcset .= !empty($img['data']['srcset_x'])
+                    ? (' ' . $img['data']['srcset_x'] . 'x') : '';
                 $srcset .= ', ';
             }
             $tag->attr('srcset', substr($srcset, 0, -2));
-            $index = $arr[0]['data']['media-index'];
+            $index = $arr[0]['data']['media_index'];
             if (isset($data['media'][$index])) {
                 $tag->attr('media', $data['media'][$index]);
             }
