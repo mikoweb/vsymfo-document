@@ -40,6 +40,11 @@ interface ResourceGroupsInterface
     public function addResource(ResourceInterface $res, $group = null);
 
     /**
+     * Czyszczenie zasobów
+     */
+    public function clearResources();
+
+    /**
      * Zapodaj zasoby o podanej grupie
      * 
      * @param string|null $name

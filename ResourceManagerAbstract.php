@@ -155,7 +155,7 @@ abstract class ResourceManagerAbstract implements ResourceManagerInterface
     }
 
     /**
-     * Zwraca tablice obiketów SingleResource
+     * Zwraca tablice obiektów ResourceInterface
      * 
      * @return array
      */
@@ -191,6 +191,15 @@ abstract class ResourceManagerAbstract implements ResourceManagerInterface
         }
         $this->groups->addResource($res, $group);
         $this->length++;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function clear()
+    {
+        $this->groups->clearResources();
+        $this->length = 0;
     }
 
     /**

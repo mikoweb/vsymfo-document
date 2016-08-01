@@ -78,6 +78,17 @@ class ResourceGroups implements ResourceGroupsInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function clearResources()
+    {
+        $this->unknown = [];
+        foreach ($this->group as &$group) {
+            $group['resources'] = [];
+        }
+    }
+
+    /**
      * Zapodaj zasoby o podanej grupie
      * 
      * @param string|null $name

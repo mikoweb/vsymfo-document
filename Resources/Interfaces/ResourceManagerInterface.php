@@ -43,6 +43,11 @@ interface ResourceManagerInterface
     public function add(ResourceInterface $res, $group = null);
 
     /**
+     * Czyszczenie zasobów
+     */
+    public function clear();
+
+    /**
      * Zwraca tablice obiektów SingleResource
      *
      * @return array
