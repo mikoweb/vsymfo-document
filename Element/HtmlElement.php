@@ -183,7 +183,7 @@ class HtmlElement implements ElementInterface
     {
         if (is_null($text)) {
             return (string)$this->element->nodeValue;
-        } else if (is_string($text)) {
+        } else if (is_scalar($text)) {
             $this->element->nodeValue = $text;
         } else {
             throw new \UnexpectedValueException('text is not string');
@@ -210,7 +210,7 @@ class HtmlElement implements ElementInterface
 
         if (is_null($value)) {
             return $this->element->getAttribute($name);
-        } else if (is_string($value)) {
+        } else if (is_scalar($value)) {
             $this->element->setAttribute($name, $value);
         } else {
             throw new \UnexpectedValueException('attribute value is not string');
