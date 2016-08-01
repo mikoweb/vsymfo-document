@@ -67,12 +67,10 @@ abstract class ResourcesLoaderAbstract extends FileLoaderAbstract
         $processor = new Processor();
         $content = Yaml::parse(file_get_contents($filename));
         $resource = new FileResource($filename);
-        if (is_array($content)) {
-            $processor->processConfiguration(
-                new ResourcesConfiguration(),
-                $content
-            );
-        }
+        $processor->processConfiguration(
+            new ResourcesConfiguration(),
+            is_null($content) ? [] : $content
+        );
 
         $this->writeCache($cache, $resource, $content);
     }

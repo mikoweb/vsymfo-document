@@ -63,12 +63,10 @@ class TranslationLoader extends FileLoaderAbstract
         $content = Yaml::parse(file_get_contents($filename));
         $resource = new FileResource($filename);
         $processor = new Processor();
-        if (is_array($content)) {
-            $processor->processConfiguration(
-                new TranslationConfiguration(),
-                $content
-            );
-        }
+        $processor->processConfiguration(
+            new TranslationConfiguration(),
+            is_null($content) ? [] : $content
+        );
 
         $this->writeCache($cache, $resource, $content);
     }
