@@ -20,7 +20,8 @@ use mikehaertl\wkhtmlto\Pdf;
 use Stringy\Stringy as S;
 
 /**
- * Dokument PDF
+ * PDF document. Generated from HTML data.
+ *
  * @author Rafał Mikołajun <rafal@vision-web.pl>
  * @package vSymfo Component
  * @subpackage Document
@@ -43,7 +44,8 @@ class PdfDocument extends HtmlDocument
     private $filename = null;
 
     /**
-     * Tablica ze ścieżkami (pliki html) do okładek
+     * Array with paths (HTML files) to covers.
+     *
      * @var array
      */
     private $covers = array();
@@ -59,7 +61,8 @@ class PdfDocument extends HtmlDocument
     private $outputSelector = null;
 
     /**
-     * Kolejka żądań utworzenia pliku
+     * Queue requests file creation.
+     *
      * @var QueuePdfDb
      */
     private $queue = null;
@@ -82,8 +85,8 @@ class PdfDocument extends HtmlDocument
     }
 
     /**
-     * Ustawienia dokumentu i WkHtmlToPdf
-     * 
+     * Settings of document and WkHtmlToPdf.
+     *
      * @param array $options
      * @link https://github.com/mikehaertl/phpwkhtmltopdf
      * @link http://wkhtmltopdf.org/usage/wkhtmltopdf.txt
@@ -170,10 +173,10 @@ class PdfDocument extends HtmlDocument
     }
 
     /**
-     * Ustaw docelową ścieżkę, gdzie zostanie zapisany plik
-     * 
+     * Set output filename for save.
+     *
      * @param string $filename
-     * 
+     *
      * @throws \InvalidArgumentException
      */
     public function setFilename($filename)
@@ -186,8 +189,8 @@ class PdfDocument extends HtmlDocument
     }
 
     /**
-     * Pobierz ścieżkę do pliku PDF
-     * 
+     * Get output filename for save.
+     *
      * @return string
      */
     public function getFilename()
@@ -196,8 +199,8 @@ class PdfDocument extends HtmlDocument
     }
 
     /**
-     * Ścieżka do pliku z rozszerzeniem HTML
-     * 
+     * Transform getFilename() to html path.
+     *
      * @return string
      */
     public function getFilenameToHtml()
@@ -207,12 +210,12 @@ class PdfDocument extends HtmlDocument
     }
 
     /**
-     * Dodaj nową okładkę
-     * 
+     * Add new Cover.
+     *
      * @param string $name
      * @param string $url
      * @param array $options
-     * 
+     *
      * @throws \InvalidArgumentException
      */
     public function addCover($name, $url, array $options = null)
@@ -232,11 +235,11 @@ class PdfDocument extends HtmlDocument
     }
 
     /**
-     * Wstaw spis treści
-     * 
+     * Insert Table of Contents.
+     *
      * @param bool $use
      * @param string $xslStyleSheet
-     * 
+     *
      * @throws \InvalidArgumentException
      */
     public function toc($use, $xslStyleSheet = null)
@@ -252,8 +255,8 @@ class PdfDocument extends HtmlDocument
     }
 
     /**
-     * Rzuć wyjątek jeżeli nie ustawiono wymaganych pól
-     * 
+     * Throw exception if not set required options.
+     *
      * @throws \RuntimeException
      */
     private function optionsTest()
@@ -268,8 +271,8 @@ class PdfDocument extends HtmlDocument
     }
 
     /**
-     * Wymuś aktualizację pliku PDF, jeżeli przekroczono czas oczekiwania
-     * 
+     * Force update PDF file if is expired.
+     *
      * @param $duration czas trwania
      */
     public function updateIfExpired($duration)
@@ -283,7 +286,7 @@ class PdfDocument extends HtmlDocument
     }
 
     /**
-     * Pobieranie dokumentu
+     * Download PDF file.
      */
     public function download()
     {
@@ -307,7 +310,7 @@ class PdfDocument extends HtmlDocument
     }
 
     /**
-     * Wyświetlanie dokumentu
+     * Display PDF in browser.
      */
     public function display()
     {
@@ -343,7 +346,7 @@ class PdfDocument extends HtmlDocument
     /**
      * Ten widok jest tworzony, gdy nie można utworzyć pliku PDF z poziomu skryptu PHP.
      * Jest to widok, który odświeża się w regularnych odstępach czasu, oczekując na wygenerowanie pliku PDF,
-     * przez zewnętrzne oprogramowanie np. Crontab.
+     * przez zewnętrzne oprogramowanie odpalane z Crontab.
      * Żądanie wygenerowania pliku jest zapisywane w bazie SQLite. Kiedy zewnętrzne oprogramowanie wegeneruje plik PDF,
      * żądanie powinno się usunąć z bazy danych.
      *
@@ -355,9 +358,7 @@ class PdfDocument extends HtmlDocument
     }
 
     /**
-     * @return string
-     * 
-     * @throws \Exception
+     * {@inheritdoc }
      */
     public function render()
     {

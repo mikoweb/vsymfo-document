@@ -16,8 +16,8 @@ use vSymfo\Component\Document\Element\TxtElement;
 use vSymfo\Component\Document\Element\HtmlElement;
 
 /**
- * Dokument XML
- * 
+ * XML document.
+ *
  * @author Rafał Mikołajun <rafal@vision-web.pl>
  * @package vSymfo Component
  * @subpackage Document_Type
@@ -52,7 +52,7 @@ class XmlDocument extends DocumentAbstract
     }
 
     /**
-     * {@inheritdoc }
+     * {@inheritdoc}
      */
     public function formatName()
     {
@@ -60,12 +60,10 @@ class XmlDocument extends DocumentAbstract
     }
 
     /**
-     * Elementy
-     * 
-     * @param string $name
-     * 
+     * {@inheritdoc}
+     *
      * @return HtmlElement|TxtElement
-     * 
+     *
      * @throws \Exception
      */
     public function element($name)
@@ -83,13 +81,7 @@ class XmlDocument extends DocumentAbstract
     }
 
     /**
-     * Zasoby
-     * 
-     * @param string $name
-     * 
-     * @return null
-     * 
-     * @throws \Exception
+     * {@inheritdoc}
      */
     public function resources($name)
     {
@@ -97,11 +89,7 @@ class XmlDocument extends DocumentAbstract
     }
 
     /**
-     * Treść
-     * 
-     * @param string
-     * 
-     * @return string
+     * {@inheritdoc}
      */
     public function body($set = null)
     {
@@ -114,7 +102,7 @@ class XmlDocument extends DocumentAbstract
 
     /**
      * @param string $name
-     * 
+     *
      * @throws \InvalidArgumentException
      */
     public function renameRoot($name)
@@ -133,8 +121,8 @@ class XmlDocument extends DocumentAbstract
     }
 
     /**
-     * Kod samego prologu
-     * 
+     * Only code of prolog.
+     *
      * @return string
      */
     protected function prologRender()
@@ -149,7 +137,7 @@ class XmlDocument extends DocumentAbstract
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function render()
     {

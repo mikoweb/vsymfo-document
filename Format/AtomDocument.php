@@ -17,8 +17,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use vSymfo\Component\Document\Element\HtmlElement;
 
 /**
- * Dokument Atom
- * 
+ * Atom format.
+ *
+ * @link https://tools.ietf.org/html/rfc4287
+ *
  * @author Rafał Mikołajun <rafal@vision-web.pl>
  * @package vSymfo Component
  * @subpackage Document_Type
@@ -113,12 +115,12 @@ class AtomDocument extends XmlDocument
     public function __construct()
     {
         parent::__construct();
-        // zmiana elementu root
+        // change root element
         $this->root->destroy($this->root);
         $this->root = new HtmlElement('feed');
         $this->root->attr('xmlns', 'http://www.w3.org/2005/Atom');
 
-        // elementy obowiązkowe zawarte w feed
+        // required elements contains in feed
         $this->title = new HtmlElement('title');
         $this->title->insertTo($this->root);
         $this->updated = new HtmlElement('updated');
@@ -126,7 +128,7 @@ class AtomDocument extends XmlDocument
         $this->id = new HtmlElement('id');
         $this->id->insertTo($this->root);
 
-        // elementy opcjonalne zawarte w feed
+        // optional elements contains in feed
         $this->author = new HtmlElement('author');
         $this->authorName = new HtmlElement('name');
         $this->authorName->insertTo($this->author);
@@ -140,10 +142,7 @@ class AtomDocument extends XmlDocument
         $this->logo = new HtmlElement('logo');
         $this->rights = new HtmlElement('rights');
 
-        // program generujący
         $this->generator('vSymfo Document Component');
-
-        // konfiguracja niektórych elementów
         $this->setAuthorResolver();
         $this->setCategoryResolver();
     }
@@ -165,142 +164,6 @@ class AtomDocument extends XmlDocument
     }
 
     /**
-     * Filtr tekstowy.
-     * Wszystkie znaki w jednej linii + htmlspecialchars().
-     * 
-     * @param HtmlElement $htmlElement
-     * @param string $text
-     * @param string $attr
-     */
-    private function filterText(HtmlElement $htmlElement, $text, $attr = null)
-    {
-        if (is_string($attr)) {
-            $htmlElement->attr($attr,
-                htmlspecialchars(
-                    S::create($text)->collapseWhitespace()
-                    , ENT_QUOTES
-                    , $this->encoding->render()
-                )
-            );
-        } else {
-            $htmlElement->text(
-                htmlspecialchars(
-                    S::create($text)->collapseWhitespace()
-                    , ENT_QUOTES
-                    , $this->encoding->render()
-                )
-            );
-        }
-    }
-
-    /**
-     * Filtr na adres URL.
-     * 
-     * @param HtmlElement $htmlElement
-     * @param string $text
-     * @param string $attr
-     */
-    private function filterLink(HtmlElement $htmlElement, $text, $attr = null)
-    {
-        if (is_string($attr)) {
-            $htmlElement->attr($attr,
-                filter_var($text, FILTER_VALIDATE_URL)
-                    ? $text
-                    : ''
-            );
-        } else {
-            $htmlElement->text(
-                filter_var($text, FILTER_VALIDATE_URL)
-                    ? $text
-                    : ''
-            );
-        }
-    }
-
-    /**
-     * Filtr na adres email.
-     * @param HtmlElement $htmlElement
-     * @param string $text
-     * @param string $attr
-     */
-    private function filterEmail(HtmlElement $htmlElement, $text, $attr = null)
-    {
-        if (is_string($attr)) {
-            $htmlElement->attr($attr,
-                filter_var($text, FILTER_VALIDATE_EMAIL)
-                    ? $text
-                    : ''
-            );
-        } else {
-            $htmlElement->text(
-                filter_var($text, FILTER_VALIDATE_EMAIL)
-                    ? $text
-                    : ''
-            );
-        }
-    }
-
-    /**
-     * Filtr na prawidłową datę.
-     * 
-     * @param HtmlElement $htmlElement
-     * @param string $text
-     * 
-     * @throws \UnexpectedValueException
-     */
-    private function filterDate(HtmlElement $htmlElement, $text)
-    {
-        $date = \DateTime::createFromFormat(\DateTime::ATOM, $text);
-        if ($date === false) {
-            throw new \UnexpectedValueException("Invalid ATOM date format. Must be: " . \DateTime::ATOM);
-        }
-
-        $htmlElement->text($date->format(\DateTime::ATOM));
-    }
-
-    /**
-     * Tworzenie obiektu do weryfikacji tablicy
-     * z danymi wejściowymi elementu 'author'
-     */
-    private function setAuthorResolver()
-    {
-        $resolver = new OptionsResolver();
-        $resolver->setRequired(array('name'));
-
-        $resolver->setDefaults(array(
-            'email' => '',
-            'uri' => ''
-        ));
-
-        $resolver->setAllowedTypes('name', 'string');
-        $resolver->setAllowedTypes('email', 'string');
-        $resolver->setAllowedTypes('uri', 'string');
-
-        $this->authorResolver = $resolver;
-    }
-
-    /**
-     * Tworzenie obiektu do weryfikacji tablicy
-     * z danymi wejściowymi elementu 'category'
-     */
-    private function setCategoryResolver()
-    {
-        $resolver = new OptionsResolver();
-        $resolver->setRequired(array('term'));
-
-        $resolver->setDefaults(array(
-            'scheme' => '',
-            'label' => ''
-        ));
-
-        $resolver->setAllowedTypes('term', 'string');
-        $resolver->setAllowedTypes('scheme', 'string');
-        $resolver->setAllowedTypes('label', 'string');
-
-        $this->categoryResolver = $resolver;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function title($set = null, $mode = self::TITLE_ONLY_TITLE, $separator = '-')
@@ -313,11 +176,11 @@ class AtomDocument extends XmlDocument
     /**
      * Data - kiedy ten plik został wygenerowany.
      * Format: rok-miesiąc-dzieńTgodzina:minuty:sekundyStrefaCzasowa.
-     * 
+     *
      * @param string $set
-     * 
+     *
      * @return string
-     * 
+     *
      * @throws \UnexpectedValueException
      */
     public function updated($set = null)
@@ -346,9 +209,9 @@ class AtomDocument extends XmlDocument
      * Unikalny, niezmienny identyfikator: <id>
      * Każdy kanał musi mieć identyfikator w formacie URI,
      * który nigdy się nie zmieni i będzie wykorzystywany tylko do tego jednego kanału.
-     * 
+     *
      * @param string $set
-     * 
+     *
      * @return string
      */
     public function id($set = null)
@@ -362,6 +225,7 @@ class AtomDocument extends XmlDocument
 
     /**
      * {@inheritdoc}
+     *
      * @return array
      */
     public function author($set = null)
@@ -432,8 +296,8 @@ class AtomDocument extends XmlDocument
     }
 
     /**
-     * Link do samego siebie
-     * 
+     * Link do samego siebie.
+     *
      * @param string $set
      * @return string
      */
@@ -453,8 +317,8 @@ class AtomDocument extends XmlDocument
     }
 
     /**
-     * Podtytuł
-     * 
+     * Podtytuł kanału.
+     *
      * @param string $set
      * 
      * @return string
@@ -474,10 +338,10 @@ class AtomDocument extends XmlDocument
     }
 
     /**
-     * Generator (program generujący) kanału
-     * 
+     * Generator (program generujący) kanału.
+     *
      * @param string $set
-     * 
+     *
      * @return string
      */
     public function generator($set = null)
@@ -497,9 +361,9 @@ class AtomDocument extends XmlDocument
     /**
      * Zawartość tego elementu jest ścieżką do ikony kanału.
      * Ikona ma być kwadratowa i musi dobrze wyglądać przeskalowana do małych rozmiarów.
-     * 
+     *
      * @param string $set
-     * 
+     *
      * @return string
      */
     public function icon($set = null)
@@ -519,9 +383,9 @@ class AtomDocument extends XmlDocument
     /**
      * Zawartość tego elementu jest ścieżką do loga kanału.
      * Logo będzie wyświetlane większe, niż ikona i ma być dwa razy szersze, niż wyższe.
-     * 
+     *
      * @param string $set
-     * 
+     *
      * @return string
      */
     public function logo($set = null)
@@ -540,9 +404,9 @@ class AtomDocument extends XmlDocument
 
     /**
      * Informacje o prawie autorskim dotyczącym treści całego kanału lub jego wpisów.
-     * 
+     *
      * @param string $set
-     * 
+     *
      * @return string
      */
     public function rights($set = null)
@@ -560,26 +424,8 @@ class AtomDocument extends XmlDocument
     }
 
     /**
-     * Znajdź id kategorii o podanym atrybucie term.
-     * 
-     * @param $term
-     * 
-     * @return null|integer
-     */
-    private function getCategoryIdByTerm($term)
-    {
-        foreach ($this->category as $id=>$category) {
-            if ($category->attr('term') == $term) {
-                return $id;
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * Dodaj kategorię kanału
-     * 
+     * Dodaj kategorię kanału.
+     *
      * @param array $values
      */
     public function addCategory(array $values)
@@ -611,10 +457,10 @@ class AtomDocument extends XmlDocument
     }
 
     /**
-     * Usuń kategorię o atrybucie term="{$term}"
-     * 
+     * Usuń kategorię o atrybucie term="{$term}".
+     *
      * @param string $term
-     * 
+     *
      * @throws \InvalidArgumentException
      */
     public function removeCategory($term)
@@ -631,28 +477,10 @@ class AtomDocument extends XmlDocument
     }
 
     /**
-     * Znajdź id współtwórcy/pomocnika o podanej nazwie.
-     * 
-     * @param $name
-     * 
-     * @return null|integer
-     */
-    private function getContributorIdByName($name)
-    {
-        foreach ($this->contributor as $id=>$contributor) {
-            if ($contributor['name']->text() == $name) {
-                return $id;
-            }
-        }
-
-        return null;
-    }
-
-    /**
      * Dodaj współtwórcę/pomocnika.
      * Zawiera takie same elementy jak <author>, ale oznacza, że opisywana
      * osoba nie jest autorem, ale miała swój wkład w powstanie tego, co przedstawia kanał/wpis.
-     * 
+     *
      * @param array $values
      */
     public function addContributor(array $values)
@@ -693,9 +521,9 @@ class AtomDocument extends XmlDocument
 
     /**
      * Usuń współtwórcę/pomocnika o podanej nazwie.
-     * 
+     *
      * @param string $name
-     * 
+     *
      * @throws \InvalidArgumentException
      */
     public function removeContributor($name)
@@ -732,5 +560,176 @@ class AtomDocument extends XmlDocument
         $replaceBody->destroy($replaceBody);
 
         return $output;
+    }
+
+    /**
+     * Filtr tekstowy.
+     * Wszystkie znaki w jednej linii + htmlspecialchars().
+     *
+     * @param HtmlElement $htmlElement
+     * @param string $text
+     * @param string $attr
+     */
+    private function filterText(HtmlElement $htmlElement, $text, $attr = null)
+    {
+        if (is_string($attr)) {
+            $htmlElement->attr($attr,
+                htmlspecialchars(
+                    S::create($text)->collapseWhitespace()
+                    , ENT_QUOTES
+                    , $this->encoding->render()
+                )
+            );
+        } else {
+            $htmlElement->text(
+                htmlspecialchars(
+                    S::create($text)->collapseWhitespace()
+                    , ENT_QUOTES
+                    , $this->encoding->render()
+                )
+            );
+        }
+    }
+
+    /**
+     * Filtr na adres URL.
+     *
+     * @param HtmlElement $htmlElement
+     * @param string $text
+     * @param string $attr
+     */
+    private function filterLink(HtmlElement $htmlElement, $text, $attr = null)
+    {
+        if (is_string($attr)) {
+            $htmlElement->attr($attr,
+                filter_var($text, FILTER_VALIDATE_URL)
+                    ? $text
+                    : ''
+            );
+        } else {
+            $htmlElement->text(
+                filter_var($text, FILTER_VALIDATE_URL)
+                    ? $text
+                    : ''
+            );
+        }
+    }
+
+    /**
+     * Filtr na adres email.
+     *
+     * @param HtmlElement $htmlElement
+     * @param string $text
+     * @param string $attr
+     */
+    private function filterEmail(HtmlElement $htmlElement, $text, $attr = null)
+    {
+        if (is_string($attr)) {
+            $htmlElement->attr($attr,
+                filter_var($text, FILTER_VALIDATE_EMAIL)
+                    ? $text
+                    : ''
+            );
+        } else {
+            $htmlElement->text(
+                filter_var($text, FILTER_VALIDATE_EMAIL)
+                    ? $text
+                    : ''
+            );
+        }
+    }
+
+    /**
+     * Filtr na prawidłową datę.
+     *
+     * @param HtmlElement $htmlElement
+     * @param string $text
+     *
+     * @throws \UnexpectedValueException
+     */
+    private function filterDate(HtmlElement $htmlElement, $text)
+    {
+        $date = \DateTime::createFromFormat(\DateTime::ATOM, $text);
+        if ($date === false) {
+            throw new \UnexpectedValueException("Invalid ATOM date format. Must be: " . \DateTime::ATOM);
+        }
+
+        $htmlElement->text($date->format(\DateTime::ATOM));
+    }
+
+    /**
+     * Tworzenie obiektu do weryfikacji tablicy z danymi wejściowymi elementu 'author'.
+     */
+    private function setAuthorResolver()
+    {
+        $resolver = new OptionsResolver();
+        $resolver->setRequired(array('name'));
+
+        $resolver->setDefaults(array(
+            'email' => '',
+            'uri' => ''
+        ));
+
+        $resolver->setAllowedTypes('name', 'string');
+        $resolver->setAllowedTypes('email', 'string');
+        $resolver->setAllowedTypes('uri', 'string');
+
+        $this->authorResolver = $resolver;
+    }
+
+    /**
+     * Tworzenie obiektu do weryfikacji tablicy z danymi wejściowymi elementu 'category'.
+     */
+    private function setCategoryResolver()
+    {
+        $resolver = new OptionsResolver();
+        $resolver->setRequired(array('term'));
+
+        $resolver->setDefaults(array(
+            'scheme' => '',
+            'label' => ''
+        ));
+
+        $resolver->setAllowedTypes('term', 'string');
+        $resolver->setAllowedTypes('scheme', 'string');
+        $resolver->setAllowedTypes('label', 'string');
+
+        $this->categoryResolver = $resolver;
+    }
+
+    /**
+     * Znajdź id kategorii o podanym atrybucie term.
+     *
+     * @param $term
+     *
+     * @return null|integer
+     */
+    private function getCategoryIdByTerm($term)
+    {
+        foreach ($this->category as $id=>$category) {
+            if ($category->attr('term') == $term) {
+                return $id;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Znajdź id współtwórcy/pomocnika o podanej nazwie.
+     *
+     * @param $name
+     *
+     * @return null|integer
+     */
+    private function getContributorIdByName($name)
+    {
+        foreach ($this->contributor as $id=>$contributor) {
+            if ($contributor['name']->text() == $name) {
+                return $id;
+            }
+        }
+
+        return null;
     }
 }

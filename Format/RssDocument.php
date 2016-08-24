@@ -18,8 +18,10 @@ use Symfony\Component\OptionsResolver\Options;
 use vSymfo\Component\Document\Element\HtmlElement;
 
 /**
- * Dokument RSS
- * 
+ * RSS format.
+ *
+ * @link http://cyber.law.harvard.edu/rss/rss.html
+ *
  * @author Rafał Mikołajun <rafal@vision-web.pl>
  * @package vSymfo Component
  * @subpackage Document_Type
@@ -184,16 +186,16 @@ class RssDocument extends XmlDocument
     public function __construct()
     {
         parent::__construct();
-        // zmiana elementu root
+        // change root element
         $this->root->destroy($this->root);
         $this->root = new HtmlElement('rss');
         $this->root->attr('version', '2.0');
 
-        // element channel
+        // channel element
         $this->channel = new HtmlElement('channel');
         $this->channel->insertTo($this->root);
 
-        // elementy zawarte w channel
+        // elements contains in channel
         $this->title = new HtmlElement('title');
         $this->link = new HtmlElement('link');
         $this->description = new HtmlElement('description');
@@ -231,10 +233,7 @@ class RssDocument extends XmlDocument
         $this->textInputLink = new HtmlElement('link');
         $this->textInputLink->insertTo($this->textInput);
 
-        // program generujący
         $this->generator('vSymfo Document Component');
-
-        // konfiguracja niektórych elementów
         $this->setImageResolver();
         $this->setTextInputResolver();
         $this->setCloudResolver();
@@ -255,142 +254,6 @@ class RssDocument extends XmlDocument
     {
         throw new \RuntimeException('Operation not allowed. You can not change RSS root element.');
     }
-
-    /**
-     * Filtr tekstowy.
-     * Wszystkie znaki w jednej linii + htmlspecialchars().
-     * 
-     * @param HtmlElement $htmlElement
-     * @param string $text
-     */
-    private function filterText(HtmlElement $htmlElement, $text)
-    {
-        $htmlElement->text(
-            htmlspecialchars(
-                S::create($text)->collapseWhitespace()
-                , ENT_QUOTES
-                , $this->encoding->render()
-            )
-        );
-    }
-
-    /**
-     * Filtr na adres URL.
-     * 
-     * @param HtmlElement $htmlElement
-     * @param string $text
-     */
-    private function filterLink(HtmlElement $htmlElement, $text)
-    {
-        $htmlElement->text(
-            filter_var($text, FILTER_VALIDATE_URL)
-                ? $text
-                : ''
-        );
-    }
-
-    /**
-     * Filtr na prawidłową datę.
-     * 
-     * @param HtmlElement $htmlElement
-     * @param string $text
-     * 
-     * @throws \UnexpectedValueException
-     */
-    private function filterDate(HtmlElement $htmlElement, $text)
-    {
-        $date = \DateTime::createFromFormat(\DateTime::RSS, $text);
-        if ($date === false) {
-            throw new \UnexpectedValueException("Invalid RSS date format. Must be: " . \DateTime::RSS);
-        }
-
-        $htmlElement->text($date->format(\DateTime::RSS));
-    }
-
-    /**
-     * Tworzenie obiektu do weryfikacji tablicy
-     * z danymi wejściowymi elementu 'image'
-     */
-    private function setImageResolver()
-    {
-        $resolver = new OptionsResolver();
-        $resolver->setRequired(array('url', 'title', 'link'));
-
-        $resolver->setDefaults(array(
-            'description' => '',
-            'width' => 0,
-            'height' => 0
-        ));
-
-        $resolver->setAllowedTypes('url', 'string');
-        $resolver->setAllowedTypes('title', 'string');
-        $resolver->setAllowedTypes('link', 'string');
-        $resolver->setAllowedTypes('description', 'string');
-        $resolver->setAllowedTypes('width', 'integer');
-        $resolver->setAllowedTypes('height', 'integer');
-
-        $resolver->setNormalizer('width', function (Options $options, $value) {
-            if (is_int($value)) {
-                if ($value > 144) {
-                    $value = 144;
-                } elseif ($value < 0) {
-                    $value = 0;
-                }
-            }
-
-            return $value;
-        });
-
-        $resolver->setNormalizer('height', function (Options $options, $value) {
-            if (is_int($value)) {
-                if ($value > 400) {
-                    $value = 400;
-                } elseif ($value < 0) {
-                    $value = 0;
-                }
-            }
-    
-            return $value;
-        });
-
-        $this->imageResolver = $resolver;
-    }
-
-    /**
-     * Tworzenie obiektu do weryfikacji tablicy
-     * z danymi wejściowymi elementu 'textInput'
-     */
-    private function setTextInputResolver()
-    {
-        $resolver = new OptionsResolver();
-        $resolver->setRequired(array('title', 'link', 'description', 'name'));
-
-        $resolver->setAllowedTypes('title', 'string');
-        $resolver->setAllowedTypes('link', 'string');
-        $resolver->setAllowedTypes('description', 'string');
-        $resolver->setAllowedTypes('name', 'string');
-
-        $this->textInputResolver = $resolver;
-    }
-
-    /**
-     * Tworzenie obiektu do weryfikacji tablicy
-     * z danymi wejściowymi elementu 'cloud'
-     */
-    private function setCloudResolver()
-    {
-        $resolver = new OptionsResolver();
-        $resolver->setRequired(array('domain', 'port', 'path', 'registerProcedure', 'protocol'));
-
-        $resolver->setAllowedTypes('domain', 'string');
-        $resolver->setAllowedTypes('port', 'integer');
-        $resolver->setAllowedTypes('path', 'string');
-        $resolver->setAllowedTypes('registerProcedure', 'string');
-        $resolver->setAllowedTypes('protocol', 'string');
-
-        $this->cloudResolver = $resolver;
-    }
-
 
     /**
      * {@inheritdoc}
@@ -414,10 +277,10 @@ class RssDocument extends XmlDocument
     }
 
     /**
-     * Link do serwisu
-     * 
+     * Link do strony.
+     *
      * @param string $set
-     * 
+     *
      * @return string
      */
     public function link($set = null)
@@ -430,10 +293,10 @@ class RssDocument extends XmlDocument
     }
 
     /**
-     * Język kanału
-     * 
+     * Język kanału.
+     *
      * @param string $set
-     * 
+     *
      * @return string
      */
     public function language($set = null)
@@ -446,10 +309,10 @@ class RssDocument extends XmlDocument
     }
 
     /**
-     * Prawa autorskie
-     * 
+     * Prawa autorskie.
+     *
      * @param string $set
-     * 
+     *
      * @return string
      */
     public function copyright($set = null)
@@ -462,10 +325,10 @@ class RssDocument extends XmlDocument
     }
 
     /**
-     * Kontakt z redaktorem
-     * 
+     * Kontakt z redaktorem.
+     *
      * @param string $set
-     * 
+     *
      * @return string
      */
     public function managingEditor($set = null)
@@ -479,9 +342,9 @@ class RssDocument extends XmlDocument
 
     /**
      * Kontakt z webmasterem
-     * 
+     *
      * @param string $set
-     * 
+     *
      * @return string
      */
     public function webMaster($set = null)
@@ -494,12 +357,12 @@ class RssDocument extends XmlDocument
     }
 
     /**
-     * Data opublikowania treści
-     * 
+     * Data opublikowania treści.
+     *
      * @param string $set
-     * 
+     *
      * @return string
-     * 
+     *
      * @throws \UnexpectedValueException
      */
     public function pubDate($set = null)
@@ -525,12 +388,12 @@ class RssDocument extends XmlDocument
     }
 
     /**
-     * Data ostatniej zmiany
-     * 
+     * Data ostatniej zmiany.
+     *
      * @param string $set
-     * 
+     *
      * @return string
-     * 
+     *
      * @throws \UnexpectedValueException
      */
     public function lastBuildDate($set = null)
@@ -556,10 +419,10 @@ class RssDocument extends XmlDocument
     }
 
     /**
-     * Kategoria kanału
-     * 
+     * Kategoria kanału.
+     *
      * @param string $set
-     * 
+     *
      * @return string
      */
     public function category($set = null)
@@ -572,10 +435,10 @@ class RssDocument extends XmlDocument
     }
 
     /**
-     * Generator (program generujący) kanału
-     * 
+     * Generator (program generujący) kanału.
+     *
      * @param string $set
-     * 
+     *
      * @return string
      */
     public function generator($set = null)
@@ -589,9 +452,9 @@ class RssDocument extends XmlDocument
 
     /**
      * Jak długo wpisy mają być w cache'u czytnika. W minutach.
-     * 
+     *
      * @param string $set
-     * 
+     *
      * @return string
      */
     public function ttl($set = null)
@@ -605,9 +468,9 @@ class RssDocument extends XmlDocument
 
     /**
      * Ilustracja kanału
-     * 
+     *
      * @param array $set
-     * 
+     *
      * @return array
      */
     public function image(array $set = null)
@@ -655,10 +518,10 @@ class RssDocument extends XmlDocument
     }
 
     /**
-     * Pole tekstowe na kanale
-     * 
+     * Pole tekstowe na kanale.
+     *
      * @param array $set
-     * 
+     *
      * @return array
      */
     public function textInput(array $set = null)
@@ -680,10 +543,10 @@ class RssDocument extends XmlDocument
     }
 
     /**
-     * Pomiń godziny
-     * 
+     * Pomiń godziny.
+     *
      * @param array $set
-     * 
+     *
      * @return array
      */
     public function skipHours(array $set = null)
@@ -715,10 +578,10 @@ class RssDocument extends XmlDocument
     }
 
     /**
-     * Pomiń dni
-     * 
+     * Pomiń dni.
+     *
      * @param array $set
-     * 
+     *
      * @return array
      */
     public function skipDays(array $set = null)
@@ -753,10 +616,10 @@ class RssDocument extends XmlDocument
     }
 
     /**
-     * Chmura RSS
-     * 
+     * Chmura RSS.
+     *
      * @param array $set
-     * 
+     *
      * @return array
      */
     public function cloud(array $set = null)
@@ -780,8 +643,8 @@ class RssDocument extends XmlDocument
     }
 
     /**
-     * Zawartość znacznika channel
-     * 
+     * Zawartość znacznika channel.
+     *
      * @return string
      */
     private function channelContent()
@@ -841,5 +704,137 @@ class RssDocument extends XmlDocument
         $replaceBody->destroy($replaceBody);
 
         return $output;
+    }
+
+    /**
+     * Filtr tekstowy.
+     * Wszystkie znaki w jednej linii + htmlspecialchars().
+     *
+     * @param HtmlElement $htmlElement
+     * @param string $text
+     */
+    private function filterText(HtmlElement $htmlElement, $text)
+    {
+        $htmlElement->text(
+            htmlspecialchars(
+                S::create($text)->collapseWhitespace()
+                , ENT_QUOTES
+                , $this->encoding->render()
+            )
+        );
+    }
+
+    /**
+     * Filtr na adres URL.
+     *
+     * @param HtmlElement $htmlElement
+     * @param string $text
+     */
+    private function filterLink(HtmlElement $htmlElement, $text)
+    {
+        $htmlElement->text(
+            filter_var($text, FILTER_VALIDATE_URL)
+                ? $text
+                : ''
+        );
+    }
+
+    /**
+     * Filtr na prawidłową datę.
+     *
+     * @param HtmlElement $htmlElement
+     * @param string $text
+     *
+     * @throws \UnexpectedValueException
+     */
+    private function filterDate(HtmlElement $htmlElement, $text)
+    {
+        $date = \DateTime::createFromFormat(\DateTime::RSS, $text);
+        if ($date === false) {
+            throw new \UnexpectedValueException("Invalid RSS date format. Must be: " . \DateTime::RSS);
+        }
+
+        $htmlElement->text($date->format(\DateTime::RSS));
+    }
+
+    /**
+     * Tworzenie obiektu do weryfikacji tablicy z danymi wejściowymi elementu 'image'.
+     */
+    private function setImageResolver()
+    {
+        $resolver = new OptionsResolver();
+        $resolver->setRequired(array('url', 'title', 'link'));
+
+        $resolver->setDefaults(array(
+            'description' => '',
+            'width' => 0,
+            'height' => 0
+        ));
+
+        $resolver->setAllowedTypes('url', 'string');
+        $resolver->setAllowedTypes('title', 'string');
+        $resolver->setAllowedTypes('link', 'string');
+        $resolver->setAllowedTypes('description', 'string');
+        $resolver->setAllowedTypes('width', 'integer');
+        $resolver->setAllowedTypes('height', 'integer');
+
+        $resolver->setNormalizer('width', function (Options $options, $value) {
+            if (is_int($value)) {
+                if ($value > 144) {
+                    $value = 144;
+                } elseif ($value < 0) {
+                    $value = 0;
+                }
+            }
+
+            return $value;
+        });
+
+        $resolver->setNormalizer('height', function (Options $options, $value) {
+            if (is_int($value)) {
+                if ($value > 400) {
+                    $value = 400;
+                } elseif ($value < 0) {
+                    $value = 0;
+                }
+            }
+
+            return $value;
+        });
+
+        $this->imageResolver = $resolver;
+    }
+
+    /**
+     * Tworzenie obiektu do weryfikacji tablicy z danymi wejściowymi elementu 'textInput'.
+     */
+    private function setTextInputResolver()
+    {
+        $resolver = new OptionsResolver();
+        $resolver->setRequired(array('title', 'link', 'description', 'name'));
+
+        $resolver->setAllowedTypes('title', 'string');
+        $resolver->setAllowedTypes('link', 'string');
+        $resolver->setAllowedTypes('description', 'string');
+        $resolver->setAllowedTypes('name', 'string');
+
+        $this->textInputResolver = $resolver;
+    }
+
+    /**
+     * Tworzenie obiektu do weryfikacji tablicy z danymi wejściowymi elementu 'cloud'.
+     */
+    private function setCloudResolver()
+    {
+        $resolver = new OptionsResolver();
+        $resolver->setRequired(array('domain', 'port', 'path', 'registerProcedure', 'protocol'));
+
+        $resolver->setAllowedTypes('domain', 'string');
+        $resolver->setAllowedTypes('port', 'integer');
+        $resolver->setAllowedTypes('path', 'string');
+        $resolver->setAllowedTypes('registerProcedure', 'string');
+        $resolver->setAllowedTypes('protocol', 'string');
+
+        $this->cloudResolver = $resolver;
     }
 }

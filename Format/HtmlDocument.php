@@ -12,7 +12,6 @@
 
 namespace vSymfo\Component\Document\Format;
 
-use vSymfo\Component\Document\ResourcesInterface;
 use vSymfo\Component\Document\Element\TxtElement;
 use vSymfo\Component\Document\Element\HtmlElement;
 use vSymfo\Component\Document\Element\FaviconElement;
@@ -21,8 +20,8 @@ use vSymfo\Component\Document\Resources\StyleSheetResourceManager;
 use vSymfo\Component\Document\ResourceGroups;
 
 /**
- * Dokument HTML
- * 
+ * HTML Document.
+ *
  * @author Rafał Mikołajun <rafal@vision-web.pl>
  * @package vSymfo Component
  * @subpackage Document_Type
@@ -173,8 +172,8 @@ class HtmlDocument extends DocumentAbstract
     }
 
     /**
-     * Ustaw wyjście skryptów
-     * 
+     * Set scripts output.
+     *
      * @param \Closure $output
      * @throws \Exception
      */
@@ -183,23 +182,18 @@ class HtmlDocument extends DocumentAbstract
         $reflection = new \ReflectionFunction($output);
         $args = $reflection->getParameters();
         if (isset($args[0]) && is_object($args[0]->getClass())
-            && $args[0]->getClass()->getName()
-                == 'vSymfo\Component\Document\Resources\JavaScriptResourceManager'
+            && $args[0]->getClass()->getName() == JavaScriptResourceManager::class
         ) {
             $this->scriptOutput = $output;
         } else {
-            throw new \Exception('not allowed Closure');
+            throw new \Exception('Unexpected closure');
         }
     }
 
     /**
-     * Zasoby
+     * {@inheritdoc}
      * 
-     * @param string $name
-     * 
-     * @return ResourcesInterface
-     * 
-     * @throws \Exception
+     * @return JavaScriptResourceManager|StyleSheetResourceManager
      */
     public function resources($name)
     {
@@ -214,12 +208,10 @@ class HtmlDocument extends DocumentAbstract
     }
 
     /**
-     * Elementy
-     * 
-     * @param string $name
-     * 
+     * {@inheritdoc}
+     *
      * @return HtmlElement|TxtElement|FaviconElement
-     * 
+     *
      * @throws \Exception
      */
     public function element($name)
@@ -247,13 +239,7 @@ class HtmlDocument extends DocumentAbstract
     }
 
     /**
-     * Tytuł
-     * 
-     * @param string $set
-     * @param integer $mode
-     * @param string $separator
-     * 
-     * @return string
+     * {@inheritdoc}
      */
     public function title($set = null, $mode = self::TITLE_ONLY_TITLE, $separator = '-')
     {
@@ -263,7 +249,8 @@ class HtmlDocument extends DocumentAbstract
     }
 
     /**
-     * Wstaw określony element do nagłówka, tylko wtedy gdy nie jest pusty
+     * Insert specific element into header only if it's not empty.
+     *
      * @param HtmlElement $el
      * @param string $set
      * @param \Closure $update
@@ -282,11 +269,7 @@ class HtmlDocument extends DocumentAbstract
     }
 
     /**
-     * Autor
-     * 
-     * @param string $set
-     * 
-     * @return string
+     * {@inheritdoc}
      */
     public function author($set = null)
     {
@@ -301,11 +284,7 @@ class HtmlDocument extends DocumentAbstract
     }
 
     /**
-     * Strona autora
-     * 
-     * @param string $set
-     * 
-     * @return string
+     * {@inheritdoc}
      */
     public function authorUrl($set = null)
     {
@@ -320,11 +299,7 @@ class HtmlDocument extends DocumentAbstract
     }
 
     /**
-     * Opis
-     * 
-     * @param string $set
-     * 
-     * @return string
+     * {@inheritdoc}
      */
     public function description($set = null)
     {
@@ -339,9 +314,7 @@ class HtmlDocument extends DocumentAbstract
     }
 
     /**
-     * Słowa kluczowe
-     * @param string $set
-     * @return string
+     * {@inheritdoc}
      */
     public function keywords($set = null)
     {
@@ -356,10 +329,7 @@ class HtmlDocument extends DocumentAbstract
     }
 
     /**
-     * Treść
-     * 
-     * @param string
-     * @return string
+     * {@inheritdoc}
      */
     public function body($set = null)
     {
@@ -371,8 +341,8 @@ class HtmlDocument extends DocumentAbstract
     }
 
     /**
-     * Własny kod w znaczniku head
-     * 
+     * Insert custom content on head of document.
+     *
      * @param string $code
      */
     public function addCustomHeadCode($code)
@@ -383,8 +353,8 @@ class HtmlDocument extends DocumentAbstract
     }
 
     /**
-     * Własny kod na dole body
-     * 
+     * Insert custom content on bottom of document.
+     *
      * @param string $code
      */
     public function addCustomBottomCode($code)
@@ -395,7 +365,7 @@ class HtmlDocument extends DocumentAbstract
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function render()
     {

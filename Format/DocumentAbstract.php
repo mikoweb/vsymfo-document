@@ -16,7 +16,7 @@ use vSymfo\Component\Document\Interfaces\DocumentInterface;
 use Stringy\Stringy as S;
 
 /**
- * Dokument
+ * Document abstract.
  * 
  * @author Rafał Mikołajun <rafal@vision-web.pl>
  * @package vSymfo Component
@@ -30,7 +30,6 @@ abstract class DocumentAbstract implements DocumentInterface
     const TITLE_FIRST_TITLE = 3;
 
     /**
-     * Tłumaczenia
      * @var array
      */
     protected $translations = array();
@@ -76,11 +75,9 @@ abstract class DocumentAbstract implements DocumentInterface
     private $keywords = '';
 
     /**
-     * Dodaj tłumaczenia
-     * 
-     * @param array $strings
+     * {@inheritdoc}
      */
-    final public function addTranslation(array $strings)
+    public function addTranslation(array $strings)
     {
         $toDel = array();
         foreach ($strings as $k => $text) {
@@ -97,37 +94,7 @@ abstract class DocumentAbstract implements DocumentInterface
     }
 
     /**
-     * Tłumacz tekst
-     * 
-     * @param string $text
-     * @param string $regex
-     * 
-     * @return string
-     */
-    final protected function transText($text, $regex = '/<trans>(.*?)<\/trans>/i')
-    {
-        $matches = array();
-        $replace = array();
-        $replaceWith = array();
-        preg_match_all($regex, $text, $matches, PREG_SET_ORDER);
-        foreach ($matches as $match) {
-            if (array_search($match[0], $replace) === false) {
-                $replace[] = $match[0];
-                $replaceWith[] = isset($this->translations[$match[1]])
-                    ? $this->translations[$match[1]]
-                    : $match[1];
-            }
-        }
-
-        return str_replace($replace, $replaceWith, $text);
-    }
-
-    /**
-     * Nazwa
-     * 
-     * @param string $set
-     * 
-     * @return string
+     * {@inheritdoc}
      */
     public function name($set = null)
     {
@@ -141,13 +108,7 @@ abstract class DocumentAbstract implements DocumentInterface
     }
 
     /**
-     * Tytuł
-     * 
-     * @param string $set
-     * @param integer $mode
-     * @param string $separator
-     * 
-     * @return string
+     * {@inheritdoc}
      */
     public function title($set = null, $mode = self::TITLE_ONLY_TITLE, $separator = '-')
     {
@@ -176,11 +137,7 @@ abstract class DocumentAbstract implements DocumentInterface
     }
 
     /**
-     * Autor
-     * 
-     * @param string $set
-     * 
-     * @return string
+     * {@inheritdoc}
      */
     public function author($set = null)
     {
@@ -194,11 +151,7 @@ abstract class DocumentAbstract implements DocumentInterface
     }
 
     /**
-     * Strona autora
-     * 
-     * @param string $set
-     * 
-     * @return string
+     * {@inheritdoc}
      */
     public function authorUrl($set = null)
     {
@@ -212,11 +165,7 @@ abstract class DocumentAbstract implements DocumentInterface
     }
 
     /**
-     * Data utworzenia
-     * 
-     * @param string $set
-     * 
-     * @return \DateTime
+     * {@inheritdoc}
      */
     public function createdDate($set = null)
     {
@@ -228,11 +177,7 @@ abstract class DocumentAbstract implements DocumentInterface
     }
 
     /**
-     * Data modyfikacji
-     * 
-     * @param string $set
-     * 
-     * @return \DateTime
+     * {@inheritdoc}
      */
     public function lastModified($set = null)
     {
@@ -244,11 +189,7 @@ abstract class DocumentAbstract implements DocumentInterface
     }
 
     /**
-     * Opis
-     * 
-     * @param string $set
-     * 
-     * @return string
+     * {@inheritdoc}
      */
     public function description($set = null)
     {
@@ -262,11 +203,7 @@ abstract class DocumentAbstract implements DocumentInterface
     }
 
     /**
-     * Słowa kluczowe
-     * 
-     * @param string $set
-     * 
-     * @return string
+     * {@inheritdoc}
      */
     public function keywords($set = null)
     {
@@ -277,5 +214,31 @@ abstract class DocumentAbstract implements DocumentInterface
         }
 
         return (string)$this->keywords;
+    }
+
+    /**
+     * Text translator.
+     *
+     * @param string $text
+     * @param string $regex
+     *
+     * @return string
+     */
+    protected function transText($text, $regex = '/<trans>(.*?)<\/trans>/i')
+    {
+        $matches = array();
+        $replace = array();
+        $replaceWith = array();
+        preg_match_all($regex, $text, $matches, PREG_SET_ORDER);
+        foreach ($matches as $match) {
+            if (array_search($match[0], $replace) === false) {
+                $replace[] = $match[0];
+                $replaceWith[] = isset($this->translations[$match[1]])
+                    ? $this->translations[$match[1]]
+                    : $match[1];
+            }
+        }
+
+        return str_replace($replace, $replaceWith, $text);
     }
 }
