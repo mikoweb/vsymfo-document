@@ -52,20 +52,33 @@ class JavaScriptCombineFiles extends CombineFilesAbstract
      */
     protected function processFiles(&$content)
     {
-        return Minifier::minify($content);
+        try {
+            $minify = Minifier::minify($content);
+        } catch (\Exception $e) {
+            $this->setException($e);
+            $minify = $content;
+        }
+
+        return $minify;
     }
 
     /**
      * Pobieranie zawartości pliku
-     * 
+     *
      * @param string $path
      * @param array $cacheFiles
      * @param string|null $relativePath
-     * 
+     *
      * @return string
      */
     protected function fileGetContents($path, array &$cacheFiles, $relativePath = null)
     {
-        return (string)@file_get_contents($path);
+        $content = @file_get_contents($path);
+
+        if ($content === false) {
+            $this->setException(new \InvalidArgumentException('Not found file: ' . $path));
+        }
+
+        return (string) $content;
     }
 }
