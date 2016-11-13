@@ -116,9 +116,19 @@ class GruntPreprocessor extends ScssPreprocessor implements PreprocessorInterfac
         }
         $this->parsedFiles = $parsedFiles;
 
-        $code = file_get_contents($outputFileName);
+        $code = $this->removeMapEntry(file_get_contents($outputFileName));
         $this->cleanUp($outputFileName, $sourceFileName);
 
         return $code;
+    }
+
+    /**
+     * @param string $source
+     *
+     * @return string
+     */
+    protected function removeMapEntry($source)
+    {
+        return trim(preg_replace('/(\/\*#\s*sourceMappingURL=){1}.*(\*\/){1}/im', '', $source));
     }
 }
