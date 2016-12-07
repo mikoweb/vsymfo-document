@@ -28,6 +28,10 @@ use vSymfo\Component\Document\ResourceGroups;
  */
 class HtmlDocument extends DocumentAbstract
 {
+    const SCRIPTS_LOCATION_TOP = 'top';
+    const SCRIPTS_LOCATION_BOTTOM = 'bottom';
+    const SCRIPTS_LOCATION_NONE = 'none';
+
     /**
      * @var TxtElement
      */
@@ -123,8 +127,26 @@ class HtmlDocument extends DocumentAbstract
      */
     private $scriptOutput = null;
 
+    /**
+     * @var string
+     */
+    private $scriptsLocation;
+
+    /**
+     * @var string
+     */
+    private $beforeStyleSheets;
+
+    /**
+     * @var string
+     */
+    private $afterStyleSheets;
+
     public function __construct()
     {
+        $this->setScriptsLocation(self::SCRIPTS_LOCATION_TOP);
+        $this->beforeStyleSheets = null;
+        $this->afterStyleSheets = null;
         $this->doctype = new TxtElement('<!DOCTYPE html>');
         $this->html = new HtmlElement('html');
         $this->head = new HtmlElement('head');
@@ -188,6 +210,14 @@ class HtmlDocument extends DocumentAbstract
         } else {
             throw new \Exception('Unexpected closure');
         }
+    }
+
+    /**
+     * @param string $scriptsLocation
+     */
+    public function setScriptsLocation($scriptsLocation)
+    {
+        $this->scriptsLocation = $scriptsLocation;
     }
 
     /**
@@ -362,6 +392,24 @@ class HtmlDocument extends DocumentAbstract
         if (is_string($code)) {
             $this->customBottomCode .= $code;
         }
+        $this->beforeStyleSheets;
+        $this->afterStyleSheets;
+    }
+
+    /**
+     * @param string $code
+     */
+    public function beforeStyleSheets($code)
+    {
+        $this->beforeStyleSheets = $code;
+    }
+
+    /**
+     * @param string $code
+     */
+    public function afterStyleSheets($code)
+    {
+        $this->afterStyleSheets = $code;
     }
 
     /**
@@ -385,31 +433,45 @@ class HtmlDocument extends DocumentAbstract
             $output .= $favicon . PHP_EOL;
         }
 
+        $output .= $this->beforeStyleSheets;
+
         if ($this->styleSheet->length()) {
             $output .= $this->styleSheet->render('html') . PHP_EOL;
         }
 
+        $output .= $this->afterStyleSheets;
+
+        $scripts = null;
         if ($this->javaScript->length()) {
             $tmp = call_user_func($this->scriptOutput, $this->javaScript, $this->translations);
             if (!empty($tmp)) {
-                $output .= $tmp . PHP_EOL;
+                $scripts .= $tmp . PHP_EOL;
             }
         }
 
         if (!$this->script->isEmpty()) {
-            $output .= '<script type="text/javascript">'
-                . $this->script->render() . '</script>' . PHP_EOL;
+            $scripts .= '<script type="text/javascript">' . $this->script->render() . '</script>' . PHP_EOL;
         }
 
+        if ($this->scriptsLocation === self::SCRIPTS_LOCATION_TOP) {
+            $output .= $scripts;
+        }
+
+        //$output .= $scripts;
         $output .= $this->customHeadCode;
         $output .= '</head>' . PHP_EOL;
 
         $bodyEndPos = strrpos($this->body, "</body>");
+        $output .= $bodyEndPos !== false ? substr($this->body, 0, $bodyEndPos) : $this->body;
+
+        if ($this->scriptsLocation === self::SCRIPTS_LOCATION_BOTTOM) {
+            $output .= $scripts;
+        }
+
+        $output .= $this->customBottomCode;
+
         if ($bodyEndPos !== false) {
-            $output .= substr($this->body, 0, $bodyEndPos);
-            $output .= $this->customBottomCode . '</body>';
-        } else {
-            $output .= $this->body;
+            $output .=  '</body>';
         }
 
         $output .= '</html>';
