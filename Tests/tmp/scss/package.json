@@ -1,6 +1,8 @@
 {
+    "scripts": {
+        "node-sass": "node-sass"
+    },
     "dependencies": {
-        "grunt-contrib-sass": "~1.0",
-        "grunt-vsymfo-scss": "~0.0.5"
+        "node-sass": "~4.1.1"
     }
 }

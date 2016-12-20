@@ -12,7 +12,7 @@
 
 namespace vSymfo\Component\Document\Resources;
 
-use vSymfo\Component\Document\CssPreprocessor\GruntPreprocessor;
+use vSymfo\Component\Document\CssPreprocessor\NodeSassPreprocessor;
 use vSymfo\Component\Document\CssPreprocessor\LessPreprocessor;
 use vSymfo\Component\Document\CssPreprocessor\NonePreprocessor;
 use vSymfo\Component\Document\CssPreprocessor\ScssPreprocessor;
@@ -108,10 +108,10 @@ class StyleSheetCombineFiles extends CombineFilesAbstract
             $pathInfo = pathinfo($path);
 
             switch ($pathInfo['extension']) {
-                case 'scss,grunt':
-                    $preprocessor = new GruntPreprocessor($this->scssVariables, $this->scssImportDirs);
-                    $path = substr($path, 0, -6);
-                    $relativePath = substr($relativePath, 0, -6);
+                case 'scss,node':
+                    $preprocessor = new NodeSassPreprocessor($this->scssVariables, $this->scssImportDirs);
+                    $path = substr($path, 0, -5);
+                    $relativePath = substr($relativePath, 0, -5);
                     break;
                 case 'scss':
                     $preprocessor = new ScssPreprocessor($this->scssVariables, $this->scssImportDirs);

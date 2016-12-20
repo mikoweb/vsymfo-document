@@ -18,6 +18,8 @@ use vSymfo\Component\Document\Resources\StyleSheetCombineFiles;
 use vSymfo\Component\Document\Resources\StyleSheetResourceManager;
 use vSymfo\Component\Document\Resources\StyleSheetResource;
 use vSymfo\Component\Document\ResourceGroups;
+use vSymfo\Component\Document\Resources\Interfaces\CombineResourceInterface;
+use vSymfo\Component\Document\Resources\Interfaces\ResourceManagerInterface;
 use vSymfo\Core\File\CombineFilesCacheDB;
 use Symfony\Component\Config\FileLocator;
 
@@ -95,6 +97,7 @@ class ResourcesTest extends \PHPUnit_Framework_TestCase
 
         $this->assertNotEmpty($res->render('json'));
         $this->assertNotEmpty($res->render('html'));
+        $this->throwCombineException($res, __DIR__ . '/tmp/cache/js.db');
     }
 
     public function testStyleSheet()
@@ -148,12 +151,13 @@ class ResourcesTest extends \PHPUnit_Framework_TestCase
         }
 
         $this->assertNotEmpty($res->render('html'));
+        $this->throwCombineException($res, __DIR__ . '/tmp/cache/less.db');
     }
 
     public function testGrunt()
     {
         $groups = new ResourceGroups();
-        $groups->addGroup('grunt_scss');
+        $groups->addGroup('node_scss');
 
         $res = new StyleSheetResourceManager($groups,
             function(StyleSheetResource $res) {
@@ -164,10 +168,10 @@ class ResourcesTest extends \PHPUnit_Framework_TestCase
                     ->setOutputForceRefresh(true)
                     ->setOutputLifeTime(0)
                     ->setOutputStrategy('manual')
-                    ->setCacheDb(CombineFilesCacheDB::openFile(__DIR__ . '/tmp/cache/grunt.db'))
+                    ->setCacheDb(CombineFilesCacheDB::openFile(__DIR__ . '/tmp/cache/node.db'))
                     ->setScssImportDirs(array(
-                        __DIR__ . '/tmp/scss/grunt_import',
-                        __DIR__ . '/tmp/scss/grunt',
+                        __DIR__ . '/tmp/scss/node_import',
+                        __DIR__ . '/tmp/scss/node',
                         __DIR__,
                     ))
                     ->setScssVariables(array(
@@ -184,11 +188,35 @@ class ResourcesTest extends \PHPUnit_Framework_TestCase
 
         $res->add(
             new StyleSheetResource('style',
-                array('/tmp/scss/style.scss,grunt'),
+                array('/tmp/scss/style.scss,node'),
                 array('combine' => true)
-            ), 'grunt_scss'
+            ), 'node_scss'
         );
 
         $this->assertNotEmpty($res->render('html'));
+        $this->throwCombineException($res, __DIR__ . '/tmp/cache/node.db');
+    }
+
+    /**
+     * @param ResourceManagerInterface $manager
+     * @param string|null $unlink
+     */
+    protected function throwCombineException(ResourceManagerInterface $manager, $unlink = null)
+    {
+        foreach ($manager->resources() as $resource) {
+            if ($resource instanceof CombineResourceInterface) {
+                $result = $resource->getCombineObject()->getException() instanceof \Exception;
+                $message = null;
+
+                if ($result) {
+                    $message = $resource->getCombineObject()->getException()->getMessage();
+                    if (is_string($unlink)) {
+                        unlink($unlink);
+                    }
+                }
+
+                $this->assertFalse($result, $message);
+            }
+        }
     }
 }
