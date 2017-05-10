@@ -22,6 +22,11 @@ use Symfony\Component\Process\Exception\ProcessFailedException;
  */
 class NodeSassPreprocessor extends ScssPreprocessor implements PreprocessorInterface
 {
+    const RUN_NATIVE = 'native';
+    const RUN_MANUALLY = 'manually';
+
+    private static $runMode = self::RUN_NATIVE;
+
     /**
      * @param array $variables
      * @param array $importDirs
@@ -76,7 +81,11 @@ class NodeSassPreprocessor extends ScssPreprocessor implements PreprocessorInter
         $content .= '@import "' . $relativePath . '";' . "\n";
         file_put_contents($sourceFileName, $content);
 
-        $command = 'npm run node-sass -- --source-map true --output-style compressed';
+        if (self::getRunMode() === self::RUN_NATIVE) {
+            $command = 'npm run node-sass -- --source-map true --output-style compressed';
+        } else {
+            $command = 'node ./node_modules/.bin/node-sass --source-map true --output-style compressed';
+        }
 
         foreach ($this->importDirs as $dir) {
             $command .= ' --include-path "' . str_replace(['\\', '//'], ['/', '/'], $dir) . '"';
@@ -123,6 +132,22 @@ class NodeSassPreprocessor extends ScssPreprocessor implements PreprocessorInter
         $this->cleanUp($outputFileName, $sourceFileName);
 
         return $code;
+    }
+
+    /**
+     * @return string
+     */
+    public static function getRunMode()
+    {
+        return self::$runMode;
+    }
+
+    /**
+     * @param string $runMode
+     */
+    public static function setRunMode($runMode)
+    {
+        self::$runMode = $runMode;
     }
 
     /**
