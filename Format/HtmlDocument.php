@@ -93,11 +93,6 @@ class HtmlDocument extends DocumentAbstract
     private $keywords = null;
 
     /**
-     * @var HtmlElement
-     */
-    private $xua_compatible = null;
-
-    /**
      * @var FaviconElement
      */
     private $favicon = null;
@@ -161,12 +156,6 @@ class HtmlDocument extends DocumentAbstract
         $this->viewport
             ->attr('name', 'viewport')
             ->attr('content', 'width=device-width, initial-scale=1.0')
-            ->insertTo($this->head)
-        ;
-        $this->xua_compatible = new HtmlElement('meta');
-        $this->xua_compatible
-            ->attr('http-equiv', 'X-UA-Compatible')
-            ->attr('content', 'IE=Edge,chrome=1')
             ->insertTo($this->head)
         ;
 
@@ -261,8 +250,6 @@ class HtmlDocument extends DocumentAbstract
                 return $this->charset;
             case 'doctype':
                 return $this->doctype;
-            case 'xua_compatible':
-                return $this->xua_compatible;
         }
 
         throw new \Exception('Element ' . $name . ' not found.');
