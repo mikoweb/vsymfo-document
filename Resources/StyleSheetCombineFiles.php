@@ -117,7 +117,6 @@ class StyleSheetCombineFiles extends CombineFilesAbstract
                     $preprocessor = new ScssPreprocessor($this->scssVariables, $this->scssImportDirs);
                     break;
                 case 'less':
-                case 'css':
                     $preprocessor = new LessPreprocessor($this->lessVariables, $this->lessImportDirs);
                     break;
                 default:
